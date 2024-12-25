@@ -2,7 +2,8 @@ import ContactCard from "../_components/contact-card";
 import Footer from "../_components/footer";
 import { type Metadata } from "next";
 import CardContainer from "@/components/card-container";
-import PostCard from "../_components/post-card";
+import LargePostCard from "./large-post-card";
+import PostList from "./post-list";
 
 export const metadata: Metadata = {
   title: "Blog",
@@ -13,21 +14,8 @@ const BlogPage = () => {
   return (
     <div className="flex flex-col gap-3 lg:gap-0 lg:flex-row w-full">
       {/* LEFT CONTENT - Fixed */}
-      <div className="w-full h-[70vh] lg:w-1/2 lg:fixed lg:top-0 lg:left-0 lg:h-screen p-0 lg:p-3 group">
-        <div className="w-full h-full relative bg-[url(/404.webp)] bg-top bg-cover rounded-xl">
-          <div className="absolute w-full bottom-0 p-3">
-            <div className="bg-white/95 backdrop-blur-sm p-3 rounded-lg flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="p-1 bg-primary text-white text-xs rounded">
-                  New
-                </div>
-                <h2 className="font-light">Travel to Hong Kong</h2>
-              </div>
-
-              <span className="text-sm underline underline-offset-2">Read</span>
-            </div>
-          </div>
-        </div>
+      <div className="w-full h-[50vh] lg:w-1/2 lg:fixed lg:top-0 lg:left-0 md:h-[80vh] lg:h-screen p-0 lg:p-3 group">
+        <LargePostCard />
       </div>
 
       {/* Spacer for fixed left content */}
@@ -51,15 +39,8 @@ const BlogPage = () => {
           </div>
         </CardContainer>
 
-        {/* POST LIST CARD  */}
-        <div className="w-full grid grid-cols-1 xl:grid-cols-2 gap-3">
-          <PostCard />
-          <PostCard />
-          <PostCard />
-          <PostCard />
-          <PostCard />
-          <PostCard />
-        </div>
+        {/* POST LIST  */}
+        <PostList />
 
         {/* CONTACT CARD  */}
         <div className="w-full grid grid-cols-2 gap-3">

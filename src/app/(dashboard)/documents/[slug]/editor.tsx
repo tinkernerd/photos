@@ -171,7 +171,7 @@ const Editor = ({ content }: Props) => {
   return (
     <div className="flex-1">
       <div className="max-w-[900px] mx-auto">
-        <div className="bg-white min-h-full shadow-sm">
+        <div className="min-h-full shadow-sm">
           <EditorContent editor={editor} />
         </div>
       </div>

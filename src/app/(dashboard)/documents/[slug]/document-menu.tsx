@@ -104,7 +104,7 @@ export const DocumentMenu = () => {
   }
 
   return (
-    <nav className="sticky top-32 space-y-1 py-4 px-4 max-h-[calc(100vh-8rem)] overflow-y-auto bg-white rounded-lg border">
+    <nav className="sticky top-32 space-y-1 py-4 px-4 max-h-[calc(100vh-8rem)] overflow-y-auto rounded-lg border">
       {headings.map((heading) => (
         <button
           key={heading.id}
