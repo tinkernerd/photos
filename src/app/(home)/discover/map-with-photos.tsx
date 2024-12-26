@@ -5,6 +5,7 @@ import Mapbox from "@/components/map";
 import { Blurhash } from "react-blurhash";
 import BlurImage from "@/components/blur-image";
 import CameraLoader from "@/components/camera-loader";
+
 // Hooks & Types
 import type { MapboxProps } from "@/components/map";
 import { useGetPhotos } from "@/features/photos/api/use-get-photos";

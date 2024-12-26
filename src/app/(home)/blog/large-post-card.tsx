@@ -1,8 +1,14 @@
 "use client";
 
-import { Badge } from "@/components/ui/badge";
-import { useGetPosts } from "@/features/posts/api/use-get-posts";
+// External dependencies
 import Image from "next/image";
+import Link from "next/link";
+
+// UI Components
+import { Badge } from "@/components/ui/badge";
+
+// Hooks
+import { useGetPosts } from "@/features/posts/api/use-get-posts";
 
 const LargePostCard = () => {
   const { data } = useGetPosts();
@@ -14,7 +20,10 @@ const LargePostCard = () => {
   const post = data[0];
 
   return (
-    <div className="w-full h-full relative rounded-xl overflow-hidden group cursor-pointer">
+    <Link
+      href={`/blog/${post.slug}`}
+      className="block w-full h-full relative rounded-xl overflow-hidden group cursor-pointer"
+    >
       {post.coverImage && (
         <Image
           src={post.coverImage}
@@ -40,7 +49,7 @@ const LargePostCard = () => {
           </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 
