@@ -11,7 +11,7 @@ const MapPage = () => {
   return (
     <div className="w-full h-full rounded-[18px] overflow-hidden relative">
       <MapWithPhotos />
-      <div className="absolute right-0 bottom-0 z-50">
+      <div className="absolute right-0 bottom-0 z-10">
         <VectorCombined title="Discover" position="bottom-right" />
       </div>
     </div>
