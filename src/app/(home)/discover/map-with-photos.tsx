@@ -65,7 +65,7 @@ const MapWithPhotos = () => {
 
   if (isLoading) {
     return (
-      <div className="w-full h-full flex items-center justify-center">
+      <div className="w-full h-full flex items-center justify-center bg-muted">
         <CameraLoader />
       </div>
     );
