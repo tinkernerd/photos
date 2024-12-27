@@ -135,12 +135,12 @@ const PhotoCard = ({ photo }: { photo: Photo }) => {
       {/* Love buton  */}
       <button
         onClick={onFavorite}
-        className="absolute top-4 right-4 z-30 rounded-full p-2 bg-transparent backdrop-blur backdrop-saturate-50 hover:backdrop-blur-lg transition-all duration-300 group"
+        className="absolute top-4 right-4 z-30 rounded-full p-2 bg-transparent group"
       >
         {photo.isFavorite ? (
           <HeartIcon className="fill-rose-500 text-rose-500 transition-all duration-300" />
         ) : (
-          <HeartIcon className="text-white size-5 group-hover:fill-rose-500 group-hover:text-rose-500 transition-all duration-300" />
+          <HeartIcon className="text-white size-6 fill-gray-500/80 group-hover:scale-110 transition-all duration-300" />
         )}
       </button>
     </div>

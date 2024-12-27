@@ -14,6 +14,7 @@ import {
   BoldIcon,
   ChevronDownIcon,
   HighlighterIcon,
+  ImageIcon,
   ItalicIcon,
   Link2Icon,
   ListIcon,
@@ -532,6 +533,22 @@ const LineHeightButton = () => {
   );
 };
 
+const ImageButton = () => {
+  // TODO: IMAGE UPLOAD
+  // const { editor } = useEditorStore();
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <button className="h-7 min-w-7 shrink-0 flex flex-col items-center justify-center rounded-sm hover:bg-muted-hover px-1.5 overflow-hidden">
+          <ImageIcon className="size-4" />
+        </button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="p-1 flex flex-col gap-y-1"></DropdownMenuContent>
+    </DropdownMenu>
+  );
+};
+
 const Toolbar = () => {
   const { editor } = useEditorStore();
 
@@ -601,37 +618,80 @@ const Toolbar = () => {
   ];
 
   return (
-    <div className="sticky top-20 z-50  min-h-10 rounded-3xl flex items-center gap-x-0.5 bg-muted px-2.5">
-      {sections[0].map((item) => (
-        <ToolbarButton key={item.label} {...item} />
-      ))}
-      <Separator orientation="vertical" className="h-6 bg-gray-300/80" />
-      <FontFamilyButton />
-      <Separator orientation="vertical" className="h-6 bg-gray-300/80" />
-      <HeadingLevelButton />
-      <Separator orientation="vertical" className="h-6 bg-gray-300/80" />
-      <FontSizeButton />
-      <Separator orientation="vertical" className="h-6 bg-gray-300/80" />
-      {sections[1].map((item) => (
-        <ToolbarButton key={item.label} {...item} />
-      ))}
-      <Separator orientation="vertical" className="h-6 bg-gray-300/80" />
-      <TextColorButton />
-      <Separator orientation="vertical" className="h-6 bg-gray-300/80" />
-      <HeightColorButton />
-      <Separator orientation="vertical" className="h-6 bg-gray-300/80" />
-      <LinkButton />
-      <Separator orientation="vertical" className="h-6 bg-gray-300/80" />
-      {/* TODO: Image  */}
-      <Separator orientation="vertical" className="h-6 bg-gray-300/80" />
-      <AlignButton />
-      <Separator orientation="vertical" className="h-6 bg-gray-300/80" />
-      <LineHeightButton />
-      <Separator orientation="vertical" className="h-6 bg-gray-300/80" />
-      <ListButton />
-      {sections[2].map((item) => (
-        <ToolbarButton key={item.label} {...item} />
-      ))}
+    <div className="bg-muted/30 backdrop-blur-sm py-1 overflow-x-auto">
+      <div className="flex flex-wrap items-center gap-1 md:gap-0.5">
+        <div className="flex items-center flex-wrap gap-1 md:gap-0.5">
+          {sections[0].map((item) => (
+            <ToolbarButton key={item.label} {...item} />
+          ))}
+        </div>
+        <Separator
+          orientation="vertical"
+          className="h-6 bg-gray-300/80 hidden md:block"
+        />
+        <div className="flex items-center flex-wrap gap-1 md:gap-0.5">
+          <FontFamilyButton />
+          <Separator
+            orientation="vertical"
+            className="h-6 bg-gray-300/80 hidden md:block"
+          />
+          <HeadingLevelButton />
+          <Separator
+            orientation="vertical"
+            className="h-6 bg-gray-300/80 hidden md:block"
+          />
+          <FontSizeButton />
+        </div>
+        <Separator
+          orientation="vertical"
+          className="h-6 bg-gray-300/80 hidden md:block"
+        />
+        <div className="flex items-center flex-wrap gap-1 md:gap-0.5">
+          {sections[1].map((item) => (
+            <ToolbarButton key={item.label} {...item} />
+          ))}
+        </div>
+        <Separator
+          orientation="vertical"
+          className="h-6 bg-gray-300/80 hidden md:block"
+        />
+        <div className="flex items-center flex-wrap gap-1 md:gap-0.5">
+          <TextColorButton />
+          <Separator
+            orientation="vertical"
+            className="h-6 bg-gray-300/80 hidden md:block"
+          />
+          <HeightColorButton />
+          <Separator
+            orientation="vertical"
+            className="h-6 bg-gray-300/80 hidden md:block"
+          />
+          <LinkButton />
+        </div>
+        <ImageButton />
+        <Separator
+          orientation="vertical"
+          className="h-6 bg-gray-300/80 hidden md:block"
+        />
+        <div className="flex items-center flex-wrap gap-1 md:gap-0.5">
+          <AlignButton />
+          <Separator
+            orientation="vertical"
+            className="h-6 bg-gray-300/80 hidden md:block"
+          />
+          <LineHeightButton />
+          <Separator
+            orientation="vertical"
+            className="h-6 bg-gray-300/80 hidden md:block"
+          />
+          <ListButton />
+        </div>
+        <div className="flex items-center flex-wrap gap-1 md:gap-0.5">
+          {sections[2].map((item) => (
+            <ToolbarButton key={item.label} {...item} />
+          ))}
+        </div>
+      </div>
     </div>
   );
 };

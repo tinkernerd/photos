@@ -30,7 +30,11 @@ const DocumentSlugPage = ({ params }: { params: Params }) => {
           </p>
         </div>
       </div>
-      <ToolBar />
+
+      <div className="sticky top-[61px] z-50 px-6">
+        <ToolBar />
+      </div>
+
       <div className="flex gap-8 flex-1 px-6 py-4">
         <div className="w-64 shrink-0">
           <DocumentMenu />

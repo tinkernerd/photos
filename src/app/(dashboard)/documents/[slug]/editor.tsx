@@ -168,6 +168,8 @@ const Editor = ({ content }: Props) => {
     return null;
   }
 
+  console.log(editor.getHTML());
+
   return (
     <div className="flex-1">
       <div className="max-w-[900px] mx-auto">

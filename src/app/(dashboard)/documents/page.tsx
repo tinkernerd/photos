@@ -71,7 +71,7 @@ const DocumentsPage = () => {
                 </AspectRatio>
 
                 <div className="w-full">
-                  <div className="flex flex-col gap-y-1">
+                  <div className="flex flex-col">
                     <h1 className="text-lg line-clamp-1">{post.title}</h1>
                     <span className="text-text-muted text-sm">
                       {new Date(post.createAt).toLocaleString("en-US", {
