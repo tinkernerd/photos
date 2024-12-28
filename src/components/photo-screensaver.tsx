@@ -14,7 +14,7 @@ interface PhotoScreensaverProps {
   className?: string;
 }
 
-const GRID_SIZE = 5; // 5x5 grid
+const GRID_SIZE = 8; // 5x5 grid
 const FLIP_INTERVAL = 3000; // 3 seconds between selecting new photo to flip
 const ANIMATION_DURATION = 1.8; // 1.8 seconds for each flip
 

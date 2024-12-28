@@ -1,9 +1,12 @@
 "use client";
 
+// External dependencies
+import { memo } from "react";
+
 // UI Components
+import { Skeleton } from "./ui/skeleton";
 import Carousel from "./Carousel";
 import BlurImage from "./blur-image";
-import { memo } from "react";
 
 // HOOKS
 import { useGetPhotos } from "@/features/photos/api/use-get-photos";
@@ -20,7 +23,7 @@ const ImageSlider = memo(function ImageSlider() {
   }
 
   if (isLoading) {
-    return <div className="size-full bg-muted-hover rounded-xl" />;
+    return <Skeleton className="size-full" />;
   }
 
   const favoritePhoto =
