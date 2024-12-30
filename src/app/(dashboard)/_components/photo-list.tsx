@@ -14,7 +14,7 @@ const PhotoList = () => {
     <div className="py-4 space-y-4 px-4">
       <div className="flex items-center">
         <h1 className="hidden md:block text-sm text-muted-foreground font-light tracking-wide subpixel-antialiased">
-          Showing <span className="text-black">{photos.length}</span> Photos
+          Showing <span className="font-bold">{photos.length}</span> Photos
           Listing
         </h1>
 

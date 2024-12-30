@@ -8,15 +8,12 @@ import { MapProvider } from "react-map-gl";
 import PhotoList from "../_components/photo-list";
 import type { MapboxProps } from "@/components/map";
 import { useGetPhotos } from "@/features/photos/api/use-get-photos";
+import { Skeleton } from "@/components/ui/skeleton";
 
 // Lazy load Mapbox component
 const MapboxComponent = dynamic(() => import("@/components/map"), {
   ssr: false,
-  loading: () => (
-    <div className="w-full h-full flex items-center justify-center bg-muted">
-      <div className="text-muted-foreground">Loading map...</div>
-    </div>
-  ),
+  loading: () => <Skeleton className="size-full" />,
 });
 
 const Page = () => {
@@ -87,13 +84,7 @@ const Page = () => {
 
         {/* Right Content */}
         <div className="lg:w-5/12 w-full h-[calc(100vh-61px)] hidden lg:block bg-muted sticky top-[61px]">
-          <Suspense
-            fallback={
-              <div className="w-full h-full flex items-center justify-center">
-                <div className="text-muted-foreground">Loading map...</div>
-              </div>
-            }
-          >
+          <Suspense fallback={<Skeleton className="size-full" />}>
             <MapboxComponent
               id="photosMap"
               initialViewState={{
