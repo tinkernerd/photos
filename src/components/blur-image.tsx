@@ -25,7 +25,7 @@ const BlurImage = memo(function BlurImage({
   return (
     <div className={containerStyle}>
       {!imageLoaded && (
-        <div className="absolute inset-0">
+        <div className={`absolute inset-0 ${className}`}>
           <Blurhash
             hash={blurhash}
             width="100%"

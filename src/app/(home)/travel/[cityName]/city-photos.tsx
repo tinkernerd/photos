@@ -42,7 +42,7 @@ const CityPhotos = ({ cityName }: { cityName: string }) => {
             fill
             quality={75}
             blurhash={cityData.coverPhoto.blurData}
-            className="object-cover rounded-xl"
+            className="object-cover rounded-xl overflow-hidden"
           />
           <div className="absolute right-0 bottom-0">
             <VectorCombined title={decodedCityName} position="bottom-right" />
