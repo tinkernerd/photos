@@ -61,6 +61,12 @@ const ProfileCard = () => {
         </MotionFadeIn>
         <MotionFadeIn delay={0.4} className="h-full">
           <ContactCard
+            title="Xiaohongshu"
+            href="https://www.xiaohongshu.com/user/profile/66c84ba2000000001b01b3f1"
+          />
+        </MotionFadeIn>
+        <MotionFadeIn delay={0.5} className="h-full">
+          <ContactCard
             title="Contact me"
             className="bg-primary hover:bg-primary-hover text-white dark:text-black"
           />

@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import { Book } from "lucide-react";
 import Link from "next/link";
 import {
   PiArrowUpRight,
@@ -13,6 +14,7 @@ const iconMap = {
   Instagram: <PiInstagramLogo size={18} />,
   GitHub: <PiGithubLogo size={18} />,
   X: <PiXLogo size={18} />,
+  Xiaohongshu: <Book size={18} />,
   "Contact me": <PiMailbox size={18} />,
 };
 
