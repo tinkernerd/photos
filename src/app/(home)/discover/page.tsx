@@ -8,7 +8,7 @@ export const metadata = {
     "Capturing memories across the globe - A visual journey through time and space",
 };
 
-const MapPage = () => {
+const DiscoverPage = () => {
   return (
     <div className="flex w-full h-full">
       {/* Left side - Fixed Map */}
@@ -29,4 +29,4 @@ const MapPage = () => {
   );
 };
 
-export default MapPage;
+export default DiscoverPage;

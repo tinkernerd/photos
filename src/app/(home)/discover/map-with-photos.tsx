@@ -74,6 +74,7 @@ const MapWithPhotos = () => {
 
   return (
     <Mapbox
+      id="discoverMap"
       initialViewState={{
         longitude: 121.2816980216146,
         latitude: 31.31395498607465,

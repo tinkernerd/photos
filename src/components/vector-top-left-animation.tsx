@@ -11,15 +11,14 @@ const VectorTopLeftAnimation = ({ title }: Props) => {
       <div className="pt-2 px-4 pb-3 overflow-hidden">
         <div className="text-sm font-light flex items-center">
           <p>{title}</p>
-          <div className="
+          <div
+            className="
             w-0 group-hover:w-[24px]
             transition-[width] duration-300 ease-out
             overflow-hidden
-          ">
-            <PiArrowRight 
-              size={14} 
-              className="ml-2 flex-shrink-0"
-            />
+          "
+          >
+            <PiArrowRight size={14} className="ml-2 flex-shrink-0" />
           </div>
         </div>
       </div>

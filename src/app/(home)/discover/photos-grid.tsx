@@ -1,10 +1,15 @@
 "use client";
 
+// External dependencies
+import { motion } from "motion/react";
+
+// Internal dependencies - UI Components
 import BlurImage from "@/components/blur-image";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import VectorTopLeftAnimation from "@/components/vector-top-left-animation";
+
+// Hooks
 import { useGetPhotos } from "@/features/photos/api/use-get-photos";
-import { motion } from "motion/react";
 
 const PhotosGrid = () => {
   const { data } = useGetPhotos();
@@ -13,7 +18,7 @@ const PhotosGrid = () => {
 
   return (
     <div className="size-full">
-      <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-3 gap-3 pb-3">
+      <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 gap-3 pb-3">
         {photos.map((photo) => (
           <motion.div
             key={photo.id}
@@ -35,11 +40,14 @@ const PhotosGrid = () => {
                 priority
                 className="object-cover group-hover:blur-sm transition-[filter] duration-300 ease-out"
                 blurhash={photo.blurData}
+                sizes="(max-width: 768px) 100vw,
+                  (max-width: 1200px) 50vw,
+                  33vw"
               />
             </AspectRatio>
 
             <div className="absolute top-0 left-0 z-20">
-              <VectorTopLeftAnimation title={photo.title} />
+              <VectorTopLeftAnimation title="title" />
             </div>
           </motion.div>
         ))}
