@@ -24,12 +24,14 @@ import { LineHeightExtension } from "@/extensions/line-height";
 interface Props {
   content: string;
   onChange?: (content: string) => void;
+  enabledEditor?: boolean;
 }
 
-const Editor = ({ content }: Props) => {
+const Editor = ({ content, enabledEditor = true }: Props) => {
   const { setEditor } = useEditorStore();
 
   const editor = useEditor({
+    editable: enabledEditor,
     immediatelyRender: false,
     onCreate: ({ editor }) => {
       setEditor(editor);
