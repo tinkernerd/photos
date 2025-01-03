@@ -127,7 +127,7 @@ export default function TravelClientPage() {
 
   if (isCitySetsLoading) {
     return (
-      <div className="h-[calc(100vh-64px)] flex items-center justify-center bg-muted">
+      <div className="h-full w-full rounded-xl flex items-center justify-center bg-muted">
         <CameraLoader />
       </div>
     );
