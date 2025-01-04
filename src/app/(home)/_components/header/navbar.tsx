@@ -1,6 +1,6 @@
 import Logo from "./logo";
-import AnimatedLink from "../../../../components/animated-link";
 import { ThemeSwitch } from "@/components/theme/theme-switch";
+import FlipLink from "@/components/flip-link";
 
 const Navbar = () => {
   return (
@@ -8,10 +8,10 @@ const Navbar = () => {
       <div className="flex items-center gap-5 pb-3 px-4 relative">
         <Logo />
         <div className="hidden lg:flex gap-5">
-          <AnimatedLink link="/travel" label="Travel" />
-          <AnimatedLink link="/discover" label="Discover" />
-          <AnimatedLink link="/blog" label="Blog" />
-          <AnimatedLink link="/about" label="About" />
+          <FlipLink href="/travel">Travel</FlipLink>
+          <FlipLink href="/discover">Discover</FlipLink>
+          <FlipLink href="/blog">Blog</FlipLink>
+          <FlipLink href="/about">About</FlipLink>
         </div>
         <ThemeSwitch />
       </div>
