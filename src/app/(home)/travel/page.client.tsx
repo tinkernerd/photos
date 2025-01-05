@@ -1,7 +1,6 @@
 "use client";
 
 // External dependencies
-import { cn } from "@/lib/utils";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
@@ -28,34 +27,18 @@ interface CoverPhotoProps {
 
 // Components
 const CoverPhoto = ({ url, city, blurData }: CoverPhotoProps) => {
-  const [currentUrl, setCurrentUrl] = useState(url);
-  const [isTransitioning, setIsTransitioning] = useState(false);
-
-  useEffect(() => {
-    if (url !== currentUrl) {
-      setIsTransitioning(true);
-      const timer = setTimeout(() => {
-        setCurrentUrl(url);
-        setIsTransitioning(false);
-      }, 100);
-      return () => clearTimeout(timer);
-    }
-  }, [url, currentUrl]);
-
   return (
     <div className="w-full h-[70vh] lg:w-1/2 lg:fixed lg:top-0 lg:left-0 lg:h-screen p-0 lg:p-3">
       <div className="w-full h-full relative rounded-xl overflow-hidden">
-        {currentUrl && blurData && (
+        {url && blurData && (
           <BlurImage
-            src={currentUrl}
+            src={url}
             alt={city || ""}
             fill
             quality={75}
+            priority
             blurhash={blurData}
-            className={cn(
-              "object-cover transition-all duration-300 ease-in-out",
-              isTransitioning ? "opacity-0" : "opacity-100"
-            )}
+            className="object-cover transition-all duration-500 ease-in-out"
           />
         )}
         <div className="absolute right-0 bottom-0">

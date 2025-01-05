@@ -95,7 +95,7 @@ const CityPhotos = ({ cityName }: { cityName: string }) => {
             </div>
 
             <div className="w-full h-full p-3 lg:p-5 bg-muted rounded-xl flex justify-between items-center">
-              <p className="text-xs text-text-muted">Count</p>
+              <p className="text-xs text-text-muted">Photos</p>
               <p className="text-xs">{cityData.photoCount}</p>
             </div>
           </div>
