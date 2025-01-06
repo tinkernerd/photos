@@ -8,12 +8,12 @@ interface Props {
 
 const AnimatedText = ({ label, label2, style }: Props) => {
   return (
-    <div className="relative inline-block overflow-hidden">
+    <div
+      className="relative inline-block overflow-hidden"
+      style={{ lineHeight: 0.75 }}
+    >
       <div
-        className={cn(
-          "relative inline-block group text-black text-sm font-light dark:text-white",
-          style
-        )}
+        className={cn("relative inline-block group text-sm font-light", style)}
       >
         {/* Default Text (visible initially, moves down on hover) */}
         <span className="block transform transition-transform duration-300 ease-in-out group-hover:translate-y-full">

@@ -6,7 +6,11 @@ const Logo = () => {
   return (
     <Link href="/" className="flex gap-2 items-center">
       <RiCameraLensFill size={18} />
-      <AnimatedText label="ECarry" label2="Photo" style="font-medium" />
+      <AnimatedText
+        label="ECarry"
+        label2="Photo"
+        style="font-medium uppercase"
+      />
     </Link>
   );
 };
