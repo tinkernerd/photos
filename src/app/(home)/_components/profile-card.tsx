@@ -13,7 +13,7 @@ const ProfileCard = () => {
       <div className="col-span-1 md:col-span-2 lg:col-span-1 xl:col-span-2">
         <Link
           href="/about"
-          className="flex flex-col p-10 gap-24 bg-muted hover:bg-muted-hover transition-all duration-150 ease-[cubic-bezier(0.22, 1, 0.36, 1)] rounded-xl font-light relative group h-full"
+          className="flex flex-col justify-between gap-6 p-6 lg:p-10 lg:gap-0 bg-muted hover:bg-muted-hover transition-all duration-150 ease-[cubic-bezier(0.22, 1, 0.36, 1)] rounded-xl font-light relative group h-full"
         >
           <div className="flex gap-4 items-center">
             {/* AVATAR  */}
@@ -52,9 +52,6 @@ const ProfileCard = () => {
             title="Instagram"
             href="https://instagram.com/ekkooooooooooo0o0"
           />
-        </MotionFadeIn>
-        <MotionFadeIn delay={0.2} className="h-full">
-          <ContactCard title="X" href="https://x.com" />
         </MotionFadeIn>
         <MotionFadeIn delay={0.3} className="h-full">
           <ContactCard title="GitHub" href="https://github.com/ecarry" />
