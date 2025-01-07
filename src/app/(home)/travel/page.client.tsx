@@ -9,40 +9,33 @@ import Footer from "../_components/footer";
 import { PiArrowRight } from "react-icons/pi";
 import BlurImage from "@/components/blur-image";
 import TextScroll from "@/components/text-scroll";
-import VectorCombined from "@/components/vector-combined";
 import CameraLoader from "@/components/camera-loader";
 import MotionFadeIn from "@/components/motion-fade-in";
 import CardContainer from "@/components/card-container";
+import VectorCombined from "@/components/vector-combined";
 
 // Hooks & Types
 import { useGetCitySets } from "@/features/city/api/use-get-city-sets";
 import { type CitySetWithRelations } from "@/app/api/[[...route]]/city";
 
-// Types
-interface CoverPhotoProps {
-  url: string | undefined;
-  city: string | undefined;
-  blurData: string | undefined;
-}
-
 // Components
-const CoverPhoto = ({ url, city, blurData }: CoverPhotoProps) => {
+const CoverPhoto = ({ city }: { city: CitySetWithRelations | null }) => {
   return (
     <div className="w-full h-[70vh] lg:w-1/2 lg:fixed lg:top-0 lg:left-0 lg:h-screen p-0 lg:p-3">
       <div className="w-full h-full relative rounded-xl overflow-hidden">
-        {url && blurData && (
+        {city && (
           <BlurImage
-            src={url}
-            alt={city || ""}
+            src={city.coverPhoto.url}
+            alt={city.city}
             fill
-            quality={75}
             priority
-            blurhash={blurData}
-            className="object-cover transition-all duration-500 ease-in-out"
+            blurhash={city.coverPhoto.blurData}
+            className="object-cover"
           />
         )}
+
         <div className="absolute right-0 bottom-0">
-          <VectorCombined title={city || ""} position="bottom-right" />
+          <VectorCombined title={city?.city || ""} position="bottom-right" />
         </div>
       </div>
     </div>
@@ -118,11 +111,7 @@ export default function TravelClientPage() {
 
   return (
     <div className="flex flex-col lg:flex-row min-h-screen w-full">
-      <CoverPhoto
-        url={activeCity?.coverPhoto?.url}
-        city={activeCity?.city}
-        blurData={activeCity?.coverPhoto?.blurData}
-      />
+      <CoverPhoto city={activeCity} />
 
       {/* Spacer for fixed left content */}
       <div className="hidden lg:block lg:w-1/2" />
