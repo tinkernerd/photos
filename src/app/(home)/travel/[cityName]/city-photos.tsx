@@ -3,12 +3,13 @@
 import { useGetCitySets } from "@/features/city/api/use-get-city-sets";
 import Footer from "../../_components/footer";
 import VectorCombined from "@/components/vector-combined";
-import { notFound } from "next/navigation";
+import { notFound, useRouter } from "next/navigation";
 import CameraLoader from "@/components/camera-loader";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import BlurImage from "@/components/blur-image";
 
 const CityPhotos = ({ cityName }: { cityName: string }) => {
+  const router = useRouter();
   const { data, isLoading: isCitySetsLoading } = useGetCitySets();
   const decodedCityName = decodeURIComponent(cityName);
 
@@ -106,7 +107,10 @@ const CityPhotos = ({ cityName }: { cityName: string }) => {
           <AspectRatio
             ratio={photo.aspectRatio}
             key={photo.id}
-            className="overflow-hidden rounded-lg"
+            className="overflow-hidden rounded-lg cursor-pointer"
+            onClick={() => {
+              router.push(`/photograph/${photo.id}`);
+            }}
           >
             <BlurImage
               src={photo.url}
