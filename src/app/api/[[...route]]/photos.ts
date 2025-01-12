@@ -23,12 +23,6 @@ const app = new Hono<{
    * @returns {Array.<Object>} An array of photos
    */
   .get("/", async (c) => {
-    const user = c.get("user");
-
-    if (!user) {
-      return c.json({ success: false, error: "Unauthorized" }, 401);
-    }
-
     const data = await db
       .select()
       .from(photos)
