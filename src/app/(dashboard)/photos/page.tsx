@@ -16,7 +16,8 @@ const MapboxComponent = dynamic(() => import("@/components/map"), {
   loading: () => <Skeleton className="size-full" />,
 });
 
-const Page = () => {
+// Create a separate component for search params handling
+const PhotosContent = () => {
   const { data: photos } = useGetPhotos();
 
   const markers: MapboxProps["markers"] =
@@ -67,7 +68,7 @@ const Page = () => {
             </div>
           </div>
         ),
-      })) || [];
+      })) ?? [];
 
   return (
     <MapProvider>
@@ -98,6 +99,14 @@ const Page = () => {
         </div>
       </div>
     </MapProvider>
+  );
+};
+
+const Page = () => {
+  return (
+    <Suspense fallback={<Skeleton className="size-full" />}>
+      <PhotosContent />
+    </Suspense>
   );
 };
 
