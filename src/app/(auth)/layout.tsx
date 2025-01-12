@@ -1,29 +1,14 @@
-import Footer from "../(home)/_components/footer";
-import VectorCombined from "@/components/vector-combined";
+interface AuthLayoutProps {
+  children: React.ReactNode;
+}
 
-const AuthLayout = ({ children }: { children: React.ReactNode }) => {
+const AuthLayout = ({ children }: AuthLayoutProps) => {
   return (
-    <div className="w-full flex flex-col lg:flex-row">
-      <div className="h-[70vh] lg:h-screen w-full lg:w-1/2 p-3 relative">
-        <div className="bg-[url(/bg.webp)] bg-top bg-cover h-full rounded-lg brightness-50"></div>
-
-        <div className="absolute top-3 left-3">
-          <VectorCombined
-            title="Back to Homepage"
-            position="top-left"
-            link="/"
-          />
-        </div>
-
-        <div className="absolute bottom-3 right-3">
-          <VectorCombined title="Login in" position="bottom-right" />
-        </div>
+    <div className="bg-[url(/bg.webp)] bg-top bg-cover h-screen flex flex-col">
+      <div className="z-[4] h-full w-full flex flex-col items-center justify-center">
+        <div className="h-full w-full md:h-auto md:w-[420px]">{children}</div>
       </div>
-
-      <div className="w-full lg:w-1/2 p-3 lg:pl-0 space-y-3 flex flex-col">
-        {children}
-        <Footer />
-      </div>
+      <div className="fixed inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.8),rgba(0,0,0,.4),rgba(0,0,0,.8))] z-[1]" />
     </div>
   );
 };

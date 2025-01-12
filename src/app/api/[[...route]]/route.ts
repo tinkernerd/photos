@@ -1,33 +1,39 @@
 import { Hono } from "hono";
 import { handle } from "hono/vercel";
-import { AuthConfig, authHandler, initAuthConfig } from "@hono/auth-js";
-import authConfig from "@/auth.config";
+import { auth } from "@/features/auth/lib/auth";
 
 // routes
 import r2 from "./r2";
 import map from "./map";
 import city from "./city";
 import posts from "./posts";
-import users from "./users";
 import photos from "./photos";
 
-function getAuthConfig(): AuthConfig {
-  return {
-    secret: process.env.AUTH_SECRET,
-    ...authConfig,
+const app = new Hono<{
+  Variables: {
+    user: typeof auth.$Infer.Session.user | null;
+    session: typeof auth.$Infer.Session.session | null;
   };
-}
+}>().basePath("/api");
 
-export const runtime = "nodejs";
+app.use("*", async (c, next) => {
+  const session = await auth.api.getSession({ headers: c.req.raw.headers });
 
-const app = new Hono().basePath("/api");
+  if (!session) {
+    c.set("user", null);
+    c.set("session", null);
+    return next();
+  }
 
-app.use("*", initAuthConfig(getAuthConfig));
-app.use("/auth/*", authHandler());
+  c.set("user", session.user);
+  c.set("session", session.session);
+  return next();
+});
+
+app.on(["POST", "GET"], "/auth/*", (c) => auth.handler(c.req.raw));
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const routes = app
-  .route("/users", users)
   .route("/photos", photos)
   .route("/r2", r2)
   .route("/map", map)

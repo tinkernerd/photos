@@ -3,18 +3,17 @@
  * This file implements secure file uploads using pre-signed URLs and handles
  * authentication, validation, and URL generation for photo storage.
  */
-
+import { z } from "zod";
 import { Hono } from "hono";
+import { cache } from "react";
 import {
   S3Client,
   PutObjectCommand,
   DeleteObjectCommand,
 } from "@aws-sdk/client-s3";
-import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+import { auth } from "@/features/auth/lib/auth";
 import { zValidator } from "@hono/zod-validator";
-import { z } from "zod";
-import { verifyAuth } from "@hono/auth-js";
-import { cache } from "react";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
 // Initialize S3 client with Cloudflare R2 configuration
 const s3Client = new S3Client({
@@ -62,23 +61,24 @@ const getPublicUrl = cache((filename: string, folder: string) => {
  */
 
 // Create a new Hono app instance and define the upload route
-const app = new Hono()
+const app = new Hono<{
+  Variables: {
+    user: typeof auth.$Infer.Session.user | null;
+    session: typeof auth.$Infer.Session.session | null;
+  };
+}>()
   .post(
     "/",
-    verifyAuth(), // Ensure request is authenticated
     zValidator("json", uploadSchema), // Validate request body
     async (c) => {
-      // Get authentication token from request
-      const auth = c.get("authUser");
-
-      // Check if user is authenticated
-      if (!auth.token?.id) {
-        return c.json({ success: false, error: "Unauthorized" }, 401);
-      }
-
       try {
         // Extract and validate file information from request
         const { filename, contentType, folder } = c.req.valid("json");
+        const user = c.get("user");
+
+        if (!user) {
+          return c.json({ success: false, error: "Unauthorized" }, 401);
+        }
 
         // Define allowed file types (JPEG and PNG only)
         const allowedMimeTypes = ["image/jpeg", "image/png"];
@@ -130,35 +130,30 @@ const app = new Hono()
       }
     }
   )
-  .delete(
-    "/delete",
-    verifyAuth(),
-    zValidator("json", deleteSchema),
-    async (c) => {
-      const auth = c.get("authUser");
-      const { filename, folder } = c.req.valid("json");
+  .delete("/delete", zValidator("json", deleteSchema), async (c) => {
+    const { filename, folder } = c.req.valid("json");
+    const user = c.get("user");
 
-      if (!auth.token?.id) {
-        return c.json({ success: false, error: "Unauthorized" }, 401);
-      }
-
-      try {
-        const command = new DeleteObjectCommand({
-          Bucket: process.env.CLOUDFLARE_R2_BUCKET_NAME,
-          Key: `${folder}/${filename}`,
-        });
-
-        await s3Client.send(command);
-
-        return c.json({
-          success: true,
-          data: { filename },
-        });
-      } catch (error) {
-        console.error("Error deleting file:", error);
-        return c.json({ success: false, error: "Failed to delete file" }, 500);
-      }
+    if (!user) {
+      return c.json({ success: false, error: "Unauthorized" }, 401);
     }
-  );
+
+    try {
+      const command = new DeleteObjectCommand({
+        Bucket: process.env.CLOUDFLARE_R2_BUCKET_NAME,
+        Key: `${folder}/${filename}`,
+      });
+
+      await s3Client.send(command);
+
+      return c.json({
+        success: true,
+        data: { filename },
+      });
+    } catch (error) {
+      console.error("Error deleting file:", error);
+      return c.json({ success: false, error: "Failed to delete file" }, 500);
+    }
+  });
 
 export default app;

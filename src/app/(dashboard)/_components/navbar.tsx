@@ -1,10 +1,10 @@
-import { UserButton } from "@/features/auth/components/user-button";
 import HomeButton from "./home-button";
 import Navigation from "./navigation";
 import SearchBar from "./search-bar";
 import UploadButton from "./upload-button";
 import { Separator } from "@/components/ui/separator";
 import { ThemeSwitch } from "@/components/theme/theme-switch";
+import UserButton from "@/features/auth/components/user-button";
 
 const Navbar = () => {
   return (

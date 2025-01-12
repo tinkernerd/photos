@@ -1,8 +1,6 @@
 "use client";
-// External dependencies
-import { useSession, signOut } from "next-auth/react";
-// Internal dependencies - UI Components
-import { Loader, LogOut } from "lucide-react";
+
+import { signOut, useSession } from "@/features/auth/lib/auth-client";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -10,37 +8,59 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { LogOut, Loader2 } from "lucide-react";
 
-export const UserButton = () => {
-  const session = useSession();
-
-  if (session.status === "loading") {
-    return <Loader className="size-4 animate-spin text-muted-foreground" />;
-  }
-
-  if (session.status === "unauthenticated" || !session.data?.user?.name) {
-    return null;
-  }
-
-  const name = session.data.user.name;
-  const imageUrl = session.data.user.image;
+const UserButton = () => {
+  const router = useRouter();
+  const [isSignOut, setIsSignOut] = useState<boolean>(false);
+  const { data: session } = useSession();
 
   return (
-    <DropdownMenu modal={false}>
-      <DropdownMenuTrigger className="outline-none relative">
-        <Avatar className="size-10 hover:opcaity-75 transition">
-          <AvatarImage alt={name} src={imageUrl || ""} />
-          <AvatarFallback className="bg-blue-500 font-medium text-white flex items-center justify-center">
-            {name.charAt(0).toUpperCase()}
-          </AvatarFallback>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Avatar className="size-9">
+          <AvatarImage
+            src={session?.user.image || "#"}
+            alt="Avatar"
+            className="object-cover"
+          />
+          <AvatarFallback>{session?.user.name.charAt(0)}</AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-60">
-        <DropdownMenuItem className="h-10" onClick={() => signOut()}>
-          <LogOut className="size-4 mr-2" />
-          Log out
+      <DropdownMenuContent>
+        <DropdownMenuItem asChild>
+          <button
+            className="w-full"
+            onClick={async () => {
+              setIsSignOut(true);
+              await signOut({
+                fetchOptions: {
+                  onSuccess() {
+                    router.push("/");
+                  },
+                },
+              });
+              setIsSignOut(false);
+            }}
+            disabled={isSignOut}
+          >
+            <span className="text-sm">
+              {isSignOut ? (
+                <Loader2 size={15} className="animate-spin" />
+              ) : (
+                <div className="flex items-center gap-2">
+                  <LogOut size={16} />
+                  Sign Out
+                </div>
+              )}
+            </span>
+          </button>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
 };
+
+export default UserButton;

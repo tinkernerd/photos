@@ -19,6 +19,10 @@ const LargePostCard = () => {
 
   const post = data[0];
 
+  if (!post) {
+    return null;
+  }
+
   return (
     <Link
       href={`/blog/${post.slug}`}

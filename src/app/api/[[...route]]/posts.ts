@@ -1,12 +1,17 @@
+import { z } from "zod";
 import { Hono } from "hono";
 import { eq } from "drizzle-orm";
 import { db } from "@/db/drizzle";
-import { verifyAuth } from "@hono/auth-js";
 import { zValidator } from "@hono/zod-validator";
+import { auth } from "@/features/auth/lib/auth";
 import { insertPostSchema, posts } from "@/db/schema";
-import { z } from "zod";
 
-const app = new Hono()
+const app = new Hono<{
+  Variables: {
+    user: typeof auth.$Infer.Session.user | null;
+    session: typeof auth.$Infer.Session.session | null;
+  };
+}>()
   .get("/", async (c) => {
     const data = await db.select().from(posts);
 
@@ -37,7 +42,6 @@ const app = new Hono()
   )
   .post(
     "/",
-    verifyAuth(),
     zValidator(
       "json",
       insertPostSchema.pick({
@@ -48,10 +52,10 @@ const app = new Hono()
       })
     ),
     async (c) => {
-      const auth = c.get("authUser");
       const values = c.req.valid("json");
+      const user = c.get("user");
 
-      if (!auth.token?.id) {
+      if (!user) {
         return c.json({ success: false, error: "Unauthorized" }, 401);
       }
 
@@ -75,15 +79,14 @@ const app = new Hono()
   )
   .patch(
     "/:slug",
-    verifyAuth(),
     zValidator("param", z.object({ slug: z.string() })),
     zValidator("json", insertPostSchema.pick({ content: true })),
     async (c) => {
-      const auth = c.get("authUser");
       const { slug } = c.req.valid("param");
       const values = c.req.valid("json");
+      const user = c.get("user");
 
-      if (!auth.token?.id) {
+      if (!user) {
         return c.json({ success: false, error: "Unauthorized" }, 401);
       }
 
@@ -102,13 +105,12 @@ const app = new Hono()
   )
   .delete(
     "/:id",
-    verifyAuth(),
     zValidator("param", z.object({ id: z.string() })),
     async (c) => {
-      const auth = c.get("authUser");
       const { id } = c.req.valid("param");
+      const user = c.get("user");
 
-      if (!auth.token?.id) {
+      if (!user) {
         return c.json({ success: false, error: "Unauthorized" }, 401);
       }
 
