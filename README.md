@@ -8,7 +8,7 @@ A modern, open-source photography blog platform built with the latest web techno
 
 - 📱 Responsive design for all devices
 - 🖼️ Automatic EXIF data extraction from photos
-- 🔐 Secure authentication with Auth.js
+- 🔐 Secure authentication with Better Auth
 - ☁️ Cloud storage with Cloudflare R2
 - 🎨 Beautiful UI with Shadcn/ui components
 - 🚀 Lightning-fast performance
@@ -35,7 +35,7 @@ A modern, open-source photography blog platform built with the latest web techno
 - **Framework:** [Next.js 15](https://nextjs.org/)
 - **Database:** [Neon](https://neon.tech/) (Serverless Postgres)
 - **ORM:** [Drizzle](https://orm.drizzle.team/)
-- **Authentication:** [Auth.js](https://authjs.dev/)
+- **Authentication:** [Better Auth](https://better-auth.com/)
 - **UI Components:** [Shadcn/ui](https://ui.shadcn.com/)
 - **API Layer:** [Hono.js](https://hono.dev/)
 - **Storage:** [Cloudflare R2](https://www.cloudflare.com/products/r2/)
@@ -59,9 +59,8 @@ Create a `.env.local` file in the root directory:
 DATABASE_URL=your_neon_database_url
 
 # Auth
-GITHUB_CLIENT_ID=your_github_client_id
-GITHUB_CLIENT_SECRET=your_github_client_secret
-AUTH_SECRET=your_auth_secret
+BETTER_AUTH_SECRET=
+BETTER_AUTH_URL=http://localhost:3000 #Base URL of your app
 
 # Cloudflare R2
 R2_ACCOUNT_ID=your_cloudflare_account_id
@@ -115,13 +114,6 @@ If you find this project helpful, please give it a ⭐️ on GitHub!
 
 [![Star History Chart](https://api.star-history.com/svg?repos=ECarry/photography-website&type=Date)](https://star-history.com/#ECarry/photography-website&Date)
 
-## 🪱 REST API
+## 📝 Changelog
 
-```
-// 🏞️ Photo Management
-GET /api/photos // 📑 Retrieve all photos
-GET /api/photos/{id} // 🔍 Retrieve a single photo
-POST /api/photos // 📸 Add a new photo
-PATCH /api/photos/{id} // 🖊️ Update a photo
-DELETE /api/photos/{id} // 🗑️ Delete a photo
-```
+- 2025-01-12: Better Auth instead of Next Auth
