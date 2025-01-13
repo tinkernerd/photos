@@ -4,7 +4,6 @@ import Link from "next/link";
 // Internal dependencies - UI Components
 import ContactCard from "./contact-card";
 import { PiArrowUpRight } from "react-icons/pi";
-import MotionFadeIn from "@/components/motion-fade-in";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const ProfileCard = () => {
@@ -47,27 +46,22 @@ const ProfileCard = () => {
       </div>
 
       <div className="col-span-1 md:col-span-1 lg:col-span-1 xl:col-span-1 flex flex-col justify-between gap-3">
-        <MotionFadeIn delay={0.1} className="h-full">
-          <ContactCard
-            title="Instagram"
-            href="https://instagram.com/ekkooooooooooo0o0"
-          />
-        </MotionFadeIn>
-        <MotionFadeIn delay={0.3} className="h-full">
-          <ContactCard title="GitHub" href="https://github.com/ecarry" />
-        </MotionFadeIn>
-        <MotionFadeIn delay={0.4} className="h-full">
-          <ContactCard
-            title="Xiaohongshu"
-            href="https://www.xiaohongshu.com/user/profile/66c84ba2000000001b01b3f1"
-          />
-        </MotionFadeIn>
-        <MotionFadeIn delay={0.5} className="h-full">
-          <ContactCard
-            title="Contact me"
-            className="bg-primary hover:bg-primary-hover text-white dark:text-black"
-          />
-        </MotionFadeIn>
+        <ContactCard
+          title="Instagram"
+          href="https://instagram.com/ekkooooooooooo0o0"
+        />
+
+        <ContactCard title="GitHub" href="https://github.com/ecarry" />
+
+        <ContactCard
+          title="Xiaohongshu"
+          href="https://www.xiaohongshu.com/user/profile/66c84ba2000000001b01b3f1"
+        />
+
+        <ContactCard
+          title="Contact me"
+          className="bg-primary hover:bg-primary-hover text-white dark:text-black"
+        />
       </div>
     </div>
   );

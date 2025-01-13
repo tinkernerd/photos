@@ -1,21 +1,21 @@
 import { cn } from "@/lib/utils";
-import { Book } from "lucide-react";
 import Link from "next/link";
+import { MdEmail } from "react-icons/md";
 import {
   PiArrowUpRight,
   PiInstagramLogo,
   PiGithubLogo,
   PiXLogo,
-  PiMailbox,
 } from "react-icons/pi";
+import { SiXiaohongshu } from "react-icons/si";
 
 // icon map
 const iconMap = {
   Instagram: <PiInstagramLogo size={18} />,
   GitHub: <PiGithubLogo size={18} />,
   X: <PiXLogo size={18} />,
-  Xiaohongshu: <Book size={18} />,
-  "Contact me": <PiMailbox size={18} />,
+  Xiaohongshu: <SiXiaohongshu size={18} />,
+  "Contact me": <MdEmail size={18} />,
 };
 
 interface Props {

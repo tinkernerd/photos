@@ -32,18 +32,18 @@ export default function Home() {
         </MotionFadeIn>
 
         {/* LAST TRAVEL CARD  */}
-        <MotionFadeIn delay={0.2}>
+        <MotionFadeIn delay={0.1}>
           <div className="mt-3">
             <LatestWorkCard />
           </div>
         </MotionFadeIn>
 
         {/* CITY CARD  */}
-        <MotionFadeIn delay={0.3}>
+        <MotionFadeIn delay={0.2}>
           <CityList />
         </MotionFadeIn>
 
-        <MotionFadeIn delay={0.4}>
+        <MotionFadeIn delay={0.3}>
           <Footer />
         </MotionFadeIn>
       </div>
