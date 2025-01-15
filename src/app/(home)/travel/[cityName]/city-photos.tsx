@@ -3,13 +3,13 @@
 import { useGetCitySets } from "@/features/city/api/use-get-city-sets";
 import Footer from "../../_components/footer";
 import VectorCombined from "@/components/vector-combined";
-import { notFound, useRouter } from "next/navigation";
+import { notFound } from "next/navigation";
 import CameraLoader from "@/components/camera-loader";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import BlurImage from "@/components/blur-image";
+import FlipCard from "@/components/flip-card";
 
 const CityPhotos = ({ cityName }: { cityName: string }) => {
-  const router = useRouter();
   const { data, isLoading: isCitySetsLoading } = useGetCitySets();
   const decodedCityName = decodeURIComponent(cityName);
 
@@ -107,17 +107,15 @@ const CityPhotos = ({ cityName }: { cityName: string }) => {
           <AspectRatio
             ratio={photo.aspectRatio}
             key={photo.id}
-            className="overflow-hidden rounded-lg cursor-pointer"
-            onClick={() => {
-              router.push(`/photograph/${photo.id}`);
-            }}
+            className="overflow-hidden rounded-lg"
           >
-            <BlurImage
-              src={photo.url}
-              alt={photo.title}
-              fill
-              blurhash={photo.blurData}
-              className="w-full h-full object-cover"
+            <FlipCard
+              image={photo.url}
+              title={photo.title || ""}
+              location={photo.city + ", " + photo.country}
+              camera={photo.make + " " + photo.model}
+              blurData={photo.blurData}
+              rotate="y"
             />
           </AspectRatio>
         ))}
