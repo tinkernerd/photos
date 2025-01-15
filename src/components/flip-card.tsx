@@ -1,10 +1,15 @@
+"use client";
+
 import { cn } from "@/lib/utils";
 import { FiCamera, FiMapPin } from "react-icons/fi";
 import { Separator } from "./ui/separator";
 import BlurImage from "./blur-image";
 import { useState } from "react";
+import { AiOutlineFullscreen } from "react-icons/ai";
+import { useRouter } from "next/navigation";
 
 interface FlipCardProps extends React.HTMLAttributes<HTMLDivElement> {
+  id: string;
   image: string;
   title: string;
   location: string;
@@ -14,6 +19,7 @@ interface FlipCardProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export default function FlipCard({
+  id,
   image,
   title,
   location,
@@ -23,6 +29,7 @@ export default function FlipCard({
   className,
   ...props
 }: FlipCardProps) {
+  const router = useRouter();
   const [isFlipped, setIsFlipped] = useState(false);
 
   const rotationClass = {
@@ -89,6 +96,18 @@ export default function FlipCard({
                   <span className="text-white text-sm">{camera}</span>
                 </div>
               </div>
+            </div>
+
+            <div className="absolute top-6 right-6">
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  router.push(`/photograph/${id}`);
+                }}
+                className="text-white opacity-70 hover:opacity-100"
+              >
+                <AiOutlineFullscreen size={24} />
+              </button>
             </div>
 
             <div className="absolute bottom-6 left-6">

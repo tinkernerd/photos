@@ -110,6 +110,7 @@ const CityPhotos = ({ cityName }: { cityName: string }) => {
             className="overflow-hidden rounded-lg"
           >
             <FlipCard
+              id={photo.id}
               image={photo.url}
               title={photo.title || ""}
               location={photo.city + ", " + photo.country}
