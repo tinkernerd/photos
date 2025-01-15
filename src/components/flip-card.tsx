@@ -73,7 +73,7 @@ export default function FlipCard({
               alt={title}
               fill
               blurhash={blurData}
-              className="w-full h-full object-cover brightness-50"
+              className="w-full h-full object-cover brightness-50 scale-x-[-1]"
             />
 
             <div className="absolute top-6 left-6">
