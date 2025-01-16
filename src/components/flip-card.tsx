@@ -104,9 +104,12 @@ export default function FlipCard({
                   e.stopPropagation();
                   router.push(`/photograph/${id}`);
                 }}
-                className="text-white opacity-70 hover:opacity-100"
+                className="group"
               >
-                <AiOutlineFullscreen size={24} />
+                <AiOutlineFullscreen
+                  size={20}
+                  className="text-white/70 group-hover:text-white group-hover:scale-125 transition-all duration-150 ease-[cubic-bezier(0.22, 1, 0.36, 1)]"
+                />
               </button>
             </div>
 
