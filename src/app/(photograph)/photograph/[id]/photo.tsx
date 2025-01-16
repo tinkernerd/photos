@@ -34,9 +34,14 @@ const Photo = ({ id }: { id: string }) => {
       </div>
 
       {/* Content layer */}
-      <div className="max-w-7xl mx-auto px-4 py-4 space-y-8">
-        <div className="w-full text-center">
-          <h1 className="text-3xl font-bold text-white">{data.title}</h1>
+      <div className="max-w-7xl mx-auto px-4 space-y-10 h-full flex flex-col justify-center">
+        <div className="w-full text-center space-y-2">
+          <h1 className="text-3xl lg:text-6xl font-bold text-white">
+            {data.title}
+          </h1>
+          <h2 className="text-xl lg:text-3xl text-gray-300">
+            {data.city}, {data.country}
+          </h2>
         </div>
         <div className="">
           <BlurImage
