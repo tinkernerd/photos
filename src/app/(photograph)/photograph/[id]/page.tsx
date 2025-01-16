@@ -1,4 +1,4 @@
-import ParallelModal from "@/components/parallel-modal";
+import Photo from "./photo";
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -8,11 +8,9 @@ const page = async ({ params }: Props) => {
   const id = (await params).id;
 
   return (
-    <ParallelModal>
-      <div>
-        <p className="text-3xl">{id}</p>
-      </div>
-    </ParallelModal>
+    <div className="w-full h-full">
+      <Photo id={id} />
+    </div>
   );
 };
 
