@@ -20,7 +20,15 @@ const LargePostCard = () => {
   const post = data[0];
 
   if (!post) {
-    return null;
+    return (
+      <div className="size-full overflow-hidden rounded-xl">
+        <img
+          src="/placeholder.svg"
+          alt="Image"
+          className="h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
+        />
+      </div>
+    );
   }
 
   return (

@@ -16,8 +16,12 @@ const ImageSlider = memo(function ImageSlider() {
 
   if (!photos) {
     return (
-      <div className="size-full bg-muted-hover rounded-xl">
-        <p>No Photos</p>
+      <div className="size-full overflow-hidden rounded-xl">
+        <img
+          src="/placeholder.svg"
+          alt="Image"
+          className="h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
+        />
       </div>
     );
   }
