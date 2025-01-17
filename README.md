@@ -22,6 +22,7 @@ A modern, open-source photography blog platform built with the latest web techno
 <img src="https://github.com/ECarry/photography-website/blob/main/screen/travel.png?raw=true" alt="page">
 <img src="https://github.com/ECarry/photography-website/blob/main/screen/discover.png?raw=true" alt="page">
 <img src="https://github.com/ECarry/photography-website/blob/main/screen/about.png?raw=true" alt="page">
+<img src="https://github.com/ECarry/photography-website/blob/main/screen/photograph.png?raw=true" alt="page">
 
 ## 🌈 Support Theme
 
