@@ -7,6 +7,7 @@ import { ThemeProvider } from "@/components/theme/theme-provider";
 import { Readex_Pro } from "next/font/google";
 import "./globals.css";
 import { QueryProvider } from "@/components/query-provider";
+import ScrollToTop from "@/components/scroll-to-top";
 
 const readex = Readex_Pro({ subsets: ["latin"] });
 
@@ -35,6 +36,7 @@ export default async function RootLayout({
           <QueryProvider>{children}</QueryProvider>
           <Toaster />
           <TailwindIndicator />
+          <ScrollToTop />
         </ThemeProvider>
       </body>
     </html>
