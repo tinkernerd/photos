@@ -115,7 +115,7 @@ export default function FlipCard({
 
             <div className="absolute bottom-6 left-6">
               <div className="flex items-center gap-2">
-                <span className="text-white text-sm font-light">f/3.5</span>
+                <span className="text-white text-sm font-light">ƒ/3.5</span>
                 <Separator orientation="vertical" className="h-4 opacity-70" />
                 <span className="text-white text-sm font-light">1/200</span>
                 <Separator orientation="vertical" className="h-4 opacity-70" />

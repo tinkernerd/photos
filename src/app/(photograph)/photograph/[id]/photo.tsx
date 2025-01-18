@@ -64,7 +64,7 @@ const Photo = ({ id }: { id: string }) => {
             className="w-auto max-h-[70dvh]"
           />
 
-          <div className="absolute -bottom-4 left-0 px-6 py-2 w-full bg-white flex justify-between items-center select-none">
+          <div className="absolute -bottom-4 left-0 px-6 py-2 w-full bg-white flex justify-between items-center select-none text-black">
             <div className="flex flex-col text-center">
               <h1
                 className={cn(
@@ -74,7 +74,7 @@ const Photo = ({ id }: { id: string }) => {
               >
                 {data.make} {data.model}
               </h1>
-              <p className="text-xs text-muted-foreground">{data.lensModel}</p>
+              <p className="text-xs">{data.lensModel}</p>
             </div>
             <div className="flex items-center gap-2">
               <SiSony size={50} />
@@ -92,7 +92,7 @@ const Photo = ({ id }: { id: string }) => {
                   <span>{"ISO" + data.iso}</span>
                 </div>
                 <div>
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-xs">
                     {data.dateTimeOriginal &&
                       new Date(data.dateTimeOriginal).toLocaleDateString(
                         "en-US",
