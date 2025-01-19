@@ -8,8 +8,10 @@ import CameraLoader from "@/components/camera-loader";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import BlurImage from "@/components/blur-image";
 import FlipCard from "@/components/flip-card";
+import { useRouter } from "next/navigation";
 
 const CityPhotos = ({ cityName }: { cityName: string }) => {
+  const router = useRouter();
   const { data, isLoading: isCitySetsLoading } = useGetCitySets();
   const decodedCityName = decodeURIComponent(cityName);
 
@@ -43,7 +45,8 @@ const CityPhotos = ({ cityName }: { cityName: string }) => {
             fill
             quality={75}
             blurhash={cityData.coverPhoto.blurData}
-            className="object-cover rounded-xl overflow-hidden"
+            onClick={() => router.push(`/photograph/${cityData.coverPhoto.id}`)}
+            className="object-cover rounded-xl overflow-hidden cursor-pointer"
           />
           <div className="absolute right-0 bottom-0">
             <VectorCombined title={decodedCityName} position="bottom-right" />
