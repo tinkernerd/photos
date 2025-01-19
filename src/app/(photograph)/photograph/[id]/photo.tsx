@@ -64,7 +64,7 @@ const Photo = ({ id }: { id: string }) => {
             className="w-auto max-h-[70dvh]"
           />
 
-          <div className="absolute -bottom-4 left-0 px-6 py-2 w-full bg-white flex justify-between items-center select-none text-black">
+          <div className="absolute -bottom-10 left-0 px-6 py-2 w-full bg-white flex justify-between items-center select-none text-black">
             <div className="flex flex-col text-center">
               <h1
                 className={cn(
@@ -83,7 +83,7 @@ const Photo = ({ id }: { id: string }) => {
                 className="hidden sm:block h-10"
               />
               <div className="hidden sm:flex flex-col gap-[2px]">
-                <div className="space-x-[6px] text-xs lg:md:text-sm">
+                <div className="space-x-[6px] text-xs lg:text-sm">
                   <span>{data.focalLength35mm + "mm"}</span>
                   <span>{"ƒ/" + data.fNumber}</span>
                   <span>
