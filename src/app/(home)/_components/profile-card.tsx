@@ -12,7 +12,7 @@ const ProfileCard = () => {
       <div className="col-span-1 md:col-span-2 lg:col-span-1 xl:col-span-2">
         <Link
           href="/about"
-          className="flex flex-col justify-between gap-6 p-6 lg:p-10 lg:gap-0 bg-muted hover:bg-muted-hover transition-all duration-150 ease-[cubic-bezier(0.22, 1, 0.36, 1)] rounded-xl font-light relative group h-full"
+          className="flex flex-col justify-between gap-6 p-6 lg:p-10 xl:gap-0 bg-muted hover:bg-muted-hover transition-all duration-150 ease-[cubic-bezier(0.22, 1, 0.36, 1)] rounded-xl font-light relative group h-full"
         >
           <div className="flex gap-4 items-center">
             {/* AVATAR  */}
@@ -31,7 +31,7 @@ const ProfileCard = () => {
             </div>
           </div>
 
-          <div>
+          <div className="lg:mt-4 xl:mt-0">
             <p className="text-text-muted text-[15px]">
               I&apos;m ECarry, a photographer dedicated to capturing authentic
               moments and telling stories through creative and emotional
