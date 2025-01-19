@@ -93,7 +93,7 @@ export default function FlipCard({
 
                 <div className="flex items-center gap-2">
                   <FiCamera className="text-white" size={14} />
-                  <span className="text-white text-sm">{camera}</span>
+                  <span className="text-white text-xs">{camera}</span>
                 </div>
               </div>
             </div>
@@ -115,13 +115,21 @@ export default function FlipCard({
 
             <div className="absolute bottom-6 left-6">
               <div className="flex items-center gap-2">
-                <span className="text-white text-sm font-light">ƒ/3.5</span>
+                <span className="text-white text-xs lg:text-sm font-light">
+                  ƒ/3.5
+                </span>
                 <Separator orientation="vertical" className="h-4 opacity-70" />
-                <span className="text-white text-sm font-light">1/200</span>
+                <span className="text-white text-xs lg:text-sm font-light">
+                  1/200
+                </span>
                 <Separator orientation="vertical" className="h-4 opacity-70" />
-                <span className="text-white text-sm font-light">ISO100</span>
+                <span className="text-white text-xs lg:text-sm font-light">
+                  ISO100
+                </span>
                 <Separator orientation="vertical" className="h-4 opacity-70" />
-                <span className="text-white text-sm font-light">45mm</span>
+                <span className="text-white text-xs lg:text-sm font-light">
+                  45mm
+                </span>
               </div>
             </div>
           </div>
