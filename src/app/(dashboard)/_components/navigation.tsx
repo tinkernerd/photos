@@ -14,6 +14,10 @@ const routes = [
     label: "Photos",
   },
   {
+    href: "/city",
+    label: "City",
+  },
+  {
     href: "/documents",
     label: "Documnets",
   },
