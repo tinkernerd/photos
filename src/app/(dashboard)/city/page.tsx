@@ -1,11 +1,16 @@
-"use client";
+import CitySets from "./city-sets";
 
-import { useGetCitySets } from "@/features/city/api/use-get-city-sets";
+export const metadata = {
+  title: "City Sets",
+  description: "City Sets",
+};
 
 const CityPage = () => {
-  const { data } = useGetCitySets();
-
-  return <div>{JSON.stringify(data, null, 2)}</div>;
+  return (
+    <div className="size-full">
+      <CitySets />
+    </div>
+  );
 };
 
 export default CityPage;
