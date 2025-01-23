@@ -14,7 +14,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { PasswordInput } from "@/components/ui/password-input";
-import { Edit, Laptop, Loader2, LogOut, X } from "lucide-react";
+import { Dot, Edit, Laptop, Loader2, LogOut, X } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   Card,
@@ -79,40 +79,62 @@ const UserCard = (props: {
             .map((session) => {
               return (
                 <div key={session.id}>
-                  <div className="flex items-center gap-2 text-sm  text-black font-medium dark:text-white">
-                    {new UAParser(session.userAgent || "").getDevice().type ===
-                    "mobile" ? (
-                      <Laptop size={16} />
-                    ) : (
-                      <Laptop size={16} />
-                    )}
-                    {new UAParser(session.userAgent || "").getOS().name},{" "}
-                    {new UAParser(session.userAgent || "").getBrowser().name}
-                    <button
-                      className="text-red-500 opacity-80  cursor-pointer text-xs border-muted-foreground border-red-600  underline "
-                      onClick={async () => {
-                        setIsTerminating(session.id);
-                        const res = await client.revokeSession({
-                          token: session.token,
-                        });
-
-                        if (res.error) {
-                          toast.error(res.error.message);
-                        } else {
-                          toast.success("Session terminated successfully");
-                        }
-                        router.refresh();
-                        setIsTerminating(undefined);
-                      }}
-                    >
-                      {isTerminating === session.id ? (
-                        <Loader2 size={15} className="animate-spin" />
-                      ) : session.id === props.session?.session.id ? (
-                        "Sign Out"
+                  <div className="flex items-center gap-4 text-sm  text-black font-medium dark:text-white">
+                    <div>
+                      {new UAParser(session.userAgent || "").getDevice()
+                        .type === "mobile" ? (
+                        <Laptop size={50} />
                       ) : (
-                        "Terminate"
+                        <Laptop size={50} />
                       )}
-                    </button>
+                    </div>
+
+                    <div className="flex flex-col">
+                      <div className="">
+                        {new UAParser(session.userAgent || "").getOS().name},{" "}
+                        {
+                          new UAParser(session.userAgent || "").getBrowser()
+                            .name
+                        }
+                      </div>
+                      <div className="flex items-center gap-2">
+                        {session.id === props.session?.session.id ? (
+                          <div className="flex items-center">
+                            <Dot size={22} className="text-green-500" />
+                            <span className="text-green-500 text-xs">
+                              Current Session
+                            </span>
+                          </div>
+                        ) : (
+                          ""
+                        )}
+                        <button
+                          className="text-red-500 opacity-80  cursor-pointer text-xs border-muted-foreground border-red-600  underline "
+                          onClick={async () => {
+                            setIsTerminating(session.id);
+                            const res = await client.revokeSession({
+                              token: session.token,
+                            });
+
+                            if (res.error) {
+                              toast.error(res.error.message);
+                            } else {
+                              toast.success("Session terminated successfully");
+                            }
+                            router.refresh();
+                            setIsTerminating(undefined);
+                          }}
+                        >
+                          {isTerminating === session.id ? (
+                            <Loader2 size={15} className="animate-spin" />
+                          ) : session.id === props.session?.session.id ? (
+                            "Sign Out"
+                          ) : (
+                            "Terminate"
+                          )}
+                        </button>
+                      </div>
+                    </div>
                   </div>
                 </div>
               );

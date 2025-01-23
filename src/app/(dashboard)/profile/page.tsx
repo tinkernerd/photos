@@ -3,6 +3,10 @@ import { auth } from "@/features/auth/lib/auth";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
+export const metadata = {
+  title: "Profile",
+};
+
 const ProfilePage = async () => {
   const [session, activeSessions] = await Promise.all([
     auth.api.getSession({
