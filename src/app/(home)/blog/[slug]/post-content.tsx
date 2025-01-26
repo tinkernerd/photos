@@ -23,13 +23,20 @@ const PostContent = ({ slug }: { slug: string }) => {
       {/* LEFT CONTENT - Fixed */}
       <div className="w-full h-[50vh] lg:w-1/2 lg:fixed lg:top-0 lg:left-0 md:h-[80vh] lg:h-screen p-0 lg:p-3 group">
         <div className="block w-full h-full relative rounded-xl overflow-hidden">
-          {data?.coverImage && (
+          {data?.coverImage ? (
             <Image
               src={data.coverImage}
               alt={data.title}
               fill
               quality={75}
               className="object-cover"
+            />
+          ) : (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src="/placeholder.svg"
+              alt="Image"
+              className="h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
             />
           )}
 

@@ -61,13 +61,22 @@ const DocumentsPage = () => {
                   ratio={16 / 10}
                   className="overflow-hidden rounded-xl"
                 >
-                  <Image
-                    src={post.coverImage || "/public/404.png"}
-                    alt={post.title}
-                    width={400}
-                    height={400}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-all duration-300"
-                  />
+                  {post.coverImage ? (
+                    <Image
+                      src={post.coverImage}
+                      alt={post.title}
+                      fill
+                      quality={75}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-all duration-300"
+                    />
+                  ) : (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src="/placeholder.svg"
+                      alt="Image"
+                      className="h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
+                    />
+                  )}
                 </AspectRatio>
 
                 <div className="w-full">
@@ -91,9 +100,9 @@ const DocumentsPage = () => {
                     e.stopPropagation();
                     handleDelete(post.id);
                   }}
-                  className="bg-transparent backdrop-blur-sm backdrop-saturate-50 rounded-full overflow-hidden hover:bg-transparent hover:backdrop-blur-lg p-2 cursor-pointer transition-all duration-300"
+                  className="bg-black/50 backdrop-blur-sm backdrop-saturate-50 rounded-full overflow-hidden hover:bg-black/80 hover:backdrop-blur-lg p-2 cursor-pointer transition-all duration-300"
                 >
-                  <Trash size={20} className="text-white/80" />
+                  <Trash size={20} className="text-white/50" />
                 </button>
               </div>
             </div>

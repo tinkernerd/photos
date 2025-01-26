@@ -9,8 +9,10 @@ import CameraLoader from "@/components/camera-loader";
 // Hooks & Types
 import type { MapboxProps } from "@/components/map";
 import { useGetPhotos } from "@/features/photos/api/use-get-photos";
+import { useRouter } from "next/navigation";
 
 const MapWithPhotos = () => {
+  const router = useRouter();
   const { data: photos, isLoading } = useGetPhotos();
 
   const markers: MapboxProps["markers"] =
@@ -58,6 +60,8 @@ const MapWithPhotos = () => {
                 quality={75}
                 priority
                 blurhash={photo.blurData}
+                onClick={() => router.push(`/photograph/${photo.id}`)}
+                className="cursor-pointer"
               />
             </div>
           </div>

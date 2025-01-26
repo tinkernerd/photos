@@ -29,13 +29,20 @@ const PostList = () => {
             href={`/blog/${post.slug}`}
             className="block w-full h-full relative rounded-xl overflow-hidden group cursor-pointer"
           >
-            {post.coverImage && (
+            {post.coverImage ? (
               <Image
                 src={post.coverImage}
                 alt={post.title}
                 fill
                 quality={30}
                 className="object-cover group-hover:blur-sm transition-[filter] duration-300 ease-out"
+              />
+            ) : (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src="/placeholder.svg"
+                alt="Image"
+                className="h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
               />
             )}
 
