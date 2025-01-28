@@ -1,17 +1,18 @@
-// Internal dependencies - UI Components
+"use client";
+
 import Footer from "./_components/footer";
 import CityList from "./_components/city-list";
 import ProfileCard from "./_components/profile-card";
-import MotionFadeIn from "@/components/motion-fade-in";
 import { ImageSlider } from "@/components/image-slider";
 import LatestWorkCard from "./_components/latest-work-card";
 import VectorCombined from "@/components/vector-combined";
+import { PageTransitionContainer, PageTransitionItem } from "@/components/page-transition";
 
 export default function Home() {
   return (
-    <div className="flex flex-col lg:flex-row min-h-screen w-full">
+    <PageTransitionContainer className="flex flex-col lg:flex-row min-h-screen w-full">
       {/* LEFT CONTENT - Fixed */}
-      <div className="w-full lg:w-1/2 h-[70vh] lg:fixed lg:top-0 lg:left-0 lg:h-screen p-0 lg:p-3 rounded-xl">
+      <PageTransitionItem className="w-full lg:w-1/2 h-[70vh] lg:fixed lg:top-0 lg:left-0 lg:h-screen p-0 lg:p-3 rounded-xl">
         <div className="w-full h-full relative">
           <ImageSlider />
 
@@ -19,34 +20,34 @@ export default function Home() {
             <VectorCombined title="Photography" position="bottom-right" />
           </div>
         </div>
-      </div>
+      </PageTransitionItem>
 
       {/* Spacer for fixed left content */}
       <div className="hidden lg:block lg:w-1/2" />
 
       {/* RIGHT CONTENT - Scrollable */}
-      <div className="w-full mt-3 lg:mt-0 lg:w-1/2 space-y-3 pb-3">
+      <PageTransitionContainer className="w-full mt-3 lg:mt-0 lg:w-1/2 space-y-3 pb-3">
         {/* PROFILE CARD  */}
-        <MotionFadeIn>
+        <PageTransitionItem>
           <ProfileCard />
-        </MotionFadeIn>
+        </PageTransitionItem>
 
         {/* LAST TRAVEL CARD  */}
-        <MotionFadeIn delay={0.1}>
+        <PageTransitionItem>
           <div className="mt-3">
             <LatestWorkCard />
           </div>
-        </MotionFadeIn>
+        </PageTransitionItem>
 
         {/* CITY CARD  */}
-        <MotionFadeIn delay={0.2}>
+        <PageTransitionItem>
           <CityList />
-        </MotionFadeIn>
+        </PageTransitionItem>
 
-        <MotionFadeIn delay={0.3}>
+        <PageTransitionItem>
           <Footer />
-        </MotionFadeIn>
-      </div>
-    </div>
+        </PageTransitionItem>
+      </PageTransitionContainer>
+    </PageTransitionContainer>
   );
 }

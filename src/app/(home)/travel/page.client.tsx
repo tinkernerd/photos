@@ -10,9 +10,12 @@ import { PiArrowRight } from "react-icons/pi";
 import BlurImage from "@/components/blur-image";
 import TextScroll from "@/components/text-scroll";
 import CameraLoader from "@/components/camera-loader";
-import MotionFadeIn from "@/components/motion-fade-in";
 import CardContainer from "@/components/card-container";
 import VectorCombined from "@/components/vector-combined";
+import {
+  PageTransitionContainer,
+  PageTransitionItem,
+} from "@/components/page-transition";
 
 // Hooks & Types
 import { useGetCitySets } from "@/features/city/api/use-get-city-sets";
@@ -110,30 +113,30 @@ export default function TravelClientPage() {
   }
 
   return (
-    <div className="flex flex-col lg:flex-row min-h-screen w-full">
+    <PageTransitionContainer className="flex flex-col lg:flex-row min-h-screen w-full">
       <CoverPhoto city={activeCity} />
 
       {/* Spacer for fixed left content */}
       <div className="hidden lg:block lg:w-1/2" />
 
       {/* RIGHT CONTENT - Scrollable */}
-      <div className="w-full mt-3 lg:mt-0 lg:w-1/2 space-y-3 pb-3">
-        <MotionFadeIn delay={0.1}>
+      <PageTransitionContainer className="w-full mt-3 lg:mt-0 lg:w-1/2 space-y-3 pb-3">
+        <PageTransitionItem>
           <Introduction />
-        </MotionFadeIn>
+        </PageTransitionItem>
 
         <div className="space-y-3">
-          {citySetsData?.map((city, index) => (
-            <MotionFadeIn key={city.id} delay={0.2 + index * 0.1}>
+          {citySetsData?.map((city) => (
+            <PageTransitionItem key={city.id}>
               <CityItem city={city} onMouseEnter={setActiveCity} />
-            </MotionFadeIn>
+            </PageTransitionItem>
           ))}
         </div>
 
-        <MotionFadeIn>
+        <PageTransitionItem>
           <Footer />
-        </MotionFadeIn>
-      </div>
-    </div>
+        </PageTransitionItem>
+      </PageTransitionContainer>
+    </PageTransitionContainer>
   );
 }
