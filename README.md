@@ -63,12 +63,20 @@ DATABASE_URL=your_neon_database_url
 BETTER_AUTH_SECRET=
 BETTER_AUTH_URL=http://localhost:3000 #Base URL of your app
 
+NEXT_PUBLIC_APP_URL='http://localhost:3000'
+
 # Cloudflare R2
-R2_ACCOUNT_ID=your_cloudflare_account_id
-R2_ACCESS_KEY_ID=your_r2_access_key
-R2_SECRET_ACCESS_KEY=your_r2_secret_key
-R2_BUCKET_NAME=your_bucket_name
+CLOUDFLARE_R2_ENDPOINT=
+CLOUDFLARE_R2_ACCESS_KEY_ID=
+CLOUDFLARE_R2_SECRET_ACCESS_KEY=
+CLOUDFLARE_R2_BUCKET_NAME=
+CLOUDFLARE_R2_PUBLIC_URL=
+
+# Mapbox
+NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN=
 ```
+
+Replace `your-domain.com` with your actual domain name. This is required for Cloudflare Image Optimization to work correctly.
 
 ### Installation
 
@@ -95,6 +103,21 @@ bun db:push
 
 ```bash
 bun run dev
+```
+
+### Create admin user
+
+// TODO: implement admin user creation
+
+### Custom Domain Configuration
+
+Before deploying, you need to update the custom domain in `image-loader.ts`:
+
+```typescript
+// image-loader.ts
+return `https://your-domain.com/cdn-cgi/image/${paramsString}/${normalizeSrc(
+  src
+)}`;
 ```
 
 Visit `http://localhost:3000` to see your application.
