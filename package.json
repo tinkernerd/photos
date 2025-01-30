@@ -54,7 +54,7 @@
     "@types/mapbox-gl": "^3.4.1",
     "@types/mapbox__mapbox-gl-geocoder": "^5.0.0",
     "@types/react-color": "^3.0.12",
-    "better-auth": "^1.1.10",
+    "better-auth": "^1.1.15",
     "blurhash": "^2.0.5",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
