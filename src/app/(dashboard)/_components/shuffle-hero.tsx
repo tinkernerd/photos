@@ -2,8 +2,8 @@ import ShuffleGrid from "./shuffle-grid";
 
 const ShuffleHero = () => {
   return (
-    <section className="w-full py-4 md:py-8 grid grid-cols-2 items-center gap-8 mx-auto overflow-x-hidden">
-      <div>
+    <section className="w-full py-4 md:py-8 grid grid-cols-2 items-center gap-8 mx-auto">
+      <div className="col-span-2 lg:col-span-1 text-center lg:text-left">
         <span className="block mb-4 text-xs md:text-sm text-sky-500 font-medium">
           Better every day
         </span>
@@ -14,7 +14,9 @@ const ShuffleHero = () => {
           Keep exploring and creating!{" "}
         </p>
       </div>
-      <ShuffleGrid />
+      <div className="col-span-2 lg:col-span-1">
+        <ShuffleGrid />
+      </div>
     </section>
   );
 };
