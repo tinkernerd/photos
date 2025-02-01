@@ -4,8 +4,10 @@ import Image from "next/image";
 import { useGetCitySets } from "@/features/city/api/use-get-city-sets";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useRouter } from "next/navigation";
 
 const CitySets = () => {
+  const router = useRouter();
   const { data: citySets, isLoading } = useGetCitySets();
 
   if (isLoading) {
@@ -41,7 +43,8 @@ const CitySets = () => {
                 src={citySet.coverPhoto.url || "/placeholder-image.jpg"}
                 alt={`${citySet.city} cover`}
                 fill
-                className="object-cover"
+                className="object-cover cursor-pointer"
+                onClick={() => router.push(`/city/${citySet.id}`)}
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               />
             </div>
