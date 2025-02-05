@@ -50,7 +50,7 @@ const formSchema = z.object({
   }),
 });
 
-export function SignUp() {
+export default function SignUp() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 

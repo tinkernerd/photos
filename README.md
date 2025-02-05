@@ -105,9 +105,15 @@ bun db:push
 bun run dev
 ```
 
-### Create admin user
+### Initial User Registration
 
-// TODO: implement admin user creation
+When you first deploy the application, you'll need to create an admin user. You can do this by visiting:
+
+```
+http://localhost:3000/sign-up
+```
+
+Note: After the first admin user is created, the `/sign-up` route will be disabled for security purposes. Any subsequent attempts to access the sign-up page will automatically redirect to the sign-in page (`/sign-in`).
 
 ### Custom Domain Configuration
 
