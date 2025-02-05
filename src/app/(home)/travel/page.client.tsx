@@ -32,35 +32,24 @@ const CoverPhoto = ({
   return (
     <div className="w-full h-[70vh] lg:w-1/2 lg:fixed lg:top-0 lg:left-0 lg:h-screen p-0 lg:p-3">
       <div className="w-full h-full relative rounded-xl overflow-hidden">
-        {/* 显示当前激活的城市封面 */}
-        {city && (
-          <BlurImage
-            src={city.coverPhoto.url}
-            alt={city.city}
-            fill
-            priority
-            blurhash={city.coverPhoto.blurData}
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            className="object-cover"
-          />
-        )}
-
-        {/* 预加载其他城市的封面图片 */}
-        <div className="hidden">
-          {citySets?.map(
-            (citySet) =>
-              city?.id !== citySet.id && (
-                <BlurImage
-                  key={citySet.id}
-                  src={citySet.coverPhoto.url}
-                  alt={citySet.city}
-                  fill
-                  priority
-                  blurhash={citySet.coverPhoto.blurData}
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                />
-              )
-          )}
+        {/* 所有城市的封面图片 */}
+        <div className="relative w-full h-full">
+          {citySets?.map((citySet) => (
+            <div
+              key={citySet.id}
+              className={`absolute inset-0 transition-opacity duration-300 ${city?.id === citySet.id ? 'opacity-100 z-10' : 'opacity-0 z-0'}`}
+            >
+              <BlurImage
+                src={citySet.coverPhoto.url}
+                alt={citySet.city}
+                fill
+                priority
+                blurhash={citySet.coverPhoto.blurData}
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                className="object-cover"
+              />
+            </div>
+          ))}
         </div>
 
         <div className="absolute right-0 bottom-0">
