@@ -32,12 +32,14 @@ const CoverPhoto = ({
   return (
     <div className="w-full h-[70vh] lg:w-1/2 lg:fixed lg:top-0 lg:left-0 lg:h-screen p-0 lg:p-3">
       <div className="w-full h-full relative rounded-xl overflow-hidden">
-        {/* 所有城市的封面图片 */}
+        {/* Cover photo */}
         <div className="relative w-full h-full">
           {citySets?.map((citySet) => (
             <div
               key={citySet.id}
-              className={`absolute inset-0 transition-opacity duration-300 ${city?.id === citySet.id ? 'opacity-100 z-10' : 'opacity-0 z-0'}`}
+              className={`absolute inset-0 transition-opacity duration-300 ${
+                city?.id === citySet.id ? "opacity-100 z-10" : "opacity-0 z-0"
+              }`}
             >
               <BlurImage
                 src={citySet.coverPhoto.url}
@@ -52,7 +54,7 @@ const CoverPhoto = ({
           ))}
         </div>
 
-        <div className="absolute right-0 bottom-0">
+        <div className="absolute right-0 bottom-0 z-10">
           <VectorCombined title={city?.city || ""} position="bottom-right" />
         </div>
       </div>
