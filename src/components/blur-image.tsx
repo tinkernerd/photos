@@ -4,7 +4,7 @@ import { useState, memo } from "react";
 import Image, { ImageProps } from "next/image";
 import { Blurhash } from "react-blurhash";
 
-interface BlurImageProps extends Omit<ImageProps, "onLoadingComplete"> {
+interface BlurImageProps extends Omit<ImageProps, "onLoad"> {
   blurhash: string;
 }
 
@@ -45,7 +45,7 @@ const BlurImage = memo(function BlurImage({
         className={`${className} transition-opacity duration-500 ease-in-out ${
           imageLoaded ? "opacity-100" : "opacity-0"
         }`}
-        onLoadingComplete={() => setImageLoaded(true)}
+        onLoad={() => setImageLoaded(true)}
         {...props}
       />
     </div>

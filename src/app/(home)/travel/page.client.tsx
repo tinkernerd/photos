@@ -22,22 +22,39 @@ import { useGetCitySets } from "@/features/city/api/use-get-city-sets";
 import { type CitySetWithRelations } from "@/app/api/[[...route]]/city";
 
 // Components
-const CoverPhoto = ({ city }: { city: CitySetWithRelations | null }) => {
+const CoverPhoto = ({
+  city,
+  citySets,
+}: {
+  city: CitySetWithRelations | null;
+  citySets: CitySetWithRelations[] | undefined;
+}) => {
   return (
     <div className="w-full h-[70vh] lg:w-1/2 lg:fixed lg:top-0 lg:left-0 lg:h-screen p-0 lg:p-3">
       <div className="w-full h-full relative rounded-xl overflow-hidden">
-        {city && (
-          <BlurImage
-            src={city.coverPhoto.url}
-            alt={city.city}
-            fill
-            priority
-            blurhash={city.coverPhoto.blurData}
-            className="object-cover"
-          />
-        )}
+        {/* Cover photo */}
+        <div className="relative w-full h-full">
+          {citySets?.map((citySet) => (
+            <div
+              key={citySet.id}
+              className={`absolute inset-0 transition-opacity duration-300 ${
+                city?.id === citySet.id ? "opacity-100 z-10" : "opacity-0 z-0"
+              }`}
+            >
+              <BlurImage
+                src={citySet.coverPhoto.url}
+                alt={citySet.city}
+                fill
+                priority
+                blurhash={citySet.coverPhoto.blurData}
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                className="object-cover"
+              />
+            </div>
+          ))}
+        </div>
 
-        <div className="absolute right-0 bottom-0">
+        <div className="absolute right-0 bottom-0 z-10">
           <VectorCombined title={city?.city || ""} position="bottom-right" />
         </div>
       </div>
@@ -114,7 +131,7 @@ export default function TravelClientPage() {
 
   return (
     <PageTransitionContainer className="flex flex-col lg:flex-row min-h-screen w-full">
-      <CoverPhoto city={activeCity} />
+      <CoverPhoto city={activeCity} citySets={citySetsData} />
 
       {/* Spacer for fixed left content */}
       <div className="hidden lg:block lg:w-1/2" />
