@@ -3,6 +3,7 @@ import { Toaster } from "@/components/ui/sonner";
 
 import { TailwindIndicator } from "@/components/tailwind-indicator";
 import { ThemeProvider } from "@/components/theme/theme-provider";
+import { TRPCProvider } from "@/trpc/client";
 
 import { Readex_Pro } from "next/font/google";
 import "./globals.css";
@@ -33,7 +34,9 @@ export default async function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <QueryProvider>{children}</QueryProvider>
+          <QueryProvider>
+            <TRPCProvider>{children}</TRPCProvider>
+          </QueryProvider>
           <Toaster />
           <TailwindIndicator />
           <ScrollToTop />
