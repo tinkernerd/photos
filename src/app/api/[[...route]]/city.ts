@@ -21,7 +21,7 @@ const app = new Hono()
         coverPhoto: true,
         photos: true,
       },
-      orderBy: (citySets, { desc }) => [desc(citySets.updateAt)],
+      orderBy: (citySets, { desc }) => [desc(citySets.updatedAt)],
     });
 
     return c.json({ data });

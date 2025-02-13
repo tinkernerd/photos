@@ -1,12 +1,7 @@
-import Header from "@/app/(home)/_components/header";
+import { HomeLayout } from "@/modules/home/ui/layouts/home-layout";
 
-const HomeLayout = ({ children }: { children: React.ReactNode }) => {
-  return (
-    <>
-      <Header />
-      <main className="p-3 h-full">{children}</main>
-    </>
-  );
+const Layout = ({ children }: { children: React.ReactNode }) => {
+  return <HomeLayout>{children}</HomeLayout>;
 };
 
-export default HomeLayout;
+export default Layout;

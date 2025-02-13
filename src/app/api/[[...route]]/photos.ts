@@ -73,7 +73,7 @@ const app = new Hono<{
               countryCode: insertedPhoto.countryCode,
               photoCount: sql`${citySets.photoCount} + 1`,
               coverPhotoId: sql`COALESCE(${citySets.coverPhotoId}, ${insertedPhoto.id})`,
-              updateAt: new Date(),
+              updatedAt: new Date(),
             },
           });
 
@@ -176,7 +176,7 @@ const app = new Hono<{
                   photoCount: sql`${citySets.photoCount} - 1`,
                   coverPhotoId:
                     newCoverPhoto.length > 0 ? newCoverPhoto[0].id : null,
-                  updateAt: new Date(),
+                  updatedAt: new Date(),
                 })
                 .where(
                   and(
@@ -190,7 +190,7 @@ const app = new Hono<{
                 .update(citySets)
                 .set({
                   photoCount: sql`${citySets.photoCount} - 1`,
-                  updateAt: new Date(),
+                  updatedAt: new Date(),
                 })
                 .where(
                   and(

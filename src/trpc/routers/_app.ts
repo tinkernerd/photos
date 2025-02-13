@@ -1,5 +1,8 @@
 import { baseProcedure, createTRPCRouter } from "../init";
+import { photosRouter } from "@/modules/photos/server/procedures";
+
 export const appRouter = createTRPCRouter({
+  photos: photosRouter,
   hello: baseProcedure.query(() => {
     return {
       greeting: `hello tRPC`,

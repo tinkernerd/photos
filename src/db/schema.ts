@@ -1,4 +1,4 @@
-import { relations, sql } from "drizzle-orm";
+import { InferModel, relations, sql } from "drizzle-orm";
 import {
   boolean,
   timestamp,
@@ -13,6 +13,12 @@ import {
 } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
+
+// ⌚️ Reusable timestamps - Define once, use everywhere!
+export const timestamps = {
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+};
 
 export const user = pgTable("user", {
   id: text("id").primaryKey(),
@@ -102,8 +108,7 @@ export const photos = pgTable(
     gpsAltitude: real("gps_altitude"),
     dateTimeOriginal: timestamp("datetime_original"),
 
-    createAt: timestamp("create_at").notNull().defaultNow(),
-    updateAt: timestamp("update_at").$onUpdate(() => new Date()),
+    ...timestamps,
   },
   (table) => ({
     yearIdx: index("year_idx").on(
@@ -130,15 +135,14 @@ export const citySets = pgTable(
     photoCount: integer("photo_count").default(0),
 
     // META DATA
-    createAt: timestamp("create_at").defaultNow(),
-    updateAt: timestamp("update_at").defaultNow(),
+    ...timestamps,
   },
   (table) => ({
     uniqueCitySet: uniqueIndex("unique_city_set").on(table.country, table.city),
   })
 );
 
-export const categorys = pgTable("categories", {
+export const categories = pgTable("categories", {
   id: uuid("id").primaryKey().defaultRandom(),
   name: text("name").notNull(),
 });
@@ -149,15 +153,14 @@ export const posts = pgTable(
     id: uuid("id").primaryKey().defaultRandom(),
     title: text("title").notNull(),
     slug: text("slug").notNull().unique(),
-    categoryId: uuid("category_id").references(() => categorys.id),
+    categoryId: uuid("category_id").references(() => categories.id),
     tags: text("tags").array(),
     coverImage: text("cover_image"),
     description: text("description"),
     content: text("content"),
     readingTimeMinutes: integer("reading_time_minutes"),
 
-    createAt: timestamp("create_at").notNull().defaultNow(),
-    updateAt: timestamp("update_at").notNull().defaultNow(),
+    ...timestamps,
   },
   (table) => ({
     categoryIdx: index("category_idx").on(table.categoryId),
@@ -177,7 +180,7 @@ export const citySetsRelations = relations(citySets, ({ one }) => ({
   }),
 }));
 
-export const photoRelations = relations(photos, ({ one }) => ({
+export const photosRelations = relations(photos, ({ one }) => ({
   citySet: one(citySets, {
     fields: [photos.country, photos.city],
     references: [citySets.country, citySets.city],
@@ -193,8 +196,8 @@ export const insertPhotoSchema = createInsertSchema(photos)
       .transform((val) => (val ? new Date(val) : null)),
   })
   .omit({
-    createAt: true,
-    updateAt: true,
+    createdAt: true,
+    updatedAt: true,
   });
 
 export const updatePhotoSchema = createInsertSchema(photos)
@@ -208,6 +211,9 @@ export const updatePhotoSchema = createInsertSchema(photos)
   .partial();
 
 export const insertPostSchema = createInsertSchema(posts).omit({
-  createAt: true,
-  updateAt: true,
+  createdAt: true,
+  updatedAt: true,
 });
+
+// Types
+export type Photo = InferModel<typeof photos>;

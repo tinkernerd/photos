@@ -1,44 +1,38 @@
 "use client";
 
 // External dependencies
-import { memo } from "react";
+import { memo, Suspense } from "react";
 
 // UI Components
-import { Skeleton } from "./ui/skeleton";
 import Carousel from "./Carousel";
 import BlurImage from "./blur-image";
+import { Skeleton } from "./ui/skeleton";
 
 // HOOKS
-import { useGetPhotos } from "@/features/photos/api/use-get-photos";
+import { trpc } from "@/trpc/client";
+import { ErrorBoundary } from "react-error-boundary";
 
-const ImageSlider = memo(function ImageSlider() {
-  const { data: photos, isLoading } = useGetPhotos();
+export const ImageSlider = () => {
+  return (
+    <Suspense fallback={<Skeleton className="size-full" />}>
+      <ErrorBoundary fallback={<div>Something went wrong</div>}>
+        <ImageSliderSuspense />
+      </ErrorBoundary>
+    </Suspense>
+  );
+};
 
-  if (!photos) {
-    return (
-      <div className="size-full overflow-hidden rounded-xl">
-        <img
-          src="/placeholder.svg"
-          alt="Image"
-          className="h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
-        />
-      </div>
-    );
-  }
-
-  if (isLoading) {
-    return <Skeleton className="size-full" />;
-  }
-
-  const favoritePhoto =
-    photos.filter((photo) => photo.isFavorite === true) || photos.slice(0, 5);
+const ImageSliderSuspense = memo(function ImageSlider() {
+  const [photos] = trpc.photos.getLikedPhotos.useSuspenseQuery({
+    limit: 10,
+  });
 
   return (
     <Carousel
       className="absolute top-0 left-0 w-full h-full rounded-xl"
       containerClassName="h-full"
     >
-      {favoritePhoto.map((photo, index) => {
+      {photos.map((photo, index) => {
         const shouldPreload = index < 1;
 
         return (
@@ -58,5 +52,3 @@ const ImageSlider = memo(function ImageSlider() {
     </Carousel>
   );
 });
-
-export { ImageSlider };
