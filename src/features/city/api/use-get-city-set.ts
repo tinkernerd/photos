@@ -11,7 +11,7 @@ export const useGetCitySet = (id: string) => {
 
       if (!res.ok) throw new Error("Failed to fetch city sets");
 
-      const { data } = (await res.json()) as CitySetWithPhotos;
+      const { data } = (await res.json()) as unknown as CitySetWithPhotos;
 
       return data;
     },

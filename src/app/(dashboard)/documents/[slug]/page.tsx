@@ -26,7 +26,7 @@ const DocumentSlugPage = ({ params }: { params: Params }) => {
         <div className="space-y-2">
           <h1 className="text-3xl font-bold">{data?.title}</h1>
           <p className="text-sm">
-            {new Date(data?.createAt || "").toDateString()}
+            {new Date(data?.createdAt || "").toDateString()}
           </p>
         </div>
       </div>

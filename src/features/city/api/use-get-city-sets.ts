@@ -10,7 +10,7 @@ export const useGetCitySets = () => {
 
       if (!res.ok) throw new Error("Failed to fetch city sets");
 
-      const { data } = (await res.json()) as ApiResponse;
+      const { data } = (await res.json()) as unknown as ApiResponse;
 
       return data;
     },

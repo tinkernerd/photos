@@ -55,8 +55,8 @@ const PostContent = ({ slug }: { slug: string }) => {
         <div className="bg-muted rounded-xl p-10 md:p-12 md:h-[calc(100vh-24px)] flex flex-col">
           <div className="mb-10">
             <span className="bg-muted-hover rounded-sm py-1 px-2 text-xs text-text-muted font-light">
-              {data?.createAt &&
-                new Date(data.createAt).toLocaleString("en-US", {
+              {data?.createdAt &&
+                new Date(data.createdAt).toLocaleString("en-US", {
                   month: "short",
                   day: "numeric",
                   year: "numeric",
@@ -94,8 +94,8 @@ const PostContent = ({ slug }: { slug: string }) => {
           <div className="bg-muted rounded-xl p-5 w-full flex justify-between">
             <p className="text-text-muted">Date</p>
             <p>
-              {data?.createAt &&
-                new Date(data.createAt).toLocaleString("en-US", {
+              {data?.createdAt &&
+                new Date(data.createdAt).toLocaleString("en-US", {
                   month: "short",
                   day: "numeric",
                   year: "numeric",

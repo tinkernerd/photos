@@ -83,7 +83,7 @@ const DocumentsPage = () => {
                   <div className="flex flex-col">
                     <h1 className="text-lg line-clamp-1">{post.title}</h1>
                     <span className="text-text-muted text-sm">
-                      {new Date(post.createAt).toLocaleString("en-US", {
+                      {new Date(post.createdAt).toLocaleString("en-US", {
                         month: "long",
                         day: "numeric",
                         year: "numeric",
