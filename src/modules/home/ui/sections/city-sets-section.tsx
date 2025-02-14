@@ -4,7 +4,7 @@ import { Suspense } from "react";
 import { trpc } from "@/trpc/client";
 import { ErrorBoundary } from "react-error-boundary";
 import CityCard from "../components/city-card";
-import { InfiniteScroll } from "@/components/infinit-scroll";
+import { InfiniteScroll } from "@/components/infinite-scroll";
 import { CityCardLoadingSkeleton } from "@/components/loading-skeleton";
 
 export const CitySetsSection = () => {

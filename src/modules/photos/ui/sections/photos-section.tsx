@@ -3,7 +3,7 @@
 import { Suspense } from "react";
 import { trpc } from "@/trpc/client";
 import { ErrorBoundary } from "react-error-boundary";
-import { InfiniteScroll } from "@/components/infinit-scroll";
+import { InfiniteScroll } from "@/components/infinite-scroll";
 
 export const PhotosSection = () => {
   return (

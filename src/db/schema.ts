@@ -1,4 +1,4 @@
-import { InferModel, relations, sql } from "drizzle-orm";
+import { InferSelectModel, relations, sql } from "drizzle-orm";
 import {
   boolean,
   timestamp,
@@ -83,7 +83,6 @@ export const photos = pgTable(
     height: real("height").notNull(),
     blurData: text("blur_data").notNull(),
 
-    // GEO DATA
     country: text("country"),
     countryCode: text("country_code"),
     region: text("region"),
@@ -93,7 +92,6 @@ export const photos = pgTable(
     fullAddress: text("full_address"),
     placeFormatted: text("place_formatted"),
 
-    // EXIF DATA
     make: varchar("make", { length: 255 }),
     model: varchar("model", { length: 255 }),
     lensModel: varchar("lens_model", { length: 255 }),
@@ -110,12 +108,10 @@ export const photos = pgTable(
 
     ...timestamps,
   },
-  (table) => ({
-    yearIdx: index("year_idx").on(
-      sql`DATE_TRUNC('year', ${table.dateTimeOriginal})`
-    ),
-    cityIdx: index("city_idx").on(table.city),
-  })
+  (t) => [
+    index("year_idx").on(sql`DATE_TRUNC('year', ${t.dateTimeOriginal})`),
+    index("city_idx").on(t.city),
+  ]
 );
 
 export const citySets = pgTable(
@@ -137,9 +133,7 @@ export const citySets = pgTable(
     // META DATA
     ...timestamps,
   },
-  (table) => ({
-    uniqueCitySet: uniqueIndex("unique_city_set").on(table.country, table.city),
-  })
+  (t) => [uniqueIndex("unique_city_set").on(t.country, t.city)]
 );
 
 export const categories = pgTable("categories", {
@@ -162,22 +156,20 @@ export const posts = pgTable(
 
     ...timestamps,
   },
-  (table) => ({
-    categoryIdx: index("category_idx").on(table.categoryId),
-    tagsIdx: index("tags_idx").on(table.tags),
-    slugIdx: index("slug_idx").on(table.slug),
-  })
+  (t) => [
+    index("category_idx").on(t.categoryId),
+    index("tags_idx").on(t.tags),
+    index("slug_idx").on(t.slug),
+  ]
 );
 
-export const citySetRelations = relations(citySets, ({ many }) => ({
-  photos: many(photos),
-}));
-
-export const citySetsRelations = relations(citySets, ({ one }) => ({
+// Soft relations
+export const citySetsRelations = relations(citySets, ({ one, many }) => ({
   coverPhoto: one(photos, {
     fields: [citySets.coverPhotoId],
     references: [photos.id],
   }),
+  photos: many(photos),
 }));
 
 export const photosRelations = relations(photos, ({ one }) => ({
@@ -216,4 +208,4 @@ export const insertPostSchema = createInsertSchema(posts).omit({
 });
 
 // Types
-export type Photo = InferModel<typeof photos>;
+export type Photo = InferSelectModel<typeof photos>;
