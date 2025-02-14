@@ -137,7 +137,7 @@ export default function TravelClientPage() {
       <div className="hidden lg:block lg:w-1/2" />
 
       {/* RIGHT CONTENT - Scrollable */}
-      <PageTransitionContainer className="w-full mt-3 lg:mt-0 lg:w-1/2 space-y-3 pb-3">
+      <PageTransitionContainer className="w-full mt-3 lg:mt-0 lg:w-1/2 space-y-3">
         <PageTransitionItem>
           <Introduction />
         </PageTransitionItem>

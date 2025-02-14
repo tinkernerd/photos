@@ -4,7 +4,7 @@
 import Mapbox from "@/components/map";
 import { Blurhash } from "react-blurhash";
 import BlurImage from "@/components/blur-image";
-import CameraLoader from "@/components/camera-loader";
+import { Skeleton } from "@/components/ui/skeleton";
 
 // Hooks & Types
 import type { MapboxProps } from "@/components/map";
@@ -70,8 +70,8 @@ const MapWithPhotos = () => {
 
   if (isLoading) {
     return (
-      <div className="w-full h-full flex items-center justify-center bg-muted">
-        <CameraLoader />
+      <div className="w-full h-full overflow-hidden flex items-center justify-center bg-muted">
+        <Skeleton className="size-full" />
       </div>
     );
   }
