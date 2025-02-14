@@ -14,9 +14,7 @@ const DiscoverPage = async () => {
 
   return (
     <HydrateClient>
-      <div className="w-full h-screen p-3">
-        <DiscoverView />
-      </div>
+      <DiscoverView />
     </HydrateClient>
   );
 };
