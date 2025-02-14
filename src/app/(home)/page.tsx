@@ -13,7 +13,9 @@ const page = async () => {
 
   return (
     <HydrateClient>
-      <HomeView />
+      <div className="p-3">
+        <HomeView />
+      </div>
     </HydrateClient>
   );
 };

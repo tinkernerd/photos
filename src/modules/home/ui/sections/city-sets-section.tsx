@@ -28,7 +28,7 @@ const CitySetsSectionSuspense = () => {
   );
 
   return (
-    <div className="mt-3 w-full grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-3">
+    <div className="w-full grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-3">
       {data.pages.map((page) =>
         page.items.map((item) => (
           <CityCard

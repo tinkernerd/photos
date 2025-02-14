@@ -6,21 +6,14 @@ import { CitySetsSection } from "../sections/city-sets-section";
 import ProfileCard from "@/app/(home)/_components/profile-card";
 import LatestWorkCard from "@/app/(home)/_components/latest-work-card";
 import Footer from "@/app/(home)/_components/footer";
-import VectorCombined from "@/components/vector-combined";
-import { ImageSlider } from "@/components/image-slider";
+import { ImageSliderSection } from "../sections/image-slider-section";
 
 export const HomeView = () => {
   return (
     <PageTransitionContainer className="flex flex-col lg:flex-row min-h-screen w-full">
       {/* LEFT CONTENT - Fixed */}
       <PageTransitionItem className="w-full lg:w-1/2 h-[70vh] lg:fixed lg:top-0 lg:left-0 lg:h-screen p-0 lg:p-3 rounded-xl">
-        <div className="w-full h-full relative">
-          <ImageSlider />
-
-          <div className="absolute right-0 bottom-0">
-            <VectorCombined title="Photography" position="bottom-right" />
-          </div>
-        </div>
+        <ImageSliderSection />
       </PageTransitionItem>
       {/* Spacer for fixed left content */}
       <div className="hidden lg:block lg:w-1/2" />
@@ -33,12 +26,10 @@ export const HomeView = () => {
 
         {/* LAST TRAVEL CARD  */}
         <PageTransitionItem>
-          <div className="mt-3">
-            <LatestWorkCard />
-          </div>
+          <LatestWorkCard />
         </PageTransitionItem>
 
-        {/* CITY CARD  */}
+        {/* CITY SETS CARD  */}
         <PageTransitionItem>
           <CitySetsSection />
         </PageTransitionItem>

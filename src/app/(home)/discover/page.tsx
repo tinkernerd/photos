@@ -1,6 +1,7 @@
-import VectorCombined from "@/components/vector-combined";
-import MapWithPhotos from "./map-with-photos";
-//import PhotosGrid from "./photos-grid";
+import { HydrateClient, trpc } from "@/trpc/server";
+import { DiscoverView } from "@/modules/discover/ui/views/discover-view";
+
+export const dynamic = "force-dynamic";
 
 export const metadata = {
   title: "Discover",
@@ -8,30 +9,15 @@ export const metadata = {
     "Capturing memories across the globe - A visual journey through time and space",
 };
 
-const DiscoverPage = () => {
-  return (
-    <div className="w-full h-full rounded-[18px] overflow-hidden relative">
-      <MapWithPhotos />
-      <div className="absolute right-0 bottom-0 z-10">
-        <VectorCombined title="Discover" position="bottom-right" />
-      </div>
-    </div>
-    // <div className="flex w-full h-full">
-    //   {/* Left side - Fixed Map */}
-    //   <div className="w-1/2 h-[calc(100%-24px)] fixed left-3 top-3 bottom-3 rounded-xl overflow-hidden">
-    //     <div className="w-full h-full rounded-l-[18px] overflow-hidden relative">
-    //       <MapWithPhotos />
-    //       <div className="absolute right-0 bottom-0 z-10">
-    //         <VectorCombined title="Discover" position="bottom-right" />
-    //       </div>
-    //     </div>
-    //   </div>
+const DiscoverPage = async () => {
+  void trpc.map.getMany.prefetch();
 
-    //   {/* Right side - Photo Grid */}
-    //   <div className="w-1/2 h-full ml-[50%] pl-6">
-    //     <PhotosGrid />
-    //   </div>
-    // </div>
+  return (
+    <HydrateClient>
+      <div className="w-full h-screen p-3">
+        <DiscoverView />
+      </div>
+    </HydrateClient>
   );
 };
 
