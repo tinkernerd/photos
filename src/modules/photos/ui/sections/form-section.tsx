@@ -87,7 +87,7 @@ const FormSectionSuspense = ({ photoId }: FormSectionProps) => {
   };
 
   const fullUrl = `${
-    process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000"
+    process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"
   }/photograph/${photoId}`;
   const [isCopied, setIsCopied] = useState(false);
 
