@@ -4,10 +4,10 @@ import { db } from "@/db/drizzle";
 import { and, desc, eq, sql } from "drizzle-orm";
 import { zValidator } from "@hono/zod-validator";
 import {
-  insertPhotoSchema,
+  photosInsertSchema,
   photos,
   citySets,
-  updatePhotoSchema,
+  photosUpdateSchema,
 } from "@/db/schema";
 import { auth } from "@/features/auth/lib/auth";
 
@@ -37,7 +37,7 @@ const app = new Hono<{
    * @returns {Object} The inserted photo
    */
   // src/app/api/[[...route]]/photos.ts
-  .post("/", zValidator("json", insertPhotoSchema), async (c) => {
+  .post("/", zValidator("json", photosInsertSchema), async (c) => {
     const values = c.req.valid("json");
     const user = c.get("user");
 
@@ -245,7 +245,7 @@ const app = new Hono<{
   .patch(
     "/:id",
     zValidator("param", z.object({ id: z.string() })),
-    zValidator("json", updatePhotoSchema),
+    zValidator("json", photosUpdateSchema),
     async (c) => {
       const { id } = c.req.valid("param");
       const values = c.req.valid("json");

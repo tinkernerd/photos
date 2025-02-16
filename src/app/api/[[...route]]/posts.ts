@@ -4,7 +4,7 @@ import { eq } from "drizzle-orm";
 import { db } from "@/db/drizzle";
 import { zValidator } from "@hono/zod-validator";
 import { auth } from "@/features/auth/lib/auth";
-import { insertPostSchema, posts } from "@/db/schema";
+import { posts, postsInsertSchema, postsUpdateSchema } from "@/db/schema";
 
 const app = new Hono<{
   Variables: {
@@ -44,7 +44,7 @@ const app = new Hono<{
     "/",
     zValidator(
       "json",
-      insertPostSchema.pick({
+      postsInsertSchema.pick({
         title: true,
         slug: true,
         description: true,
@@ -80,7 +80,7 @@ const app = new Hono<{
   .patch(
     "/:slug",
     zValidator("param", z.object({ slug: z.string() })),
-    zValidator("json", insertPostSchema.pick({ content: true })),
+    zValidator("json", postsUpdateSchema),
     async (c) => {
       const { slug } = c.req.valid("param");
       const values = c.req.valid("json");

@@ -1,10 +1,79 @@
 import { z } from "zod";
 import { db } from "@/db/drizzle";
-import { citySets, photos } from "@/db/schema";
+import { citySets, photos, photosUpdateSchema } from "@/db/schema";
 import { and, eq, lt, or, desc } from "drizzle-orm";
-import { baseProcedure, createTRPCRouter } from "@/trpc/init";
+import {
+  baseProcedure,
+  createTRPCRouter,
+  protectedProcedure,
+} from "@/trpc/init";
+import { TRPCError } from "@trpc/server";
 
 export const photosRouter = createTRPCRouter({
+  remove: protectedProcedure
+    .input(
+      z.object({
+        id: z.string().uuid(),
+      })
+    )
+    .mutation(async ({ input }) => {
+      const { id } = input;
+
+      if (!id) {
+        throw new TRPCError({ code: "BAD_REQUEST" });
+      }
+
+      const [deletedPhoto] = await db
+        .delete(photos)
+        .where(eq(photos.id, id))
+        .returning();
+
+      if (!deletedPhoto) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Photo not found",
+        });
+      }
+
+      return deletedPhoto;
+    }),
+  update: protectedProcedure
+    .input(photosUpdateSchema)
+    .mutation(async ({ input }) => {
+      const { id } = input;
+
+      if (!id) {
+        throw new TRPCError({ code: "BAD_REQUEST" });
+      }
+
+      const [updatedPhoto] = await db
+        .update(photos)
+        .set({
+          title: input.title,
+          description: input.description,
+        })
+        .where(eq(photos.id, id))
+        .returning();
+
+      if (!updatedPhoto) {
+        throw new TRPCError({ code: "NOT_FOUND" });
+      }
+
+      return updatedPhoto;
+    }),
+  getOne: baseProcedure
+    .input(
+      z.object({
+        id: z.string().uuid(),
+      })
+    )
+    .query(async ({ input }) => {
+      const { id } = input;
+
+      const [photo] = await db.select().from(photos).where(eq(photos.id, id));
+
+      return photo;
+    }),
   getMany: baseProcedure
     .input(
       z.object({

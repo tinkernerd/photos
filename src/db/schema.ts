@@ -11,7 +11,11 @@ import {
   uniqueIndex,
   index,
 } from "drizzle-orm/pg-core";
-import { createInsertSchema } from "drizzle-zod";
+import {
+  createInsertSchema,
+  createSelectSchema,
+  createUpdateSchema,
+} from "drizzle-zod";
 import { z } from "zod";
 
 // ⌚️ Reusable timestamps - Define once, use everywhere!
@@ -180,7 +184,7 @@ export const photosRelations = relations(photos, ({ one }) => ({
 }));
 
 // Schema
-export const insertPhotoSchema = createInsertSchema(photos)
+export const photosInsertSchema = createInsertSchema(photos)
   .extend({
     dateTimeOriginal: z
       .string()
@@ -191,9 +195,10 @@ export const insertPhotoSchema = createInsertSchema(photos)
     createdAt: true,
     updatedAt: true,
   });
-
-export const updatePhotoSchema = createInsertSchema(photos)
+export const photosSelectSchema = createSelectSchema(photos);
+export const photosUpdateSchema = createUpdateSchema(photos)
   .pick({
+    id: true,
     title: true,
     description: true,
     isFavorite: true,
@@ -202,10 +207,9 @@ export const updatePhotoSchema = createInsertSchema(photos)
   })
   .partial();
 
-export const insertPostSchema = createInsertSchema(posts).omit({
-  createdAt: true,
-  updatedAt: true,
-});
+export const postsInsertSchema = createInsertSchema(posts);
+export const postsSelectSchema = createSelectSchema(posts);
+export const postsUpdateSchema = createUpdateSchema(posts);
 
 // Types
 export type Photo = InferSelectModel<typeof photos>;

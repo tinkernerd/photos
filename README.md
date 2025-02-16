@@ -152,11 +152,8 @@ If you find this project helpful, please give it a ⭐️ on GitHub!
 ## 🏃‍♂️ Todo
 
 - [x] Home page with tRPC
+- [x] Discover page with tRPC
+- [x] Dashboard photos & photo id page with tRPC
 - [ ] Blog page with tRPC
-- [ ] About page with tRPC
-- [ ] Profile page with tRPC
 - [ ] Travel page with tRPC
-- [ ] Discover page with tRPC
 - [ ] Post page with tRPC
-- [ ] City page with tRPC
-- [ ] Location page with tRPC

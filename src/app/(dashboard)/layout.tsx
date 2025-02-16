@@ -1,6 +1,5 @@
-import ModalProvider from "@/components/providers/modal-provider";
-import Navbar from "./_components/navbar";
 import { Metadata } from "next";
+import { DashboardLayout } from "@/modules/dashboard/ui/layouts/dashboard-layout";
 
 export const metadata: Metadata = {
   title: {
@@ -9,16 +8,8 @@ export const metadata: Metadata = {
   },
 };
 
-const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
-  return (
-    <div>
-      <Navbar />
-      <main>
-        {children}
-        <ModalProvider />
-      </main>
-    </div>
-  );
+const Layout = ({ children }: { children: React.ReactNode }) => {
+  return <DashboardLayout>{children}</DashboardLayout>;
 };
 
-export default DashboardLayout;
+export default Layout;
