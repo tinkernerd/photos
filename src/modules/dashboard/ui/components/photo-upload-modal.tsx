@@ -2,6 +2,7 @@
 
 import { ResponsiveModal } from "@/components/responsive-modal";
 import { Button } from "@/components/ui/button";
+import { PhotoUploader } from "@/modules/cloudflare/components/photo-uploader";
 import { ImagePlus, Loader2 } from "lucide-react";
 
 export const PhotoUploadModal = () => {
@@ -9,10 +10,10 @@ export const PhotoUploadModal = () => {
     <>
       <ResponsiveModal
         title="Upload a photo"
-        open={false}
+        open={true}
         onOpenChange={() => {}}
       >
-        <div>Upload a photo</div>
+        <PhotoUploader onUploadSuccess={() => {}} folder="test" />
       </ResponsiveModal>
       <Button
         disabled={false}

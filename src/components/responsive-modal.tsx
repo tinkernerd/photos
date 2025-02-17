@@ -48,7 +48,7 @@ export const ResponsiveModal = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent>
+      <DialogContent className="h-[80vh] w-[50vw] max-w-none">
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription></DialogDescription>
