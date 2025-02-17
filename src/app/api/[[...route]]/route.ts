@@ -1,6 +1,6 @@
 import { Hono } from "hono";
 import { handle } from "hono/vercel";
-import { auth } from "@/features/auth/lib/auth";
+import { auth } from "@/modules/auth/lib/auth";
 
 // routes
 import r2 from "./r2";

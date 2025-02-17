@@ -6,7 +6,7 @@ import {
 } from "@/components/ui/sidebar";
 import { Skeleton } from "@/components/ui/skeleton";
 import { UserAvatar } from "@/components/user-avatar";
-import { useSession } from "@/features/auth/lib/auth-client";
+import { useSession } from "@/modules/auth/lib/auth-client";
 
 import Link from "next/link";
 

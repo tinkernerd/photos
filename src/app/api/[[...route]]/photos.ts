@@ -9,7 +9,7 @@ import {
   citySets,
   photosUpdateSchema,
 } from "@/db/schema";
-import { auth } from "@/features/auth/lib/auth";
+import { auth } from "@/modules/auth/lib/auth";
 
 const app = new Hono<{
   Variables: {

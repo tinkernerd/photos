@@ -3,7 +3,7 @@ import { Hono } from "hono";
 import { eq } from "drizzle-orm";
 import { db } from "@/db/drizzle";
 import { zValidator } from "@hono/zod-validator";
-import { auth } from "@/features/auth/lib/auth";
+import { auth } from "@/modules/auth/lib/auth";
 import { posts, postsInsertSchema, postsUpdateSchema } from "@/db/schema";
 
 const app = new Hono<{

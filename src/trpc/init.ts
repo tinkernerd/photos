@@ -1,11 +1,11 @@
 import { initTRPC } from "@trpc/server";
 import { cache } from "react";
 import superjson from "superjson";
-import { auth } from "@/features/auth/lib/auth";
+import { auth } from "@/modules/auth/lib/auth";
 import { headers } from "next/headers";
 
 // Types
-import type { Session } from "@/features/auth/lib/auth-types";
+import type { Session } from "@/modules/auth/lib/auth-types";
 
 export const createTRPCContext = cache(async () => {
   /**

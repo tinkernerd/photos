@@ -1,8 +1,8 @@
 import { Metadata } from "next";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-import SignUp from "@/features/auth/components/sign-up";
-import { auth } from "@/features/auth/lib/auth";
+import SignUp from "@/modules/auth/components/sign-up";
+import { auth } from "@/modules/auth/lib/auth";
 import { db } from "@/db/drizzle";
 import { user } from "@/db/schema";
 

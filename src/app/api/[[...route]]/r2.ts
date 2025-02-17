@@ -11,7 +11,7 @@ import {
   PutObjectCommand,
   DeleteObjectCommand,
 } from "@aws-sdk/client-s3";
-import { auth } from "@/features/auth/lib/auth";
+import { auth } from "@/modules/auth/lib/auth";
 import { zValidator } from "@hono/zod-validator";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
