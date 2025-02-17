@@ -20,8 +20,12 @@ const ProfilePage = async () => {
   });
 
   return (
-    <div className="w-full">
-      <div className="flex gap-4 flex-col max-w-[800px] mx-auto">
+    <div className="flex flex-col gap-y-6 pt-2.5">
+      <div className="px-4">
+        <h1 className="text-2xl font-bold">Security & access</h1>
+        <p className="text-xs text-muted-foreground">
+          Manage the devices logged in your account
+        </p>
         <UserCard
           session={JSON.parse(JSON.stringify(session))}
           activeSessions={JSON.parse(JSON.stringify(activeSessions))}

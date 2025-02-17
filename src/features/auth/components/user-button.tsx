@@ -20,7 +20,7 @@ const UserButton = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Avatar className="size-9">
+        <Avatar className="size-9 hover:opacity-80 transition-opacity cursor-pointer">
           <AvatarImage
             src={session?.user.image || "#"}
             alt="Avatar"

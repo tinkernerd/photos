@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { trpc } from "@/trpc/client";
-import { Suspense, useState } from "react";
+import { Suspense, useMemo, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -24,6 +24,7 @@ import { photosUpdateSchema } from "@/db/schema";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -35,14 +36,26 @@ import { toast } from "sonner";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import BlurImage from "@/components/blur-image";
+import dynamic from "next/dynamic";
+import { Skeleton } from "@/components/ui/skeleton";
+import { formatGPSCoordinates } from "@/lib/utils";
 
 interface FormSectionProps {
   photoId: string;
 }
 
+const MapboxComponent = dynamic(() => import("@/components/map"), {
+  ssr: false,
+  loading: () => (
+    <div className="h-[300px] w-full rounded-md border flex items-center justify-center bg-muted">
+      <Skeleton className="h-full w-full" />
+    </div>
+  ),
+});
+
 export const FormSection = ({ photoId }: FormSectionProps) => {
   return (
-    <Suspense fallback={<p>Loading...</p>}>
+    <Suspense fallback={<FormSectionSkeleton />}>
       <ErrorBoundary fallback={<p>Something went wrong</p>}>
         <FormSectionSuspense photoId={photoId} />
       </ErrorBoundary>
@@ -50,10 +63,26 @@ export const FormSection = ({ photoId }: FormSectionProps) => {
   );
 };
 
+// TODO: Loading skeleton
+const FormSectionSkeleton = () => {
+  return (
+    <div>
+      <p>Loading...</p>
+    </div>
+  );
+};
+
 const FormSectionSuspense = ({ photoId }: FormSectionProps) => {
   const router = useRouter();
   const utils = trpc.useUtils();
   const [photo] = trpc.photos.getOne.useSuspenseQuery({ id: photoId });
+  const [currentLocation, setCurrentLocation] = useState<{
+    lat: number | null;
+    lng: number | null;
+  }>({
+    lat: photo.latitude,
+    lng: photo.longitude,
+  });
 
   const update = trpc.photos.update.useMutation({
     onSuccess: () => {
@@ -81,6 +110,30 @@ const FormSectionSuspense = ({ photoId }: FormSectionProps) => {
     resolver: zodResolver(photosUpdateSchema),
     defaultValues: photo,
   });
+
+  // Memoize map values to reduce re-renders
+  const mapValues = useMemo(() => {
+    const longitude = currentLocation?.lng ?? photo.longitude ?? 0;
+    const latitude = currentLocation?.lat ?? photo.latitude ?? 0;
+
+    return {
+      markers:
+        longitude === 0 && latitude === 0
+          ? []
+          : [
+              {
+                id: "location",
+                longitude,
+                latitude,
+              },
+            ],
+    };
+  }, [
+    currentLocation?.lat,
+    currentLocation?.lng,
+    photo.latitude,
+    photo.longitude,
+  ]);
 
   const onSubmit = (data: z.infer<typeof photosUpdateSchema>) => {
     update.mutateAsync(data);
@@ -145,7 +198,7 @@ const FormSectionSuspense = ({ photoId }: FormSectionProps) => {
                   <FormItem>
                     <FormLabel>Title</FormLabel>
                     <FormControl>
-                      <Input {...field} placeholder="Video title" />
+                      <Input {...field} placeholder="Photo title" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -164,13 +217,53 @@ const FormSectionSuspense = ({ photoId }: FormSectionProps) => {
                         rows={10}
                         className="resize-none"
                         value={field.value || ""}
-                        placeholder="Video description"
+                        placeholder="Photo description"
                       />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
+
+              {/* Map */}
+              <FormItem>
+                <FormLabel>Location</FormLabel>
+                <FormControl>
+                  <div className="h-[300px] w-full rounded-md overflow-hidden border">
+                    <Suspense
+                      fallback={
+                        <div className="h-full w-full flex items-center justify-center bg-muted">
+                          <Skeleton className="h-full w-full" />
+                        </div>
+                      }
+                    >
+                      <MapboxComponent
+                        draggableMarker
+                        markers={mapValues.markers}
+                        initialViewState={{
+                          longitude: photo.longitude!,
+                          latitude: photo.latitude!,
+                          zoom: 10,
+                        }}
+                        onMarkerDragEnd={(data) => {
+                          setCurrentLocation({
+                            lat: data.lat,
+                            lng: data.lng,
+                          });
+                        }}
+                      />
+                    </Suspense>
+                  </div>
+                </FormControl>
+                <FormDescription>
+                  {currentLocation
+                    ? formatGPSCoordinates(
+                        currentLocation.lat,
+                        currentLocation.lng
+                      )
+                    : formatGPSCoordinates(photo.latitude, photo.longitude)}
+                </FormDescription>
+              </FormItem>
             </div>
 
             <div className="flex flex-col gap-y-8 lg:col-span-2">

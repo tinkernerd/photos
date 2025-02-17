@@ -75,8 +75,8 @@ export const formatISO = (iso?: number): string => {
  * @example formatGPSCoordinates(40.7128, -74.006) => "40.7128°N, 74.006°W"
  */
 export const formatGPSCoordinates = (
-  latitude?: number,
-  longitude?: number
+  latitude?: number | null,
+  longitude?: number | null
 ): string => {
   if (!longitude || !latitude) return "- -";
 

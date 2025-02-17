@@ -124,6 +124,7 @@ const PhotosSectionSuspense = () => {
                           quality={20}
                           className="object-cover"
                           blurhash={photo.blurData}
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                         />
                       </div>
                       <div className="flex flex-col overflow-hidden gap-y-1">

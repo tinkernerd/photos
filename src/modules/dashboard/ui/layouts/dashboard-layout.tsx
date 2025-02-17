@@ -9,9 +9,9 @@ export const DashboardLayout = ({
 }) => {
   return (
     <SidebarProvider>
-      <div className="w-full">
+      <div className="flex h-screen w-full flex-col">
         <DashboardNavbar />
-        <div className="flex min-h-screen pt-[4rem]">
+        <div className="flex flex-1 pt-[4rem]">
           <DashboardSidebar />
           <main className="flex-1 overflow-y-auto">{children}</main>
         </div>
