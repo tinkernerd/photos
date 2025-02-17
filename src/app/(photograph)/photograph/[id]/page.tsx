@@ -1,34 +1,28 @@
-import Photo from "./photo";
+import { HydrateClient, trpc } from "@/trpc/server";
+import { PhotographSection } from "./photograph-section";
 
 type Props = {
   params: Promise<{ id: string }>;
 };
 
-const getPhoto = async (id: string) => {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_APP_URL}/api/photos/${id}`
-  );
-
-  return res.json();
-};
-
 export const generateMetadata = async ({ params }: Props) => {
   const id = (await params).id;
-  const photo = await getPhoto(id);
+  const photo = await trpc.photos.getOne({ id });
 
   return {
-    title: `${photo.data.title}`,
-    description: `${photo.data.description}`,
+    title: `${photo.title}`,
+    description: `${photo.description}`,
   };
 };
 
 const page = async ({ params }: Props) => {
   const id = (await params).id;
+  void trpc.photos.getOne.prefetch({ id });
 
   return (
-    <div className="w-full h-full">
-      <Photo id={id} />
-    </div>
+    <HydrateClient>
+      <PhotographSection id={id} />
+    </HydrateClient>
   );
 };
 
