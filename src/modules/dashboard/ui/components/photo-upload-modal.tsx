@@ -15,6 +15,7 @@ export const PhotoUploadModal = () => {
         title="Upload a photo"
         open={isUploading}
         onOpenChange={() => setIsUploading(false)}
+        className="h-[80vh] w-[80vw] max-w-none"
       >
         <PhotoUploader />
       </ResponsiveModal>

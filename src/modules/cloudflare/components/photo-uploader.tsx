@@ -1,13 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useMemo, useState } from "react";
 import { toast } from "sonner";
-import { Progress } from "@/components/ui/progress";
 import { trpc } from "@/trpc/client";
-import { Loader2, Upload } from "lucide-react";
 import { cloudflareR2 } from "@/lib/cloudflare-r2";
 import { useDropzone } from "react-dropzone";
-import { cn } from "@/lib/utils";
+import { cn, formatGPSCoordinates } from "@/lib/utils";
 import { DEFAULT_FOLDER, IMAGE_SIZE_LIMIT } from "@/constants";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -18,17 +16,18 @@ import { z } from "zod";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { UploadCloud } from "lucide-react";
+import { photosSelectSchema } from "@/db/schema";
+import { Skeleton } from "@/components/ui/skeleton";
+import dynamic from "next/dynamic";
 
-const photoFormSchema = z.object({
-  title: z.string().min(1, "Title is required"),
-  description: z.string().optional(),
-  location: z.string().optional(),
-});
+const photoFormSchema = photosSelectSchema;
 
 type PhotoFormValues = z.infer<typeof photoFormSchema>;
 
@@ -37,35 +36,43 @@ interface PhotoUploaderProps {
   folder?: string;
 }
 
+const MapboxComponent = dynamic(() => import("@/components/map"), {
+  ssr: false,
+  loading: () => (
+    <div className="h-[300px] w-full rounded-md border flex items-center justify-center bg-muted">
+      <Skeleton className="h-full w-full" />
+    </div>
+  ),
+});
+
 export function PhotoUploader({
   onUploadSuccess,
   folder = DEFAULT_FOLDER,
 }: PhotoUploaderProps) {
-  const [progress, setProgress] = useState(0);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadedImageUrl, setUploadedImageUrl] = useState<string | null>(null);
+  const [currentLocation, setCurrentLocation] = useState<{
+    lat: number | null;
+    lng: number | null;
+  }>({
+    lat: null,
+    lng: null,
+  });
 
-  const { mutateAsync: getUploadUrl, isPending: isGettingUrl } =
+  const { mutateAsync: getUploadUrl } =
     trpc.cloudflare.getUploadUrl.useMutation();
 
   const form = useForm<PhotoFormValues>({
     resolver: zodResolver(photoFormSchema),
-    defaultValues: {
-      title: "",
-      description: "",
-      location: "",
-    },
   });
 
   const handleUpload = async (file: File) => {
     try {
       setIsUploading(true);
-      setProgress(0);
 
       const { publicUrl } = await cloudflareR2.upload({
         file,
         folder,
-        onProgress: setProgress,
         getUploadUrl,
       });
 
@@ -79,11 +86,10 @@ export function PhotoUploader({
       );
     } finally {
       setIsUploading(false);
-      setProgress(0);
     }
   };
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+  const { getRootProps, getInputProps, open } = useDropzone({
     onDrop: async (acceptedFiles) => {
       const file = acceptedFiles[0];
       if (file) {
@@ -95,6 +101,25 @@ export function PhotoUploader({
     },
     multiple: false,
   });
+
+  // Memoize map values to reduce re-renders
+  const mapValues = useMemo(() => {
+    const longitude = currentLocation?.lng ?? 0;
+    const latitude = currentLocation?.lat ?? 0;
+
+    return {
+      markers:
+        longitude === 0 && latitude === 0
+          ? []
+          : [
+              {
+                id: "location",
+                longitude,
+                latitude,
+              },
+            ],
+    };
+  }, [currentLocation?.lat, currentLocation?.lng]);
 
   const onSubmit = async () => {
     if (!uploadedImageUrl) return;
@@ -112,241 +137,127 @@ export function PhotoUploader({
     }
   };
 
-  const isLoading = isGettingUrl || isUploading;
-  const loadingText = isGettingUrl
-    ? "Preparing upload..."
-    : isUploading
-    ? "Uploading..."
-    : "Upload Photo";
-
   if (uploadedImageUrl) {
-    const steps = [
-      {
-        title: "详细信息",
-        active: true,
-        completed: false,
-      },
-      {
-        title: "视频元素",
-        active: false,
-        completed: false,
-      },
-      {
-        title: "检查",
-        active: false,
-        completed: false,
-      },
-      {
-        title: "公开范围",
-        active: false,
-        completed: false,
-      },
-    ];
-
     return (
-      <div className="space-y-6">
-        {/* Progress Steps */}
-        <div className="relative">
-          <div className="flex justify-between">
-            {steps.map((step, index) => (
-              <div
-                key={step.title}
-                className="flex flex-col items-center relative z-10"
-              >
-                <div
-                  className={cn(
-                    "w-8 h-8 rounded-full border-2 flex items-center justify-center",
-                    step.active
-                      ? "border-primary bg-primary text-white"
-                      : "border-gray-300 bg-white"
-                  )}
-                >
-                  {step.completed ? (
-                    <svg
-                      className="w-4 h-4 text-white"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M5 13l4 4L19 7"
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)}>
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
+            <div className="space-y-6 lg:col-span-3">
+              <FormField
+                control={form.control}
+                name="title"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Title</FormLabel>
+                    <FormControl>
+                      <Input {...field} placeholder="Photo title" />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="description"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Description</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        {...field}
+                        rows={10}
+                        className="resize-none"
+                        value={field.value || ""}
+                        placeholder="Photo description"
                       />
-                    </svg>
-                  ) : (
-                    index + 1
-                  )}
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* Map */}
+              <FormItem>
+                <FormLabel>Location</FormLabel>
+                <FormControl>
+                  <div className="h-[300px] w-full rounded-md overflow-hidden border">
+                    <Suspense
+                      fallback={
+                        <div className="h-full w-full flex items-center justify-center bg-muted">
+                          <Skeleton className="h-full w-full" />
+                        </div>
+                      }
+                    >
+                      <MapboxComponent
+                        draggableMarker
+                        markers={mapValues.markers}
+                        onMarkerDragEnd={(data) => {
+                          setCurrentLocation({
+                            lat: data.lat,
+                            lng: data.lng,
+                          });
+                        }}
+                      />
+                    </Suspense>
+                  </div>
+                </FormControl>
+                <FormDescription>
+                  {currentLocation &&
+                    formatGPSCoordinates(
+                      currentLocation.lat,
+                      currentLocation.lng
+                    )}
+                </FormDescription>
+              </FormItem>
+            </div>
+
+            <div className="flex flex-col gap-y-8 lg:col-span-2">
+              <div className="flex flex-col gap-4 bg-muted rounded-xl overflow-hidden h-fit">
+                <div className="aspect-video overflow-hidden relative">
+                  {/* IMAGE  */}
                 </div>
-                <span
-                  className={cn(
-                    "mt-2 text-sm",
-                    step.active ? "text-primary" : "text-gray-500"
-                  )}
-                >
-                  {step.title}
-                </span>
               </div>
-            ))}
-          </div>
-          {/* Progress Line */}
-          <div className="absolute top-4 left-0 w-full">
-            <div className="h-[2px] bg-gray-200">
-              <div
-                className="h-full bg-primary transition-all duration-500"
-                style={{ width: "0%" }}
-              />
             </div>
           </div>
-        </div>
-
-        <div className="grid grid-cols-2 gap-6">
-          {/* Left Column - Form */}
-          <div className="space-y-4">
-            <Form {...form}>
-              <form
-                onSubmit={form.handleSubmit(onSubmit)}
-                className="space-y-4"
-              >
-                <FormField
-                  control={form.control}
-                  name="title"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>标题（必填）</FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="为你的照片添加标题"
-                          {...field}
-                          className="h-12"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="description"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>说明</FormLabel>
-                      <FormControl>
-                        <Textarea
-                          placeholder="向观看者介绍你的视频（输入 @ 可提及某个频道）"
-                          {...field}
-                          className="min-h-[120px]"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="location"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>位置</FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="添加拍摄地点"
-                          {...field}
-                          className="h-12"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <div className="flex justify-end gap-4">
-                  <Button
-                    type="button"
-                    variant="outline"
-                    onClick={() => setUploadedImageUrl(null)}
-                  >
-                    重新上传
-                  </Button>
-                  <Button type="submit">保存</Button>
-                </div>
-              </form>
-            </Form>
+          <div className="flex items-center justify-end mt-6">
+            <Button type="submit" disabled={false}>
+              Save
+            </Button>
           </div>
-
-          {/* Right Column - Image Preview */}
-          <div className="space-y-4">
-            <div className="aspect-video relative rounded-lg overflow-hidden bg-gray-100 border">
-              <img
-                src={uploadedImageUrl}
-                alt="Uploaded photo"
-                className="object-contain w-full h-full"
-              />
-            </div>
-            <div className="p-4 border rounded-lg space-y-2">
-              <p className="text-sm font-medium">文件名</p>
-              <p className="text-sm text-gray-500 break-all">
-                {uploadedImageUrl?.split("/").pop()}
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
+        </form>
+      </Form>
     );
   }
 
   return (
-    <div className="w-full space-y-4">
+    <div className="w-full flex flex-col items-center space-y-4">
       <div
         {...getRootProps()}
         className={cn(
-          "relative flex flex-col items-center justify-center w-full h-64 border-2 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 dark:bg-gray-700 dark:border-gray-600 dark:hover:bg-gray-600",
-          isDragActive && "border-primary bg-primary/5",
-          isLoading && "pointer-events-none opacity-60"
+          "relative flex flex-col items-center justify-center rounded-full size-32 bg-muted cursor-pointer",
+          { "opacity-50": isUploading }
         )}
       >
-        <input {...getInputProps()} disabled={isLoading} />
-        <div className="flex flex-col items-center justify-center pt-5 pb-6">
-          {isLoading ? (
-            <>
-              <Loader2 className="h-10 w-10 animate-spin text-gray-500 mb-3" />
-              <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                {loadingText}
-              </p>
-            </>
-          ) : (
-            <>
-              <Upload className="h-10 w-10 text-gray-500 mb-3" />
-              <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                {isDragActive ? (
-                  "Drop the photo here"
-                ) : (
-                  <>
-                    <span className="font-semibold">Click to upload</span> or
-                    drag and drop
-                  </>
-                )}
-              </p>
-              <p className="text-xs text-gray-500 dark:text-gray-400">
-                PNG, JPG or GIF (MAX. {IMAGE_SIZE_LIMIT / 1024 / 1024}MB)
-              </p>
-            </>
-          )}
+        <input {...getInputProps()} disabled={isUploading} />
+        <div className="flex flex-col items-center justify-center pt-5 pb-6 relative size-32">
+          <UploadCloud className="size-20 opacity-70" />
         </div>
       </div>
-
-      {isUploading && progress > 0 && (
-        <div className="space-y-2">
-          <Progress value={progress} className="h-1" />
-          <div className="flex items-center justify-between text-xs text-gray-500">
-            <span>Uploading...</span>
-            <span>{progress}%</span>
-          </div>
-        </div>
-      )}
+      <div className="text-center space-y-2">
+        <h1 className={cn(isUploading && "opacity-50")}>
+          Drag and drop photo file to upload
+        </h1>
+        <p className="text-xs text-muted-foreground">
+          Your photo will be private until you publish it.
+        </p>
+        <p className="text-xs text-muted-foreground">
+          Maximum file size: {IMAGE_SIZE_LIMIT / 1024 / 1024} MB
+        </p>
+      </div>
+      <Button type="button" disabled={isUploading} onClick={open}>
+        Select file
+      </Button>
     </div>
   );
 }
