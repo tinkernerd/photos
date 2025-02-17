@@ -3,25 +3,27 @@
 import { ResponsiveModal } from "@/components/responsive-modal";
 import { Button } from "@/components/ui/button";
 import { PhotoUploader } from "@/modules/cloudflare/components/photo-uploader";
-import { ImagePlus, Loader2 } from "lucide-react";
+import { ImagePlus } from "lucide-react";
+import { useState } from "react";
 
 export const PhotoUploadModal = () => {
+  const [isUploading, setIsUploading] = useState(false);
+
   return (
     <>
       <ResponsiveModal
         title="Upload a photo"
-        open={true}
-        onOpenChange={() => {}}
+        open={isUploading}
+        onOpenChange={() => setIsUploading(false)}
       >
-        <PhotoUploader onUploadSuccess={() => {}} folder="test" />
+        <PhotoUploader />
       </ResponsiveModal>
       <Button
-        disabled={false}
-        onClick={() => {}}
+        onClick={() => setIsUploading(true)}
         variant="secondary"
         className="flex items-center gap-1"
       >
-        {false ? <Loader2 className="h-4 w-4 animate-spin" /> : <ImagePlus />}
+        <ImagePlus />
         Create
       </Button>
     </>

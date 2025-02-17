@@ -49,8 +49,7 @@ export const photosRouter = createTRPCRouter({
       const [updatedPhoto] = await db
         .update(photos)
         .set({
-          title: input.title,
-          description: input.description,
+          ...input,
         })
         .where(eq(photos.id, id))
         .returning();

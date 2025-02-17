@@ -10,6 +10,7 @@ import {
   uuid,
   uniqueIndex,
   index,
+  pgEnum,
 } from "drizzle-orm/pg-core";
 import {
   createInsertSchema,
@@ -74,6 +75,11 @@ export const verification = pgTable("verification", {
   updatedAt: timestamp("updated_at"),
 });
 
+export const photoVisibility = pgEnum("photo_visibility", [
+  "public",
+  "private",
+]);
+
 export const photos = pgTable(
   "photos",
   {
@@ -82,6 +88,7 @@ export const photos = pgTable(
     title: text("title").notNull(),
     description: text("description").notNull(),
     isFavorite: boolean("isFavorite").default(false),
+    visibility: photoVisibility("visibility").default("private").notNull(),
     aspectRatio: real("aspect_ratio").notNull(),
     width: real("width").notNull(),
     height: real("height").notNull(),
@@ -204,6 +211,7 @@ export const photosUpdateSchema = createUpdateSchema(photos)
     isFavorite: true,
     latitude: true,
     longitude: true,
+    visibility: true,
   })
   .partial();
 

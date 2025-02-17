@@ -18,6 +18,8 @@ import BlurImage from "@/components/blur-image";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ErrorBoundary } from "react-error-boundary";
 import { InfiniteScroll } from "@/components/infinite-scroll";
+import { snakeCaseToTitle } from "@/lib/utils";
+import { Globe2Icon, HeartCrack, HeartIcon, LockIcon } from "lucide-react";
 
 export const PhotosSection = () => {
   return (
@@ -101,11 +103,11 @@ const PhotosSectionSuspense = () => {
           <TableRow>
             <TableHead className="pl-6 w-[510px]">Photos</TableHead>
             <TableHead>Visibility</TableHead>
-            <TableHead>Status</TableHead>
             <TableHead>Date</TableHead>
-            <TableHead className="text-right">Views</TableHead>
-            <TableHead className="text-right">Comments</TableHead>
-            <TableHead className="text-right pr-6">Likes</TableHead>
+            <TableHead>Make</TableHead>
+            <TableHead>Len</TableHead>
+            <TableHead>Address</TableHead>
+            <TableHead className="text-right pr-6">Favorite</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -138,12 +140,47 @@ const PhotosSectionSuspense = () => {
                       </div>
                     </div>
                   </TableCell>
-                  <TableCell></TableCell>
-                  <TableCell></TableCell>
-                  <TableCell className="text-xs truncate"></TableCell>
-                  <TableCell className="text-right">views</TableCell>
-                  <TableCell className="text-right">comments</TableCell>
-                  <TableCell className="text-right pr-6">likes</TableCell>
+                  <TableCell>
+                    <div className="flex items-center">
+                      {photo.visibility === "private" ? (
+                        <LockIcon className="size-4 mr-2" />
+                      ) : (
+                        <Globe2Icon className="size-4 mr-2" />
+                      )}
+                      {snakeCaseToTitle(photo.visibility)}
+                    </div>
+                  </TableCell>
+                  <TableCell className="text-xs truncate">
+                    {photo.dateTimeOriginal &&
+                      new Date(photo.dateTimeOriginal).toLocaleDateString()}
+                  </TableCell>
+                  <TableCell>
+                    <p className="line-clamp-1">
+                      {photo.make} {photo.model}
+                    </p>
+                  </TableCell>
+                  <TableCell>
+                    <p className="line-clamp-1">
+                      {photo.lensModel}
+                      <span className="text-muted-foreground ml-2 text-xs">
+                        {photo.focalLength35mm}mm
+                      </span>
+                    </p>
+                  </TableCell>
+                  <TableCell>
+                    <p className="line-clamp-1">
+                      {photo.city}, {photo.countryCode}
+                    </p>
+                  </TableCell>
+                  <TableCell className="pr-6 text-right">
+                    <div className="inline-block">
+                      {photo.isFavorite ? (
+                        <HeartIcon className="stroke-rose-500 fill-rose-500" />
+                      ) : (
+                        <HeartCrack className="text-muted-foreground" />
+                      )}
+                    </div>
+                  </TableCell>
                 </TableRow>
               </Link>
             ))}

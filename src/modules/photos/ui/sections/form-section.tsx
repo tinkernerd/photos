@@ -30,6 +30,13 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
@@ -225,6 +232,31 @@ const FormSectionSuspense = ({ photoId }: FormSectionProps) => {
                 )}
               />
 
+              <FormField
+                control={form.control}
+                name="isFavorite"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Favorite</FormLabel>
+                    <Select
+                      onValueChange={(value) => field.onChange(value === "true")}
+                      defaultValue={String(field.value ?? false)}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select a favorite" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="true">Yes</SelectItem>
+                        <SelectItem value="false">No</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
               {/* Map */}
               <FormItem>
                 <FormLabel>Location</FormLabel>
@@ -305,6 +337,31 @@ const FormSectionSuspense = ({ photoId }: FormSectionProps) => {
                   </div>
                 </div>
               </div>
+
+              <FormField
+                control={form.control}
+                name="visibility"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Visibility</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value ?? undefined}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select visibility" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="public">Public</SelectItem>
+                        <SelectItem value="private">Private</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </div>
           </div>
         </form>

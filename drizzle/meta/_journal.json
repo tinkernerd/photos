@@ -15,6 +15,20 @@
       "when": 1739409551599,
       "tag": "0001_amused_black_crow",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1739793230852,
+      "tag": "0002_common_nextwave",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1739793404480,
+      "tag": "0003_magenta_magik",
+      "breakpoints": true
     }
   ]
 }

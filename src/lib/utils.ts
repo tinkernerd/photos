@@ -32,7 +32,7 @@ export const formatExposureCompensation = (
  * Format focal length with unit
  * @example formatFocalLength(50) => "50mm"
  */
-export const formatFocalLength = (focalLength?: number): string => {
+export const formatFocalLength = (focalLength?: number | null): string => {
   if (!focalLength) return "";
   return `${focalLength}mm`;
 };
@@ -41,7 +41,9 @@ export const formatFocalLength = (focalLength?: number): string => {
  * Format focal length 35mm equivalent
  * @example formatFocalLength35mm(50) => "50mm in 35mm"
  */
-export const formatFocalLength35mm = (focalLength35mm?: number): string => {
+export const formatFocalLength35mm = (
+  focalLength35mm?: number | null
+): string => {
   if (!focalLength35mm) return "";
   return `${focalLength35mm}mm in 35mm`;
 };
@@ -116,3 +118,11 @@ export const formatDateTime = (date?: Date) => {
 
   return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 };
+
+/**
+ * Format snake case string to title case
+ * @example snakeCaseToTitle("hello_world") => "Hello World"
+ */
+export function snakeCaseToTitle(str: string) {
+  return str.replace(/_/g, " ").replace(/\b\w/g, (char) => char.toUpperCase());
+}
