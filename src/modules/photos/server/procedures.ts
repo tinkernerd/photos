@@ -1,6 +1,11 @@
 import { z } from "zod";
 import { db } from "@/db/drizzle";
-import { citySets, photos, photosUpdateSchema } from "@/db/schema";
+import {
+  citySets,
+  photos,
+  photosSelectSchema,
+  photosUpdateSchema,
+} from "@/db/schema";
 import { and, eq, lt, or, desc } from "drizzle-orm";
 import {
   baseProcedure,
@@ -10,6 +15,13 @@ import {
 import { TRPCError } from "@trpc/server";
 
 export const photosRouter = createTRPCRouter({
+  create: protectedProcedure
+    .input(photosSelectSchema)
+    .mutation(async ({ input }) => {
+      const data = input;
+
+      console.log(data);
+    }),
   remove: protectedProcedure
     .input(
       z.object({

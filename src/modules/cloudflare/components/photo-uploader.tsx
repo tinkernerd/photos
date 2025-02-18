@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useMemo, useState } from "react";
+import { Suspense, useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 import { trpc } from "@/trpc/client";
 import { cloudflareR2 } from "@/lib/cloudflare-r2";
@@ -23,11 +23,17 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { UploadCloud } from "lucide-react";
-import { photosSelectSchema } from "@/db/schema";
+import { photosUpdateSchema } from "@/db/schema";
 import { Skeleton } from "@/components/ui/skeleton";
 import dynamic from "next/dynamic";
+import {
+  ExifData,
+  getImageInfo,
+  getPhotoExif,
+  ImageInfo,
+} from "@/features/photos/utils";
 
-const photoFormSchema = photosSelectSchema;
+const photoFormSchema = photosUpdateSchema;
 
 type PhotoFormValues = z.infer<typeof photoFormSchema>;
 
@@ -51,24 +57,33 @@ export function PhotoUploader({
 }: PhotoUploaderProps) {
   const [isUploading, setIsUploading] = useState(false);
   const [uploadedImageUrl, setUploadedImageUrl] = useState<string | null>(null);
+  const [exif, setExif] = useState<ExifData | null>(null);
+  const [imageInfo, setImageInfo] = useState<ImageInfo | null>(null);
   const [currentLocation, setCurrentLocation] = useState<{
-    lat: number | null;
-    lng: number | null;
+    lat: number;
+    lng: number;
   }>({
-    lat: null,
-    lng: null,
+    // Default to Beijing
+    lat: 39.9042,
+    lng: 116.4074,
   });
 
   const { mutateAsync: getUploadUrl } =
     trpc.cloudflare.getUploadUrl.useMutation();
+  // const create = trpc.photos.create.useMutation();
 
   const form = useForm<PhotoFormValues>({
     resolver: zodResolver(photoFormSchema),
+    defaultValues: {},
   });
 
   const handleUpload = async (file: File) => {
     try {
       setIsUploading(true);
+      const exifData = await getPhotoExif(file);
+      const imageInfo = await getImageInfo(file);
+      setExif(exifData);
+      setImageInfo(imageInfo);
 
       const { publicUrl } = await cloudflareR2.upload({
         file,
@@ -102,6 +117,44 @@ export function PhotoUploader({
     multiple: false,
   });
 
+  // Get current location in background
+  useEffect(() => {
+    // Don't get current location if we already have EXIF data with coordinates
+    if ("geolocation" in navigator && !exif?.latitude && !exif?.longitude) {
+      const timeoutId = setTimeout(() => {
+        try {
+          navigator.geolocation.getCurrentPosition(
+            (position) => {
+              const newLocation = {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude,
+              };
+              setCurrentLocation(newLocation);
+
+              // Only update form if no EXIF data
+              form.setValue("latitude", newLocation.lat);
+              form.setValue("longitude", newLocation.lng);
+            },
+            (error) => {
+              console.warn("Unable to get location:", error.message);
+              // Keep using default location (Beijing coordinates)
+            },
+            {
+              timeout: 5000,
+              maximumAge: 0,
+              enableHighAccuracy: false,
+            }
+          );
+        } catch (error) {
+          console.warn("Geolocation error:", error);
+          // Keep using default location (Beijing coordinates)
+        }
+      }, 500);
+
+      return () => clearTimeout(timeoutId);
+    }
+  }, [exif, form]);
+
   // Memoize map values to reduce re-renders
   const mapValues = useMemo(() => {
     const longitude = currentLocation?.lng ?? 0;
@@ -121,16 +174,20 @@ export function PhotoUploader({
     };
   }, [currentLocation?.lat, currentLocation?.lng]);
 
-  const onSubmit = async () => {
+  const onSubmit = async (values: PhotoFormValues) => {
     if (!uploadedImageUrl) return;
 
-    try {
-      // TODO: Add your photo creation mutation here
-      // await createPhoto.mutateAsync({
-      //   ...data,
-      //   url: uploadedImageUrl,
-      // });
+    const data = {
+      ...values,
+      ...exif,
+      ...imageInfo,
+      url: uploadedImageUrl,
+    };
 
+    console.log(data);
+
+    try {
+      // await create.mutateAsync(data);
       toast.success("Photo details saved!");
     } catch {
       toast.error("Failed to save photo details");
@@ -198,6 +255,11 @@ export function PhotoUploader({
                             lng: data.lng,
                           });
                         }}
+                        initialViewState={{
+                          longitude: currentLocation.lng,
+                          latitude: currentLocation.lat,
+                          zoom: 14,
+                        }}
                       />
                     </Suspense>
                   </div>
@@ -216,6 +278,8 @@ export function PhotoUploader({
               <div className="flex flex-col gap-4 bg-muted rounded-xl overflow-hidden h-fit">
                 <div className="aspect-video overflow-hidden relative">
                   {/* IMAGE  */}
+                  {exif && JSON.stringify(exif)}
+                  {imageInfo && JSON.stringify(imageInfo)}
                 </div>
               </div>
             </div>
