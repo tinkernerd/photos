@@ -17,6 +17,7 @@ import { UseFormReturn } from "react-hook-form";
 import dynamic from "next/dynamic";
 import { formatGPSCoordinates } from "@/lib/utils";
 import { ExifData, ImageInfo } from "@/features/photos/utils";
+import BlurImage from "@/components/blur-image";
 
 const MapboxComponent = dynamic(() => import("@/components/map"), {
   ssr: false,
@@ -34,6 +35,7 @@ interface PhotoFormProps {
   setCurrentLocation: (location: { lat: number; lng: number }) => void;
   exif: ExifData | null;
   imageInfo: ImageInfo | null;
+  url: string;
 }
 
 export function PhotoForm({
@@ -43,7 +45,10 @@ export function PhotoForm({
   setCurrentLocation,
   exif,
   imageInfo,
+  url,
 }: PhotoFormProps) {
+  if (!imageInfo?.blurhash) return null;
+
   const mapValues = {
     markers:
       currentLocation.lng === 0 && currentLocation.lat === 0
@@ -85,7 +90,7 @@ export function PhotoForm({
                   <FormControl>
                     <Textarea
                       {...field}
-                      rows={10}
+                      rows={5}
                       className="resize-none"
                       value={field.value || ""}
                       placeholder="Photo description"
@@ -137,11 +142,22 @@ export function PhotoForm({
           </div>
 
           <div className="flex flex-col gap-y-8 lg:col-span-2">
-            <div className="flex flex-col gap-4 bg-muted rounded-xl overflow-hidden h-fit">
+            <div className="flex flex-col gap-4 bg-muted rounded-md overflow-hidden h-fit">
               <div className="aspect-video overflow-hidden relative">
-                {exif && JSON.stringify(exif)}
-                {imageInfo && JSON.stringify(imageInfo)}
+                <BlurImage
+                  src={url}
+                  alt="photo"
+                  fill
+                  blurhash={imageInfo.blurhash}
+                  className="object-cover"
+                />
               </div>
+
+              {exif && (
+                <div className="p-4">
+                  <p>{JSON.stringify(exif, null, 2)}</p>
+                </div>
+              )}
             </div>
           </div>
         </div>

@@ -64,6 +64,7 @@ export function PhotoUploader({
         setCurrentLocation={setCurrentLocation}
         exif={exif}
         imageInfo={imageInfo}
+        url={uploadedImageUrl}
       />
     );
   }
