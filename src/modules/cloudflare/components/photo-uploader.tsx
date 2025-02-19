@@ -9,6 +9,7 @@ import { useLocation } from "../hooks/useLocation";
 import { PhotoForm } from "./photo-form";
 import { UploadZone } from "./upload-zone";
 import { photoFormSchema, PhotoFormValues } from "../types";
+import { useGetAddress } from "../hooks/use-get-address";
 
 interface PhotoUploaderProps {
   onUploadSuccess?: (url: string) => void;
@@ -33,6 +34,11 @@ export function PhotoUploader({
   const { currentLocation, setCurrentLocation } = useLocation({
     form,
     exif,
+  });
+
+  const { data } = useGetAddress({
+    lat: currentLocation.lat,
+    lng: currentLocation.lng,
   });
 
   const onSubmit = async (values: PhotoFormValues) => {
@@ -62,6 +68,7 @@ export function PhotoUploader({
         onSubmit={onSubmit}
         currentLocation={currentLocation}
         setCurrentLocation={setCurrentLocation}
+        address={data?.features[0]?.properties?.full_address}
         exif={exif}
         imageInfo={imageInfo}
         url={uploadedImageUrl}

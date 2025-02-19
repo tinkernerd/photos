@@ -15,7 +15,6 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { UseFormReturn } from "react-hook-form";
 import dynamic from "next/dynamic";
-import { formatGPSCoordinates } from "@/lib/utils";
 import { ExifData, ImageInfo } from "@/features/photos/utils";
 import BlurImage from "@/components/blur-image";
 
@@ -36,6 +35,7 @@ interface PhotoFormProps {
   exif: ExifData | null;
   imageInfo: ImageInfo | null;
   url: string;
+  address?: string | null;
 }
 
 export function PhotoForm({
@@ -46,6 +46,7 @@ export function PhotoForm({
   exif,
   imageInfo,
   url,
+  address,
 }: PhotoFormProps) {
   if (!imageInfo?.blurhash) return null;
 
@@ -131,13 +132,7 @@ export function PhotoForm({
                   </Suspense>
                 </div>
               </FormControl>
-              <FormDescription>
-                {currentLocation &&
-                  formatGPSCoordinates(
-                    currentLocation.lat,
-                    currentLocation.lng
-                  )}
-              </FormDescription>
+              <FormDescription>{address}</FormDescription>
             </FormItem>
           </div>
 
