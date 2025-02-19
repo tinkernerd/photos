@@ -8,51 +8,20 @@ import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 
 // Hooks
-import { useGetPosts } from "@/features/posts/api/use-get-posts";
 
 const LargePostCard = () => {
-  const { data } = useGetPosts();
-
-  if (!data) {
-    return null;
-  }
-
-  const post = data[0];
-
-  if (!post) {
-    return (
-      <div className="size-full overflow-hidden rounded-xl">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="/placeholder.svg"
-          alt="Image"
-          className="h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
-        />
-      </div>
-    );
-  }
-
   return (
     <Link
-      href={`/blog/${post.slug}`}
+      href={`/blog/`}
       className="block w-full h-full relative rounded-xl overflow-hidden group cursor-pointer"
     >
-      {post.coverImage ? (
-        <Image
-          src={post.coverImage}
-          alt={post.title}
-          fill
-          quality={75}
-          className="object-cover group-hover:blur-sm transition-[filter] duration-300 ease-out"
-        />
-      ) : (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
-          src="/placeholder.svg"
-          alt="Image"
-          className="h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
-        />
-      )}
+      <Image
+        src="/placeholder.svg"
+        alt="Image"
+        fill
+        quality={75}
+        className="object-cover group-hover:blur-sm transition-[filter] duration-300 ease-out"
+      />
 
       <div className="absolute w-full bottom-0 p-3">
         <div className="bg-background backdrop-blur-sm p-3 rounded-lg flex items-center justify-between">
@@ -60,7 +29,7 @@ const LargePostCard = () => {
             <Badge>
               <span className="text-xs font-light">New</span>
             </Badge>
-            <h2 className="font-light">{post.title}</h2>
+            <h2 className="font-light">Title</h2>
           </div>
 
           <div className="relative mr-2">

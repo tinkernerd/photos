@@ -1,4 +1,4 @@
-import { Suspense } from "react";
+import { Suspense, useState, useEffect } from "react";
 import { PhotoFormData } from "../types";
 import {
   Form,
@@ -15,7 +15,7 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { UseFormReturn } from "react-hook-form";
 import dynamic from "next/dynamic";
-import { ExifData, ImageInfo } from "@/features/photos/utils";
+import type { TExifData, TImageInfo } from "@/lib/utils";
 import BlurImage from "@/components/blur-image";
 
 const MapboxComponent = dynamic(() => import("@/components/map"), {
@@ -30,10 +30,8 @@ const MapboxComponent = dynamic(() => import("@/components/map"), {
 interface PhotoFormProps {
   form: UseFormReturn<PhotoFormData>;
   onSubmit: (values: PhotoFormData) => Promise<void>;
-  currentLocation: { lat: number; lng: number };
-  setCurrentLocation: (location: { lat: number; lng: number }) => void;
-  exif: ExifData | null;
-  imageInfo: ImageInfo | null;
+  exif: TExifData | null;
+  imageInfo: TImageInfo | null;
   url: string;
   address?: string | null;
 }
@@ -41,13 +39,62 @@ interface PhotoFormProps {
 export function PhotoForm({
   form,
   onSubmit,
-  currentLocation,
-  setCurrentLocation,
   exif,
   imageInfo,
   url,
   address,
 }: PhotoFormProps) {
+  const [currentLocation, setCurrentLocation] = useState<{
+    lat: number;
+    lng: number;
+  }>({
+    lat: 39.9042, // Default to Beijing
+    lng: 116.4074,
+  });
+
+  useEffect(() => {
+    if ("geolocation" in navigator && !exif?.latitude && !exif?.longitude) {
+      const timeoutId = setTimeout(() => {
+        try {
+          navigator.geolocation.getCurrentPosition(
+            (position) => {
+              const newLocation = {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude,
+              };
+              setCurrentLocation(newLocation);
+
+              form.setValue("latitude", newLocation.lat);
+              form.setValue("longitude", newLocation.lng);
+            },
+            (error) => {
+              console.warn("Unable to get location:", error.message);
+            },
+            {
+              timeout: 5000,
+              maximumAge: 0,
+              enableHighAccuracy: false,
+            }
+          );
+        } catch (error) {
+          console.warn("Geolocation error:", error);
+        }
+      }, 500);
+
+      return () => clearTimeout(timeoutId);
+    }
+
+    if (exif?.latitude && exif?.longitude) {
+      const newLocation = {
+        lat: exif.latitude,
+        lng: exif.longitude,
+      };
+      setCurrentLocation(newLocation);
+      form.setValue("latitude", newLocation.lat);
+      form.setValue("longitude", newLocation.lng);
+    }
+  }, [exif?.latitude, exif?.longitude, form]);
+
   if (!imageInfo?.blurhash) return null;
 
   const mapValues = {
@@ -75,7 +122,11 @@ export function PhotoForm({
                 <FormItem>
                   <FormLabel>Title</FormLabel>
                   <FormControl>
-                    <Input {...field} value={field.value || ""} placeholder="Photo title" />
+                    <Input
+                      {...field}
+                      value={field.value || ""}
+                      placeholder="Photo title"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

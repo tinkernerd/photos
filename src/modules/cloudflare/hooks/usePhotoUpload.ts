@@ -2,20 +2,29 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { trpc } from "@/trpc/client";
 import { cloudflareR2 } from "@/lib/cloudflare-r2";
-import { ExifData, getPhotoExif, getImageInfo, ImageInfo } from "@/features/photos/utils";
+import {
+  type TExifData,
+  type TImageInfo,
+  getPhotoExif,
+  getImageInfo,
+} from "@/lib/utils";
 
 interface UsePhotoUploadProps {
   folder: string;
   onUploadSuccess?: (url: string) => void;
 }
 
-export function usePhotoUpload({ folder, onUploadSuccess }: UsePhotoUploadProps) {
+export function usePhotoUpload({
+  folder,
+  onUploadSuccess,
+}: UsePhotoUploadProps) {
   const [isUploading, setIsUploading] = useState(false);
   const [uploadedImageUrl, setUploadedImageUrl] = useState<string | null>(null);
-  const [exif, setExif] = useState<ExifData | null>(null);
-  const [imageInfo, setImageInfo] = useState<ImageInfo | null>(null);
+  const [exif, setExif] = useState<TExifData | null>(null);
+  const [imageInfo, setImageInfo] = useState<TImageInfo | null>(null);
 
-  const { mutateAsync: getUploadUrl } = trpc.cloudflare.getUploadUrl.useMutation();
+  const { mutateAsync: getUploadUrl } =
+    trpc.cloudflare.getUploadUrl.useMutation();
 
   const handleUpload = async (file: File) => {
     try {

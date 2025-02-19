@@ -5,11 +5,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { DEFAULT_FOLDER } from "@/constants";
 import { toast } from "sonner";
 import { usePhotoUpload } from "../hooks/usePhotoUpload";
-import { useLocation } from "../hooks/useLocation";
+
 import { PhotoForm } from "./photo-form";
 import { UploadZone } from "./upload-zone";
 import { photoSchema, PhotoFormData } from "../types";
-import { useGetAddress } from "../hooks/use-get-address";
 import { trpc } from "@/trpc/client";
 
 interface PhotoUploaderProps {
@@ -37,16 +36,6 @@ export function PhotoUploader({
       onUploadSuccess,
     });
 
-  const { currentLocation, setCurrentLocation } = useLocation({
-    form,
-    exif,
-  });
-
-  const { data: address } = useGetAddress({
-    lat: currentLocation.lat,
-    lng: currentLocation.lng,
-  });
-
   const onSubmit = async (values: PhotoFormData) => {
     if (!uploadedImageUrl || !imageInfo) return;
 
@@ -71,18 +60,6 @@ export function PhotoUploader({
       gpsAltitude: exif?.gpsAltitude,
       dateTimeOriginal: exif?.dateTimeOriginal?.toString() ?? null,
       url: uploadedImageUrl,
-      country: address?.features[0].properties.context.country?.name,
-      countryCode:
-        address?.features[0].properties.context.country?.country_code,
-      region: address?.features[0].properties.context.region?.name,
-      city:
-        address?.features[0].properties.context.country.country_code === "JP" ||
-        address?.features[0].properties.context.country.country_code === "TW"
-          ? address?.features[0].properties.context.region?.name
-          : address?.features[0].properties.context.place?.name,
-      district: address?.features[0].properties.context.locality?.name,
-      fullAddress: address?.features[0].properties.full_address,
-      placeFormatted: address?.features[0].properties.place_formatted,
     };
 
     console.log(data);
@@ -95,14 +72,11 @@ export function PhotoUploader({
     }
   };
 
-  if (uploadedImageUrl) {
+  if (uploadedImageUrl && imageInfo) {
     return (
       <PhotoForm
         form={form}
         onSubmit={onSubmit}
-        currentLocation={currentLocation}
-        setCurrentLocation={setCurrentLocation}
-        address={address?.features[0]?.properties?.full_address}
         exif={exif}
         imageInfo={imageInfo}
         url={uploadedImageUrl}

@@ -1,44 +1,26 @@
 "use client";
 
 import Image from "next/image";
-import { useGetPost } from "@/features/posts/api/use-get-post";
 import Footer from "../../_components/footer";
 import ContactCard from "../../_components/contact-card";
 import VectorCombined from "@/components/vector-combined";
-import Editor from "@/app/(dashboard)/documents/[slug]/editor";
 import { ArrowDownIcon } from "lucide-react";
 
 const PostContent = ({ slug }: { slug: string }) => {
-  const { data } = useGetPost(slug);
-
-  const handleClick = () => {
-    window.scrollTo({
-      top: window.innerHeight,
-      behavior: "smooth",
-    });
-  };
+  console.log(slug);
 
   return (
     <div className="flex flex-col gap-3 lg:gap-0 lg:flex-row w-full">
       {/* LEFT CONTENT - Fixed */}
       <div className="w-full h-[50vh] lg:w-1/2 lg:fixed lg:top-0 lg:left-0 md:h-[80vh] lg:h-screen p-0 lg:p-3 group">
         <div className="block w-full h-full relative rounded-xl overflow-hidden">
-          {data?.coverImage ? (
-            <Image
-              src={data.coverImage}
-              alt={data.title}
-              fill
-              quality={75}
-              className="object-cover"
-            />
-          ) : (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src="/placeholder.svg"
-              alt="Image"
-              className="h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
-            />
-          )}
+          <Image
+            src="/placeholder.svg"
+            alt="Image"
+            fill
+            quality={75}
+            className="object-cover"
+          />
 
           <div className="absolute right-0 bottom-0">
             <VectorCombined title="Tag" position="bottom-right" />
@@ -55,24 +37,16 @@ const PostContent = ({ slug }: { slug: string }) => {
         <div className="bg-muted rounded-xl p-10 md:p-12 md:h-[calc(100vh-24px)] flex flex-col">
           <div className="mb-10">
             <span className="bg-muted-hover rounded-sm py-1 px-2 text-xs text-text-muted font-light">
-              {data?.createdAt &&
-                new Date(data.createdAt).toLocaleString("en-US", {
-                  month: "short",
-                  day: "numeric",
-                  year: "numeric",
-                })}
+              March 2024
             </span>
           </div>
 
           <div className="mt-auto flex flex-col gap-3">
-            <h1 className="text-4xl">{data?.title}</h1>
-            <h2 className="font-light">{data?.description}</h2>
+            <h1 className="text-4xl">Title</h1>
+            <h2 className="font-light">Description</h2>
 
             <div className="mt-8">
-              <button
-                onClick={handleClick}
-                className="bg-background hover:bg-muted duration-150 transition-all flex items-center gap-1 py-[10px] pr-3 pl-[14px] rounded-lg"
-              >
+              <button className="bg-background hover:bg-muted duration-150 transition-all flex items-center gap-1 py-[10px] pr-3 pl-[14px] rounded-lg">
                 <span className="text-sm font-light">Read Article</span>{" "}
                 <ArrowDownIcon size={14} />
               </button>
@@ -93,18 +67,9 @@ const PostContent = ({ slug }: { slug: string }) => {
 
           <div className="bg-muted rounded-xl p-5 w-full flex justify-between">
             <p className="text-text-muted">Date</p>
-            <p>
-              {data?.createdAt &&
-                new Date(data.createdAt).toLocaleString("en-US", {
-                  month: "short",
-                  day: "numeric",
-                  year: "numeric",
-                })}
-            </p>
+            <p>March 2024</p>
           </div>
         </div>
-
-        <Editor content={data?.content || ""} enabledEditor={false} />
 
         {/* CONTACT CARD  */}
         <ContactCard
