@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import { PhotoFormValues } from "../types";
+import { PhotoFormData } from "../types";
 import {
   Form,
   FormControl,
@@ -28,8 +28,8 @@ const MapboxComponent = dynamic(() => import("@/components/map"), {
 });
 
 interface PhotoFormProps {
-  form: UseFormReturn<PhotoFormValues>;
-  onSubmit: (values: PhotoFormValues) => Promise<void>;
+  form: UseFormReturn<PhotoFormData>;
+  onSubmit: (values: PhotoFormData) => Promise<void>;
   currentLocation: { lat: number; lng: number };
   setCurrentLocation: (location: { lat: number; lng: number }) => void;
   exif: ExifData | null;
@@ -75,7 +75,7 @@ export function PhotoForm({
                 <FormItem>
                   <FormLabel>Title</FormLabel>
                   <FormControl>
-                    <Input {...field} placeholder="Photo title" />
+                    <Input {...field} value={field.value || ""} placeholder="Photo title" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

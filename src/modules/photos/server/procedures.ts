@@ -1,26 +1,74 @@
 import { z } from "zod";
 import { db } from "@/db/drizzle";
-import {
-  citySets,
-  photos,
-  photosSelectSchema,
-  photosUpdateSchema,
-} from "@/db/schema";
-import { and, eq, lt, or, desc } from "drizzle-orm";
+import { citySets, photos, photosUpdateSchema } from "@/db/schema";
+import { and, eq, lt, or, desc, sql } from "drizzle-orm";
 import {
   baseProcedure,
   createTRPCRouter,
   protectedProcedure,
 } from "@/trpc/init";
 import { TRPCError } from "@trpc/server";
+import { photosInsertSchema } from "@/db/schema";
 
 export const photosRouter = createTRPCRouter({
   create: protectedProcedure
-    .input(photosSelectSchema)
+    .input(photosInsertSchema)
     .mutation(async ({ input }) => {
-      const data = input;
+      const values = input;
 
-      console.log(data);
+      try {
+        const [insertedPhoto] = await db
+          .insert(photos)
+          .values(values)
+          .returning();
+
+        const cityName =
+          values.countryCode === "JP" || values.countryCode === "TW"
+            ? values.region
+            : values.city;
+
+        if (insertedPhoto.country && cityName) {
+          await db
+            .insert(citySets)
+            .values({
+              country: insertedPhoto.country,
+              countryCode: insertedPhoto.countryCode,
+              city: cityName,
+              photoCount: 1,
+              coverPhotoId: insertedPhoto.id,
+            })
+            .onConflictDoUpdate({
+              target: [citySets.country, citySets.city],
+              set: {
+                countryCode: insertedPhoto.countryCode,
+                photoCount: sql`${citySets.photoCount} + 1`,
+                coverPhotoId: sql`COALESCE(${citySets.coverPhotoId}, ${insertedPhoto.id})`,
+                updatedAt: new Date(),
+              },
+            });
+
+          const updatedCitySet = await db
+            .select()
+            .from(citySets)
+            .where(
+              sql`${citySets.country} = ${insertedPhoto.country} AND ${citySets.city} = ${insertedPhoto.city}`
+            );
+
+          console.log("Updated city set:", updatedCitySet);
+        } else {
+          console.log(
+            "No geo information available for photo:",
+            insertedPhoto.id
+          );
+        }
+
+        return insertedPhoto;
+      } catch {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Failed to create photo",
+        });
+      }
     }),
   remove: protectedProcedure
     .input(
