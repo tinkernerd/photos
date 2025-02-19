@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import { UseFormSetValue } from "react-hook-form";
-import { PhotoFormValues } from "../types";
+import { PhotoFormData } from "../types";
 
 interface UseLocationProps {
   form: {
-    setValue: UseFormSetValue<PhotoFormValues>;
+    setValue: UseFormSetValue<PhotoFormData>;
   };
   exif: {
     latitude?: number;
