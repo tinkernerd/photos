@@ -8,14 +8,15 @@ import {
   getPhotoExif,
   getImageInfo,
 } from "@/lib/utils";
+import { DEFAULT_FOLDER } from "@/constants";
 
 interface UsePhotoUploadProps {
-  folder: string;
+  folder?: string;
   onUploadSuccess?: (url: string) => void;
 }
 
 export function usePhotoUpload({
-  folder,
+  folder = DEFAULT_FOLDER,
   onUploadSuccess,
 }: UsePhotoUploadProps) {
   const [isUploading, setIsUploading] = useState(false);

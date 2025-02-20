@@ -87,7 +87,7 @@ export const photos = pgTable(
     url: text("url").notNull(),
     title: text("title").notNull(),
     description: text("description").notNull(),
-    isFavorite: boolean("isFavorite").default(false),
+    isFavorite: boolean("is_favorite").default(false).notNull(),
     visibility: photoVisibility("visibility").default("private").notNull(),
     aspectRatio: real("aspect_ratio").notNull(),
     width: real("width").notNull(),
@@ -191,17 +191,10 @@ export const photosRelations = relations(photos, ({ one }) => ({
 }));
 
 // Schema
-export const photosInsertSchema = createInsertSchema(photos)
-  .extend({
-    dateTimeOriginal: z
-      .string()
-      .nullable()
-      .transform((val) => (val ? new Date(val) : null)),
-  })
-  .omit({
-    createdAt: true,
-    updatedAt: true,
-  });
+export const photosInsertSchema = createInsertSchema(photos).extend({
+  title: z.string().min(1, { message: "Title is required" }),
+  description: z.string().min(1, { message: "Description is required" }),
+});
 export const photosSelectSchema = createSelectSchema(photos);
 export const photosUpdateSchema = createUpdateSchema(photos)
   .pick({

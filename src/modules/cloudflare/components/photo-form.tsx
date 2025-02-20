@@ -1,5 +1,4 @@
-import { Suspense, useState, useEffect } from "react";
-import { PhotoFormData } from "../types";
+import { Suspense, useState } from "react";
 import {
   Form,
   FormControl,
@@ -13,10 +12,15 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { UseFormReturn } from "react-hook-form";
 import dynamic from "next/dynamic";
 import type { TExifData, TImageInfo } from "@/lib/utils";
 import BlurImage from "@/components/blur-image";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { photosInsertSchema } from "@/db/schema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { CopyCheckIcon, CopyIcon } from "lucide-react";
+import { Checkbox } from "@/components/ui/checkbox";
 
 const MapboxComponent = dynamic(() => import("@/components/map"), {
   ssr: false,
@@ -28,22 +32,12 @@ const MapboxComponent = dynamic(() => import("@/components/map"), {
 });
 
 interface PhotoFormProps {
-  form: UseFormReturn<PhotoFormData>;
-  onSubmit: (values: PhotoFormData) => Promise<void>;
   exif: TExifData | null;
-  imageInfo: TImageInfo | null;
+  imageInfo: TImageInfo;
   url: string;
-  address?: string | null;
 }
 
-export function PhotoForm({
-  form,
-  onSubmit,
-  exif,
-  imageInfo,
-  url,
-  address,
-}: PhotoFormProps) {
+export function PhotoForm({ exif, imageInfo, url }: PhotoFormProps) {
   const [currentLocation, setCurrentLocation] = useState<{
     lat: number;
     lng: number;
@@ -52,50 +46,23 @@ export function PhotoForm({
     lng: 116.4074,
   });
 
-  useEffect(() => {
-    if ("geolocation" in navigator && !exif?.latitude && !exif?.longitude) {
-      const timeoutId = setTimeout(() => {
-        try {
-          navigator.geolocation.getCurrentPosition(
-            (position) => {
-              const newLocation = {
-                lat: position.coords.latitude,
-                lng: position.coords.longitude,
-              };
-              setCurrentLocation(newLocation);
-
-              form.setValue("latitude", newLocation.lat);
-              form.setValue("longitude", newLocation.lng);
-            },
-            (error) => {
-              console.warn("Unable to get location:", error.message);
-            },
-            {
-              timeout: 5000,
-              maximumAge: 0,
-              enableHighAccuracy: false,
-            }
-          );
-        } catch (error) {
-          console.warn("Geolocation error:", error);
-        }
-      }, 500);
-
-      return () => clearTimeout(timeoutId);
-    }
-
-    if (exif?.latitude && exif?.longitude) {
-      const newLocation = {
-        lat: exif.latitude,
-        lng: exif.longitude,
-      };
-      setCurrentLocation(newLocation);
-      form.setValue("latitude", newLocation.lat);
-      form.setValue("longitude", newLocation.lng);
-    }
-  }, [exif?.latitude, exif?.longitude, form]);
-
-  if (!imageInfo?.blurhash) return null;
+  const form = useForm<z.infer<typeof photosInsertSchema>>({
+    resolver: zodResolver(photosInsertSchema),
+    defaultValues: {
+      title: "",
+      description: "",
+      visibility: "private",
+      isFavorite: false,
+      url,
+      aspectRatio: imageInfo.aspectRatio,
+      width: imageInfo.width,
+      height: imageInfo.height,
+      blurData: imageInfo.blurhash,
+      latitude: exif?.latitude ?? currentLocation.lat,
+      longitude: exif?.longitude ?? currentLocation.lng,
+      ...exif,
+    },
+  });
 
   const mapValues = {
     markers:
@@ -110,6 +77,20 @@ export function PhotoForm({
           ],
   };
 
+  const onSubmit = (values: z.infer<typeof photosInsertSchema>) => {
+    console.log(values);
+  };
+
+  const [isCopied, setIsCopied] = useState(false);
+
+  const onCopy = async () => {
+    await navigator.clipboard.writeText(url);
+    setIsCopied(true);
+    setTimeout(() => {
+      setIsCopied(false);
+    }, 2000);
+  };
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -122,11 +103,7 @@ export function PhotoForm({
                 <FormItem>
                   <FormLabel>Title</FormLabel>
                   <FormControl>
-                    <Input
-                      {...field}
-                      value={field.value || ""}
-                      placeholder="Photo title"
-                    />
+                    <Input {...field} placeholder="Photo title" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -144,7 +121,6 @@ export function PhotoForm({
                       {...field}
                       rows={5}
                       className="resize-none"
-                      value={field.value || ""}
                       placeholder="Photo description"
                     />
                   </FormControl>
@@ -153,7 +129,24 @@ export function PhotoForm({
               )}
             />
 
-            {/* Map */}
+            <FormField
+              control={form.control}
+              name="visibility"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Visibility</FormLabel>
+                  <FormControl>
+                    <select {...field} className="w-full p-2 border rounded-md">
+                      <option value="private">Private</option>
+                      <option value="public">Public</option>
+                    </select>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* Location Fields */}
             <FormItem>
               <FormLabel>Location</FormLabel>
               <FormControl>
@@ -173,6 +166,8 @@ export function PhotoForm({
                           lat: data.lat,
                           lng: data.lng,
                         });
+                        form.setValue("latitude", data.lat);
+                        form.setValue("longitude", data.lng);
                       }}
                       initialViewState={{
                         longitude: currentLocation.lng,
@@ -183,8 +178,66 @@ export function PhotoForm({
                   </Suspense>
                 </div>
               </FormControl>
-              <FormDescription>{address}</FormDescription>
+              <FormDescription>
+                Drag the marker to set the photo location
+              </FormDescription>
             </FormItem>
+
+            <div className="grid grid-cols-2 gap-4">
+              <FormField
+                control={form.control}
+                name="latitude"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Latitude</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        type="number"
+                        step="any"
+                        value={field.value ?? ""}
+                        onChange={(e) => {
+                          const value = parseFloat(e.target.value);
+                          field.onChange(value);
+                          setCurrentLocation((prev) => ({
+                            ...prev,
+                            lat: value,
+                          }));
+                        }}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="longitude"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Longitude</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        type="number"
+                        step="any"
+                        value={field.value ?? ""}
+                        onChange={(e) => {
+                          const value = parseFloat(e.target.value);
+                          field.onChange(value);
+                          setCurrentLocation((prev) => ({
+                            ...prev,
+                            lng: value,
+                          }));
+                        }}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
           </div>
 
           <div className="flex flex-col gap-y-8 lg:col-span-2">
@@ -199,12 +252,52 @@ export function PhotoForm({
                 />
               </div>
 
-              {exif && (
-                <div className="p-4">
-                  <p>{JSON.stringify(exif, null, 2)}</p>
+              <div className="p-4 flex flex-col gap-y-6">
+                <div className="flex justify-between items-center gap-x-2">
+                  <div className="flex flex-col">
+                    <p className="text-sm text-muted-foreground">Photo link</p>
+                    <div className="flex items-center gap-x-2">
+                      <a href={url} target="_blank" rel="noopener noreferrer">
+                        <p className="line-clamp-1 text-sm text-blue-500">
+                          {url}
+                        </p>
+                      </a>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon"
+                        onClick={onCopy}
+                        className="shrink-0"
+                        disabled={isCopied}
+                      >
+                        {isCopied ? <CopyCheckIcon /> : <CopyIcon />}
+                      </Button>
+                    </div>
+                  </div>
                 </div>
-              )}
+              </div>
             </div>
+
+            <FormField
+              control={form.control}
+              name="isFavorite"
+              render={({ field }) => (
+                <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                  <div className="space-y-0.5">
+                    <FormLabel className="text-base">Favorite</FormLabel>
+                    <FormDescription>
+                      Mark this photo as favorite
+                    </FormDescription>
+                  </div>
+                  <FormControl>
+                    <Checkbox
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
           </div>
         </div>
         <div className="flex items-center justify-end mt-6">
