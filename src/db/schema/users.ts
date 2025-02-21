@@ -6,7 +6,7 @@ export const timestamps = {
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 };
 
-export const users = pgTable("users", {
+export const user = pgTable("user", {
   id: text("id").primaryKey(),
   name: text("name").notNull(),
   email: text("email").notNull().unique(),
@@ -16,7 +16,7 @@ export const users = pgTable("users", {
   updatedAt: timestamp("updated_at").notNull(),
 });
 
-export const sessions = pgTable("sessions", {
+export const session = pgTable("session", {
   id: text("id").primaryKey(),
   expiresAt: timestamp("expires_at").notNull(),
   token: text("token").notNull().unique(),
@@ -26,16 +26,16 @@ export const sessions = pgTable("sessions", {
   userAgent: text("user_agent"),
   userId: text("user_id")
     .notNull()
-    .references(() => users.id),
+    .references(() => user.id),
 });
 
-export const accounts = pgTable("accounts", {
+export const account = pgTable("account", {
   id: text("id").primaryKey(),
   accountId: text("account_id").notNull(),
   providerId: text("provider_id").notNull(),
   userId: text("user_id")
     .notNull()
-    .references(() => users.id),
+    .references(() => user.id),
   accessToken: text("access_token"),
   refreshToken: text("refresh_token"),
   idToken: text("id_token"),
@@ -47,7 +47,7 @@ export const accounts = pgTable("accounts", {
   updatedAt: timestamp("updated_at").notNull(),
 });
 
-export const verifications = pgTable("verifications", {
+export const verification = pgTable("verification", {
   id: text("id").primaryKey(),
   identifier: text("identifier").notNull(),
   value: text("value").notNull(),
