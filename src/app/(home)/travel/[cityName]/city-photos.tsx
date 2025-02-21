@@ -45,7 +45,7 @@ const CityPhotos = ({ cityName }: { cityName: string }) => {
             fill
             quality={75}
             blurhash={cityData.coverPhoto.blurData}
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            sizes="75vw"
             onClick={() => router.push(`/photograph/${cityData.coverPhoto.id}`)}
             className="object-cover rounded-xl overflow-hidden cursor-pointer"
           />
