@@ -1,7 +1,6 @@
 "use client";
 
 import { usePhotoUpload } from "../hooks/usePhotoUpload";
-
 import { PhotoForm } from "./photo-form";
 import { UploadZone } from "./upload-zone";
 import { ScrollArea } from "@/components/ui/scroll-area";

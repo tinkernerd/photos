@@ -8,7 +8,7 @@ import {
   photos,
   citySets,
   photosUpdateSchema,
-} from "@/db/schema";
+} from "@/db/schema/photos";
 import { auth } from "@/modules/auth/lib/auth";
 
 const app = new Hono<{

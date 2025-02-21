@@ -1,6 +1,11 @@
 import { z } from "zod";
 import { db } from "@/db/drizzle";
-import { citySets, photos, photosUpdateSchema } from "@/db/schema";
+import {
+  citySets,
+  photos,
+  photosUpdateSchema,
+  photosInsertSchema,
+} from "@/db/schema/photos";
 import { and, eq, lt, or, desc, sql } from "drizzle-orm";
 import {
   baseProcedure,
@@ -8,7 +13,6 @@ import {
   protectedProcedure,
 } from "@/trpc/init";
 import { TRPCError } from "@trpc/server";
-import { photosInsertSchema } from "@/db/schema";
 
 export const photosRouter = createTRPCRouter({
   create: protectedProcedure

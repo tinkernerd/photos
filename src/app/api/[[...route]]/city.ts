@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 import { db } from "@/db/drizzle";
 import { type InferSelectModel } from "drizzle-orm";
-import { citySets, type photos } from "@/db/schema";
+import { citySets, type photos } from "@/db/schema/photos";
 import { zValidator } from "@hono/zod-validator";
 import { z } from "zod";
 import { eq } from "drizzle-orm";

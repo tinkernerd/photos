@@ -4,7 +4,7 @@ import { eq } from "drizzle-orm";
 import { db } from "@/db/drizzle";
 import { zValidator } from "@hono/zod-validator";
 import { auth } from "@/modules/auth/lib/auth";
-import { posts, postsInsertSchema, postsUpdateSchema } from "@/db/schema";
+import { posts, postsInsertSchema, postsUpdateSchema } from "@/db/schema/posts";
 
 const app = new Hono<{
   Variables: {

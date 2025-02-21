@@ -1,12 +1,17 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { trpc } from "@/trpc/client";
+// External dependencies
+import { z } from "zod";
+import Link from "next/link";
 import { Suspense, useMemo, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
+import { useRouter } from "next/navigation";
+import dynamic from "next/dynamic";
+import { formatGPSCoordinates } from "@/lib/utils";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+// Internal dependencies - UI Components
+import { Button } from "@/components/ui/button";
+import { trpc } from "@/trpc/client";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,8 +24,6 @@ import {
   MoreVerticalIcon,
   TrashIcon,
 } from "lucide-react";
-import { z } from "zod";
-import { photosUpdateSchema } from "@/db/schema";
 import {
   Form,
   FormControl,
@@ -39,13 +42,14 @@ import {
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { toast } from "sonner";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
 import BlurImage from "@/components/blur-image";
-import dynamic from "next/dynamic";
 import { Skeleton } from "@/components/ui/skeleton";
-import { formatGPSCoordinates } from "@/lib/utils";
+
+// Internal dependencies - Hooks & Types
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { photosUpdateSchema } from "@/db/schema/photos";
+import { toast } from "sonner";
 
 interface FormSectionProps {
   photoId: string;
@@ -239,7 +243,9 @@ const FormSectionSuspense = ({ photoId }: FormSectionProps) => {
                   <FormItem>
                     <FormLabel>Favorite</FormLabel>
                     <Select
-                      onValueChange={(value) => field.onChange(value === "true")}
+                      onValueChange={(value) =>
+                        field.onChange(value === "true")
+                      }
                       defaultValue={String(field.value ?? false)}
                     >
                       <FormControl>

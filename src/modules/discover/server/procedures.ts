@@ -1,5 +1,5 @@
 import { db } from "@/db/drizzle";
-import { photos } from "@/db/schema";
+import { photos } from "@/db/schema/photos";
 import { baseProcedure, createTRPCRouter } from "@/trpc/init";
 
 export const mapRouter = createTRPCRouter({

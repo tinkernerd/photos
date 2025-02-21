@@ -1,4 +1,9 @@
+// External dependencies
+import { z } from "zod";
+import dynamic from "next/dynamic";
 import { Suspense, useState } from "react";
+
+// Internal dependencies - UI Components
 import {
   Form,
   FormControl,
@@ -8,22 +13,22 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { Checkbox } from "@/components/ui/checkbox";
+import BlurImage from "@/components/blur-image";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import dynamic from "next/dynamic";
-import type { TExifData, TImageInfo } from "@/lib/utils";
-import BlurImage from "@/components/blur-image";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { photosInsertSchema } from "@/db/schema";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { CopyCheckIcon, CopyIcon } from "lucide-react";
-import { Checkbox } from "@/components/ui/checkbox";
-import { useGetAddress } from "../hooks/use-get-address";
-import { trpc } from "@/trpc/client";
+
+// Internal dependencies - Hooks & Types
 import { toast } from "sonner";
+import { trpc } from "@/trpc/client";
+import { useForm } from "react-hook-form";
+import type { TExifData, TImageInfo } from "@/lib/utils";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useGetAddress } from "../hooks/use-get-address";
+import { photosInsertSchema } from "@/db/schema/photos";
 
 const MapboxComponent = dynamic(() => import("@/components/map"), {
   ssr: false,

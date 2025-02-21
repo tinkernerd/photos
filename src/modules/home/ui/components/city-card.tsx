@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import BlurImage from "@/components/blur-image";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import VectorTopLeftAnimation from "@/components/vector-top-left-animation";
-import { type Photo } from "@/db/schema";
+import { type Photo } from "@/db/schema/photos";
 
 interface Props {
   title: string;
