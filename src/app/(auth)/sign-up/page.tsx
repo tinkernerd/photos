@@ -4,14 +4,14 @@ import { redirect } from "next/navigation";
 import SignUp from "@/modules/auth/components/sign-up";
 import { auth } from "@/modules/auth/lib/auth";
 import { db } from "@/db/drizzle";
-import { users } from "@/db/schema/users";
+import { user } from "@/db/schema/users";
 
 export const metadata: Metadata = {
   title: "Sign Up",
 };
 
 const SignUpPage = async () => {
-  const existingUser = await db.select().from(users);
+  const existingUser = await db.select().from(user);
 
   if (existingUser.length > 0) {
     return redirect("/sign-in");
