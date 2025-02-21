@@ -63,6 +63,7 @@ export default function FlipCard({
             alt={title}
             fill
             blurhash={blurData}
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             className="w-full h-full object-cover"
           />
         </div>
@@ -80,6 +81,7 @@ export default function FlipCard({
               alt={title}
               fill
               blurhash={blurData}
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               className="w-full h-full object-cover brightness-50 scale-x-[-1]"
             />
 

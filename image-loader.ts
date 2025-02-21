@@ -11,6 +11,9 @@ export default function cloudflareLoader({
   width: number;
   quality?: number;
 }) {
+  if (src.startsWith("/")) {
+    return src;
+  }
   // if (process.env.NODE_ENV === "development") {
   //   return src;
   // }

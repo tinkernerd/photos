@@ -46,6 +46,7 @@ const ImageSliderSuspense = memo(function ImageSlider() {
               src={photo.url}
               alt={photo.title}
               fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               priority={shouldPreload}
               loading={shouldPreload ? "eager" : "lazy"}
               blurhash={photo.blurData}

@@ -21,7 +21,8 @@ const PostList = () => {
             src="/placeholder.svg"
             alt="Image"
             fill
-            quality={30}
+            unoptimized
+            priority
             className="object-cover group-hover:blur-sm transition-[filter] duration-300 ease-out"
           />
 
