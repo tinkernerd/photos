@@ -21,6 +21,9 @@ import { photosInsertSchema } from "@/db/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CopyCheckIcon, CopyIcon } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
+import { useGetAddress } from "../hooks/use-get-address";
+import { trpc } from "@/trpc/client";
+import { toast } from "sonner";
 
 const MapboxComponent = dynamic(() => import("@/components/map"), {
   ssr: false,
@@ -42,8 +45,24 @@ export function PhotoForm({ exif, imageInfo, url }: PhotoFormProps) {
     lat: number;
     lng: number;
   }>({
-    lat: 39.9042, // Default to Beijing
-    lng: 116.4074,
+    lat: exif?.latitude ?? 39.9042,
+    lng: exif?.longitude ?? 116.4074,
+  });
+
+  const { data: address } = useGetAddress({
+    lat: currentLocation.lat,
+    lng: currentLocation.lng,
+  });
+
+  const utils = trpc.useUtils();
+  const create = trpc.photos.create.useMutation({
+    onSuccess: () => {
+      toast.success("Photo created");
+      utils.photos.getMany.invalidate();
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
   });
 
   const form = useForm<z.infer<typeof photosInsertSchema>>({
@@ -78,7 +97,25 @@ export function PhotoForm({ exif, imageInfo, url }: PhotoFormProps) {
   };
 
   const onSubmit = (values: z.infer<typeof photosInsertSchema>) => {
-    console.log(values);
+    const formData = {
+      ...values,
+      country: address?.features[0].properties.context.country?.name,
+      countryCode:
+        address?.features[0].properties.context.country?.country_code,
+      region: address?.features[0].properties.context.region?.name,
+      city:
+        address?.features[0].properties.context.country?.country_code ===
+          "JP" ||
+        address?.features[0].properties.context.country?.country_code === "TW"
+          ? address?.features[0].properties.context.region?.name
+          : address?.features[0].properties.context.place?.name,
+      district: address?.features[0].properties.context.locality?.name,
+      fullAddress: address?.features[0].properties.full_address,
+      placeFormatted: address?.features[0].properties.place_formatted,
+    };
+    console.log(formData);
+
+    create.mutate(formData);
   };
 
   const [isCopied, setIsCopied] = useState(false);
@@ -179,7 +216,7 @@ export function PhotoForm({ exif, imageInfo, url }: PhotoFormProps) {
                 </div>
               </FormControl>
               <FormDescription>
-                Drag the marker to set the photo location
+                {address?.features?.[0]?.properties?.full_address}
               </FormDescription>
             </FormItem>
 
@@ -248,6 +285,7 @@ export function PhotoForm({ exif, imageInfo, url }: PhotoFormProps) {
                   alt="photo"
                   fill
                   blurhash={imageInfo.blurhash}
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   className="object-cover"
                 />
               </div>
