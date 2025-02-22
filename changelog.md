@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Version 1.0.1] - 2025-02-22
 
 ### Added
-- **`Differences.md`**: Documented the differences between this repository and the original @ECarry repo. This primarily covers content variations to streamline future updates by allowing easy cloning, modification, and re-commit.
+- **`Differences.md`**: Documented the differences between this repository and the original [ECarry/photography-website](https://github.com/ECarry/photography-website) repo. This primarily covers content variations to streamline future updates by allowing easy cloning, modification, and re-commit.
 - **`Setup.md`**: Added a detailed walkthrough for setting up the project, providing step-by-step guidance to help users get started.
 
 ### Changed
@@ -21,8 +21,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Changed background image source from `/bg.webp` to `https://photograph.tinkernerd.dev/photos/Pickerel_Lake_241108_0062_edit.jpg` in `src/app/(auth)/layout.tsx` & in `src/app/(home)/about/page.tsx`. -> Will Possibly replace background with the slider from homepage.
 
 ### Removed
-- **Old Photos/Screenshots**: Deleted outdated images and replaced them with the latest versions from the @ECarry repo for a more consistent and modern look.
+- **Old Photos/Screenshots**: Deleted outdated images and replaced them with the latest versions from the [ECarry/photography-website](https://github.com/ECarry/photography-website) repo for a more consistent and modern look.
 
-## [Pre-Clone] @ECarry Repo Changes
+## [Pre-Clone] [ECarry/photography-website](https://github.com/ECarry/photography-website) Repo Changes
 - 2025-02-13: tRPC instead of Hono.js
 - 2025-01-12: Better Auth instead of Next Auth
