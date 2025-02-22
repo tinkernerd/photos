@@ -85,6 +85,7 @@ export const citySets = pgTable(
     country: text("country").notNull(),
     countryCode: text("country_code"),
     city: text("city").notNull(),
+    region: text("region"),
 
     // COVER PHOTO
     coverPhotoId: uuid("cover_photo_id")
@@ -110,8 +111,8 @@ export const citySetsRelations = relations(citySets, ({ one, many }) => ({
 
 export const photosRelations = relations(photos, ({ one }) => ({
   citySet: one(citySets, {
-    fields: [photos.country, photos.city],
-    references: [citySets.country, citySets.city],
+    fields: [photos.country, photos.city, photos.region],
+    references: [citySets.country, citySets.city, citySets.region],
   }),
 }));
 

@@ -39,6 +39,7 @@ export const photosRouter = createTRPCRouter({
             .values({
               country: insertedPhoto.country,
               countryCode: insertedPhoto.countryCode,
+              region: insertedPhoto.region,
               city: cityName,
               photoCount: 1,
               coverPhotoId: insertedPhoto.id,
@@ -57,7 +58,7 @@ export const photosRouter = createTRPCRouter({
             .select()
             .from(citySets)
             .where(
-              sql`${citySets.country} = ${insertedPhoto.country} AND ${citySets.city} = ${insertedPhoto.city}`
+              sql`${citySets.country} = ${insertedPhoto.country} AND ${citySets.city} = ${insertedPhoto.city} AND ${citySets.region} = ${insertedPhoto.region}`
             );
 
           console.log("Updated city set:", updatedCitySet);

@@ -31,12 +31,11 @@ const Footer = () => {
           ]}
         />
         <FooterNav
-          title="CMS"
-          links={[{ title: "Dashboard", href: "/dashboard" }]}
-        />
-        <FooterNav
           title="Utility"
-          links={[{ title: "Login", href: "/sign-in" }]}
+          links={[
+            { title: "Login", href: "/sign-in" },
+            { title: "Dashboard", href: "/dashboard" }
+          ]}
         />
       </div>
 

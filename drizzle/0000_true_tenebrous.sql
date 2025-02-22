@@ -25,6 +25,7 @@ CREATE TABLE "city_sets" (
 	"country" text NOT NULL,
 	"country_code" text,
 	"city" text NOT NULL,
+  "region" text,
 	"cover_photo_id" uuid,
 	"photo_count" integer DEFAULT 0,
 	"create_at" timestamp DEFAULT now(),

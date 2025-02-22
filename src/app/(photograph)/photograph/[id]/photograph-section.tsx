@@ -83,6 +83,16 @@ const PhotographSectionSuspense = ({ id }: Props) => {
               </h1>
               <p className="text-xs">{data.lensModel}</p>
             </div>
+            <div className="flex flex-col text-center">
+            <div className="space-x-[6px] text-xs lg:text-md">
+            <h1
+                className={cn(
+                  "font-semibold text-xs sm:text-sm lg:text-lg",
+                  data.aspectRatio < 1 ? "lg:text-sm" : "lg:text-lg"
+                )}
+              >{data.title} | {data.city}, {data.country}</h1>
+            </div>
+            </div>
             <div className="flex items-center gap-2">
               <SiSony size={50} />
               <Separator
