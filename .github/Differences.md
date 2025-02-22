@@ -1,5 +1,5 @@
 src/app/(home)/_components/footer.tsx
-add to top: 
+- Add to Top
 `import { DEFAULT_AVATAR } from "@/constants";`
 - Line: 10-12
 ```ts
@@ -27,9 +27,9 @@ add to top:
 ```
 
 src/app/(home)/_components/profile-card.tsx
-add to top: 
+- Add to Top
 `import { DEFAULT_AVATAR } from "@/constants";`
-Const ProfileCard
+- Const ProfileCard
 ``` ts
 const ProfileCard = () => {
   return (
@@ -96,7 +96,7 @@ src/app/(home)/_components/contact-card.tsx
 `Website: <CgWebsite size={18} />,`
 
 src/app/(home)/_components/header/mobile-menu.tsx
-add to top: 
+- Add to Top
 `import { DEFAULT_AVATAR } from "@/constants";`
 - Line: 71-87
 ```ts
@@ -116,7 +116,7 @@ add to top:
 </div>
 ```
 src/modules/home/ui/components/header/mobile-menu.tsx
-add to top: 
+- Add to Top
 `import { DEFAULT_AVATAR } from "@/constants";`
 - Line: 71-87
 ```ts
@@ -209,7 +209,7 @@ src/modules/cloudflare/components/photo-uploader.tsx
 When Testing add for Test folder
 
 src/constants.ts
-line: end of file:
+- Line | end of file:
 ```ts
 export const DEFAULT_AVATAR = `https://avatars.githubusercontent.com/${process.env.NEXT_PUBLIC_GITHUB_USERNAME}`;
 ```
