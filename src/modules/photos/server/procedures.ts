@@ -13,6 +13,8 @@ import {
   protectedProcedure,
 } from "@/trpc/init";
 import { TRPCError } from "@trpc/server";
+import { DeleteObjectCommand } from "@aws-sdk/client-s3";
+import { s3Client } from "@/lib/s3-client";
 
 export const photosRouter = createTRPCRouter({
   create: protectedProcedure
@@ -87,19 +89,111 @@ export const photosRouter = createTRPCRouter({
         throw new TRPCError({ code: "BAD_REQUEST" });
       }
 
-      const [deletedPhoto] = await db
-        .delete(photos)
-        .where(eq(photos.id, id))
-        .returning();
+      try {
+        const [photo] = await db.select().from(photos).where(eq(photos.id, id));
 
-      if (!deletedPhoto) {
+        if (!photo) {
+          throw new TRPCError({
+            code: "NOT_FOUND",
+            message: "Photo not found",
+          });
+        }
+
+        // city set related
+        if (photo.country && photo.city) {
+          const [citySet] = await db
+            .select()
+            .from(citySets)
+            .where(
+              and(
+                eq(citySets.country, photo.country),
+                eq(citySets.city, photo.city)
+              )
+            );
+
+          // if city set photo count is 1, delete the city set
+          if (citySet && citySet.photoCount === 1) {
+            await db.delete(citySets).where(eq(citySets.id, citySet.id));
+          }
+
+          if (citySet) {
+            // if this is the cover photo, find a new cover photo
+            if (citySet.coverPhotoId === photo.id) {
+              const [newCoverPhoto] = await db
+                .select()
+                .from(photos)
+                .where(
+                  and(
+                    eq(photos.country, photo.country),
+                    eq(photos.city, photo.city),
+                    sql`${photos.id} != ${photo.id}`
+                  )
+                );
+
+              if (!newCoverPhoto) return;
+
+              await db
+                .update(citySets)
+                .set({
+                  photoCount: sql`${citySets.photoCount} - 1`,
+                  coverPhotoId: newCoverPhoto.id,
+                  updatedAt: new Date(),
+                })
+                .where(
+                  and(
+                    eq(citySets.country, photo.country),
+                    eq(citySets.city, photo.city)
+                  )
+                );
+            } else {
+              // update the city set photo count
+              await db
+                .update(citySets)
+                .set({
+                  photoCount: sql`${citySets.photoCount} - 1`,
+                  updatedAt: new Date(),
+                })
+                .where(
+                  and(
+                    eq(citySets.country, photo.country),
+                    eq(citySets.city, photo.city)
+                  )
+                );
+            }
+          }
+        }
+
+        // delete cloudflare r2 file & database record
+        try {
+          const key = new URL(photo.url).pathname.slice(1);
+          const command = new DeleteObjectCommand({
+            Bucket: process.env.CLOUDFLARE_R2_BUCKET_NAME,
+            Key: key,
+          });
+          await s3Client.send(command);
+
+          await db.delete(photos).where(eq(photos.id, id));
+        } catch (error) {
+          if (error instanceof Error) {
+            throw new TRPCError({
+              code: "INTERNAL_SERVER_ERROR",
+              message: error.message,
+            });
+          }
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: "Failed to delete photo",
+          });
+        }
+
+        return photo;
+      } catch (error) {
+        console.error("Photo deletion error:", error);
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
-          message: "Photo not found",
+          message: "Failed to delete photo",
         });
       }
-
-      return deletedPhoto;
     }),
   update: protectedProcedure
     .input(photosUpdateSchema)
@@ -218,25 +312,23 @@ export const photosRouter = createTRPCRouter({
     .query(async ({ input }) => {
       const { cursor, limit } = input;
 
-      const data = await db
-        .select()
-        .from(citySets)
-        .where(
-          and(
-            cursor
-              ? or(
-                  lt(citySets.updatedAt, cursor.updatedAt),
-                  and(
-                    eq(citySets.updatedAt, cursor.updatedAt),
-                    lt(photos.id, cursor.id)
-                  )
-                )
-              : undefined
-          )
-        )
-        .leftJoin(photos, eq(photos.id, citySets.coverPhotoId))
-        .orderBy(desc(citySets.updatedAt))
-        .limit(limit + 1);
+      const data = await db.query.citySets.findMany({
+        with: {
+          coverPhoto: true,
+          photos: true,
+        },
+        where: cursor
+          ? or(
+              lt(citySets.updatedAt, cursor.updatedAt),
+              and(
+                eq(citySets.updatedAt, cursor.updatedAt),
+                lt(citySets.id, cursor.id)
+              )
+            )
+          : undefined,
+        orderBy: [desc(citySets.updatedAt)],
+        limit: limit + 1,
+      });
 
       const hasMore = data.length > limit;
       // Remove the last item if there is more data
@@ -245,11 +337,30 @@ export const photosRouter = createTRPCRouter({
       const lastItem = items[items.length - 1];
       const nextCursor = hasMore
         ? {
-            id: lastItem.city_sets.id,
-            updatedAt: lastItem.city_sets.updatedAt,
+            id: lastItem.id,
+            updatedAt: lastItem.updatedAt,
           }
         : null;
 
       return { items, nextCursor };
+    }),
+  getCitySetByCity: baseProcedure
+    .input(
+      z.object({
+        city: z.string(),
+      })
+    )
+    .query(async ({ input }) => {
+      const { city } = input;
+
+      const data = await db.query.citySets.findFirst({
+        with: {
+          coverPhoto: true,
+          photos: true,
+        },
+        where: eq(citySets.city, city),
+      });
+
+      return data;
     }),
 });

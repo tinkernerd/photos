@@ -1,5 +1,7 @@
 import FooterNav from "./footer-nav";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { DEFAULT_AVATAR } from "@/constants";
+
 
 const Footer = () => {
   return (
@@ -7,7 +9,7 @@ const Footer = () => {
       <div className="flex flex-col lg:flex-row gap-4 items-center">
         {/* AVATAR  */}
         <Avatar className="size-[60px]">
-          <AvatarImage src="https://avatars.githubusercontent.com/u/29255317?v=4" />
+        <AvatarImage src={DEFAULT_AVATAR} alt="Avatar" />
           <AvatarFallback>NS</AvatarFallback>
         </Avatar>
 
@@ -24,23 +26,17 @@ const Footer = () => {
             { title: "Home", href: "/" },
             { title: "Travel", href: "/travel" },
             { title: "Discover", href: "/discover" },
+            { title: "Blog", href: "/blog" },
             { title: "About", href: "/about" },
           ]}
         />
         <FooterNav
           title="CMS"
-          links={[
-            { title: "Dashboard", href: "/dashboard" },
-            { title: "Photos", href: "/photos" },
-            { title: "Documents", href: "/documents" },
-          ]}
+          links={[{ title: "Dashboard", href: "/dashboard" }]}
         />
         <FooterNav
           title="Utility"
-          links={[
-            { title: "404", href: "/404" },
-            { title: "Login", href: "/sign-in" },
-          ]}
+          links={[{ title: "Login", href: "/sign-in" }]}
         />
       </div>
 

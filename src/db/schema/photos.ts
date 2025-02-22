@@ -87,7 +87,9 @@ export const citySets = pgTable(
     city: text("city").notNull(),
 
     // COVER PHOTO
-    coverPhotoId: uuid("cover_photo_id").references(() => photos.id),
+    coverPhotoId: uuid("cover_photo_id")
+      .references(() => photos.id)
+      .notNull(),
 
     photoCount: integer("photo_count").default(0),
 
@@ -133,3 +135,8 @@ export const photosUpdateSchema = createUpdateSchema(photos)
 
 // Types
 export type Photo = InferSelectModel<typeof photos>;
+export type CitySet = InferSelectModel<typeof citySets>;
+// with photos & cover photo
+export type CitySetWithPhotos = CitySet & { photos: Photo[] } & {
+  coverPhoto: Photo;
+};

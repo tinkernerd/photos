@@ -1067,11 +1067,6 @@
   resolved "https://registry.yarnpkg.com/@hexagon/base64/-/base64-1.1.28.tgz#7d306a97f1423829be5b27c9d388fe50e3099d48"
   integrity sha512-lhqDEAvWixy3bZ+UOYbPwUbBkwBq5C1LAJ/xPC8Oi+lL54oyakv/npbA0aU2hgCsx/1NUd4IBvV03+aUBWxerw==
 
-"@hono/zod-validator@^0.4.1":
-  version "0.4.3"
-  resolved "https://registry.yarnpkg.com/@hono/zod-validator/-/zod-validator-0.4.3.tgz#f72d68be9e494ec1615cf23fbc1c2cd5dd66fd4b"
-  integrity sha512-xIgMYXDyJ4Hj6ekm9T9Y27s080Nl9NXHcJkOvkXPhubOLj8hZkOL8pDnnXfvCf5xEE8Q4oMFenQUZZREUY2gqQ==
-
 "@hookform/resolvers@^3.9.1":
   version "3.10.0"
   resolved "https://registry.yarnpkg.com/@hookform/resolvers/-/resolvers-3.10.0.tgz#7bfd18113daca4e57e27e1205b7d5a2d371aa59a"
@@ -2704,19 +2699,19 @@
     "@tiptap/pm" "^2.11.5"
 
 "@trpc/client@^11.0.0-rc.761":
-  version "11.0.0-rc.800"
-  resolved "https://registry.yarnpkg.com/@trpc/client/-/client-11.0.0-rc.800.tgz#3803f1a51b01c13343aa72404d4c599ab5f1c11f"
-  integrity sha512-ER9W2zdEnvSI9jeXeQ5Rz8OnDN5wkscAITWpsLUPCqaVCpL5yT/zCb8gayshSTx9kuyk7iWn43nD41cTYjKQ5Q==
+  version "11.0.0-rc.802"
+  resolved "https://registry.yarnpkg.com/@trpc/client/-/client-11.0.0-rc.802.tgz#fa5c5f4c9cb4d9557bd070acf8669b91a1f9fb36"
+  integrity sha512-oToR54iL/sxmu2RwVxh/dJfY6CrZ8IeSEpsu5KjtlwQHM7/w5awSTF4+odjhgB0QnVFgM0vOjw8MNbExKCKSFw==
 
 "@trpc/react-query@^11.0.0-rc.761":
-  version "11.0.0-rc.800"
-  resolved "https://registry.yarnpkg.com/@trpc/react-query/-/react-query-11.0.0-rc.800.tgz#a4a13380c6df4f3a14e11c91bf6cb7150fb3a85b"
-  integrity sha512-C++nyxjSaZAl5zZqvVZqSHTrh/1NnTkZtq2j/8L5pIyjE3Xt+geq6R9CFt4CpkYhyEub60JEVdGfhxHGuPjqVw==
+  version "11.0.0-rc.802"
+  resolved "https://registry.yarnpkg.com/@trpc/react-query/-/react-query-11.0.0-rc.802.tgz#5f0a6db97b3e4ffc74596fd8d5493eb2b4c006e2"
+  integrity sha512-4hJU8UdYq/7+cWNS/bW4Bslcqe0SJPACbQ3JDJRKp4GsSlq4GsaFsTJnxSfoGIyDuKaUczjn3Y7CpXObTJaZZw==
 
 "@trpc/server@^11.0.0-rc.761":
-  version "11.0.0-rc.800"
-  resolved "https://registry.yarnpkg.com/@trpc/server/-/server-11.0.0-rc.800.tgz#58a00f581e4c4afb13f2c29e6d45f6a1f8f241e9"
-  integrity sha512-41bKqujk4QAS2czpTPMXDBy8ZD9kInu9qDfya0KMs4SkEs2RNW4c0FLBJKMOIXz+z0dVkrmspW5q+ZTPGZV59g==
+  version "11.0.0-rc.802"
+  resolved "https://registry.yarnpkg.com/@trpc/server/-/server-11.0.0-rc.802.tgz#91550f1a262b7a94c39489eb8cb898f9bbf4e501"
+  integrity sha512-CkV2qTnmSOy84Qtev3B4WA6oLft7q2pg8X/IewssaD4LQevBrmTdTPDfvGeT1wdCa/NAT4ZIMt7AgbbWfAs/9Q==
 
 "@types/cacheable-request@^6.0.1":
   version "6.0.3"
@@ -4624,11 +4619,6 @@ hasown@^2.0.2:
   integrity sha512-0hJU9SCPvmMzIBdZFqNPXWa6dqh7WdH0cII9y+CyS8rG3nL48Bclra9HmKhVVUHyPWNH5Y7xDwAB7bfgSjkUMQ==
   dependencies:
     function-bind "^1.1.2"
-
-hono@^4.6.7:
-  version "4.7.2"
-  resolved "https://registry.yarnpkg.com/hono/-/hono-4.7.2.tgz#8d8285060d318e71d75fd5c886572e021b8fcb54"
-  integrity sha512-8V5XxoOF6SI12jkHkzX/6aLBMU5GEF5g387EjVSQipS0DlxWgWGSMeEayY3CRBjtTUQYwLHx9JYouWqKzy2Vng==
 
 hosted-git-info@^2.1.4:
   version "2.8.9"

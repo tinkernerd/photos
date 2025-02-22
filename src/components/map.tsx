@@ -48,6 +48,7 @@ const MAP_STYLES = {
   dark: "mapbox://styles/tinkernerd/cm7ewvpet00ed01qoeoie08th",
 } as const;
 
+
 const Mapbox = ({
   id,
   initialViewState = {

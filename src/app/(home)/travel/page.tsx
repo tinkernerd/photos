@@ -1,12 +1,23 @@
-import TravelClientPage from "./page.client";
+import { TravelView } from "@/modules/travel/ui/views/travel-view";
+import { HydrateClient, trpc } from "@/trpc/server";
 
 export const metadata = {
   title: "Travel",
   description: "Travel",
 };
 
-const TravelPage = () => {
-  return <TravelClientPage />;
+export const dynamic = "force-dynamic";
+
+const TravelPage = async () => {
+  void trpc.photos.getCitySets.prefetchInfinite({
+    limit: 10,
+  });
+
+  return (
+    <HydrateClient>
+      <TravelView />
+    </HydrateClient>
+  );
 };
 
 export default TravelPage;

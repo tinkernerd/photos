@@ -5,6 +5,7 @@ import Link from "next/link";
 import ContactCard from "./contact-card";
 import { PiArrowUpRight } from "react-icons/pi";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { DEFAULT_AVATAR } from "@/constants";
 
 const ProfileCard = () => {
   return (
@@ -17,10 +18,8 @@ const ProfileCard = () => {
           <div className="flex gap-4 items-center">
             {/* AVATAR  */}
             <Avatar className="size-[60px]">
-              <AvatarImage
-                src="https://avatars.githubusercontent.com/u/29255317?v=4"
-                alt="Avatar"
-              />
+            <AvatarImage src={DEFAULT_AVATAR} alt="Avatar" />
+
               <AvatarFallback>NS</AvatarFallback>
             </Avatar>
 
@@ -47,7 +46,7 @@ const ProfileCard = () => {
       <div className="col-span-1 md:col-span-1 lg:col-span-1 xl:col-span-1 flex flex-col justify-between gap-3">
         <ContactCard
           title="Instagram"
-          href="https://instagram.com/https://www.instagram.com/therealnicholasstull/"
+          href="https://www.instagram.com/therealnicholasstull/"
         />
 
         <ContactCard title="GitHub" href="https://github.com/tinkernerd" />

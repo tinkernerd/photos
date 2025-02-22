@@ -43,9 +43,15 @@ interface PhotoFormProps {
   exif: TExifData | null;
   imageInfo: TImageInfo;
   url: string;
+  onCreateSuccess?: () => void;
 }
 
-export function PhotoForm({ exif, imageInfo, url }: PhotoFormProps) {
+export function PhotoForm({
+  exif,
+  imageInfo,
+  url,
+  onCreateSuccess,
+}: PhotoFormProps) {
   const [currentLocation, setCurrentLocation] = useState<{
     lat: number;
     lng: number;
@@ -64,6 +70,7 @@ export function PhotoForm({ exif, imageInfo, url }: PhotoFormProps) {
     onSuccess: () => {
       toast.success("Photo created");
       utils.photos.getMany.invalidate();
+      onCreateSuccess?.();
     },
     onError: (error) => {
       toast.error(error.message);
@@ -118,7 +125,7 @@ export function PhotoForm({ exif, imageInfo, url }: PhotoFormProps) {
       fullAddress: address?.features[0].properties.full_address,
       placeFormatted: address?.features[0].properties.place_formatted,
     };
-    console.log(formData);
+    //console.log(formData);
 
     create.mutate(formData);
   };

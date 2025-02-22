@@ -4,7 +4,7 @@ interface AuthLayoutProps {
 
 const AuthLayout = ({ children }: AuthLayoutProps) => {
   return (
-    <div className="bg-[url(/bg.webp)] bg-top bg-cover h-screen flex flex-col">
+    <div className="bg-[url(https://photograph.tinkernerd.dev/photos/Pickerel_Lake_241108_0062_edit.jpg)] bg-top bg-cover h-screen flex flex-col">
       <div className="z-[4] h-full w-full flex flex-col items-center justify-center">
         <div className="h-full w-full md:h-auto md:w-[420px]">{children}</div>
       </div>
