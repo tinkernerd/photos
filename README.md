@@ -47,7 +47,7 @@ Enjoy a seamless experience in both dark and light modes.
 
 ## 🚀 Getting Started
 
-For setup and customization details, check the [Setup Document](https://github.com/tinkernerd/photos/edit/main/.github/SETUP.md).
+For setup and customization details, check the [Setup Document](https://github.com/tinkernerd/photos/blob/main/.github/SETUP.md).
 
 ---
 
@@ -59,11 +59,11 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 ## 🤝 Contributing & 💖 Support
 
-If you find this project helpful, check out @ECarry for the original codebase and continuous updates.  
+If you find this project helpful, check out [`ECarry/photography-website`](https://github.com/ECarry/photography-website) for the original codebase and continuous updates.  
 Feel free to open issues and pull requests. Don’t forget to give it a ⭐️!
 
 ---
 
 ## 📝 Changelog
 
-Keep up with updates in the [Changelog](https://github.com/tinkernerd/photos/edit/main/changelog.md).
+Keep up with updates in the [Changelog](https://github.com/tinkernerd/Photos/main/changelog.md).
