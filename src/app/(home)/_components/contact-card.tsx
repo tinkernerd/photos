@@ -7,14 +7,14 @@ import {
   PiGithubLogo,
   PiXLogo,
 } from "react-icons/pi";
-import { SiXiaohongshu } from "react-icons/si";
+import { CgWebsite } from "react-icons/cg";
 
 // icon map
 const iconMap = {
   Instagram: <PiInstagramLogo size={18} />,
   GitHub: <PiGithubLogo size={18} />,
   X: <PiXLogo size={18} />,
-  Xiaohongshu: <SiXiaohongshu size={18} />,
+  Website: <CgWebsite size={18} />,
   "Contact me": <MdEmail size={18} />,
 };
 

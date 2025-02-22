@@ -50,8 +50,8 @@ export function PhotoForm({ exif, imageInfo, url }: PhotoFormProps) {
     lat: number;
     lng: number;
   }>({
-    lat: exif?.latitude ?? 39.9042,
-    lng: exif?.longitude ?? 116.4074,
+    lat: exif?.latitude ?? 45.86518667524172,
+    lng: exif?.longitude ?? -84.63549803244882,
   });
 
   const { data: address } = useGetAddress({

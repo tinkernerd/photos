@@ -18,24 +18,23 @@ const ProfileCard = () => {
             {/* AVATAR  */}
             <Avatar className="size-[60px]">
               <AvatarImage
-                src="https://avatars.githubusercontent.com/u/16572906?s=400&u=a304af70d12572524d540553425d78ff4d1a101a&v=4"
+                src="https://avatars.githubusercontent.com/u/29255317?v=4"
                 alt="Avatar"
               />
-              <AvatarFallback>EC</AvatarFallback>
+              <AvatarFallback>NS</AvatarFallback>
             </Avatar>
 
             {/* NAME  */}
             <div className="flex flex-col gap-[2px]">
-              <h1 className="text-lg">ECarry</h1>
+              <h1 className="text-lg">Nick Stull</h1>
               <p className="text-sm text-text-muted">Photographer</p>
             </div>
           </div>
 
           <div className="lg:mt-4 xl:mt-0">
             <p className="text-text-muted text-[15px]">
-              I&apos;m ECarry, a photographer dedicated to capturing authentic
-              moments and telling stories through creative and emotional
-              imagery, wherever my journey takes me.
+              I&apos;m Nick, a photographer dedicated to capturing God&apos;s creation
+              through a diffrent perspective and capturing moments wherever my journey takes me.
             </p>
           </div>
 
@@ -48,18 +47,19 @@ const ProfileCard = () => {
       <div className="col-span-1 md:col-span-1 lg:col-span-1 xl:col-span-1 flex flex-col justify-between gap-3">
         <ContactCard
           title="Instagram"
-          href="https://instagram.com/ekkooooooooooo0o0"
+          href="https://instagram.com/https://www.instagram.com/therealnicholasstull/"
         />
 
-        <ContactCard title="GitHub" href="https://github.com/ecarry" />
+        <ContactCard title="GitHub" href="https://github.com/tinkernerd" />
 
         <ContactCard
-          title="Xiaohongshu"
-          href="https://www.xiaohongshu.com/user/profile/66c84ba2000000001b01b3f1"
+          title="Website"
+          href="https://tinkernerd.dev"
         />
 
         <ContactCard
           title="Contact me"
+          href="https://contact.tinkernerd.dev"
           className="bg-primary hover:bg-primary-hover text-white dark:text-black"
         />
       </div>

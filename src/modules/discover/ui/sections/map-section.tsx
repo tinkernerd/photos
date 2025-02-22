@@ -88,8 +88,8 @@ const MapSectionSuspense = () => {
     <Mapbox
       id="discoverMap"
       initialViewState={{
-        longitude: 121.2816980216146,
-        latitude: 31.31395498607465,
+        longitude: -84.63549803244882,
+        latitude: 45.86518667524172,
         zoom: 3,
       }}
       markers={markers}

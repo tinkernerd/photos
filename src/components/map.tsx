@@ -44,15 +44,15 @@ export interface MapboxProps {
 }
 
 const MAP_STYLES = {
-  light: "mapbox://styles/ecarry/cldmhu6tr000001n33ujbxf7j",
-  dark: "mapbox://styles/ecarry/clp8hcmd300km01qx78rt0xaw",
+  light: "mapbox://styles/tinkernerd/cm7ewyz2o000901qx4qrq23na",
+  dark: "mapbox://styles/tinkernerd/cm7ewvpet00ed01qoeoie08th",
 } as const;
 
 const Mapbox = ({
   id,
   initialViewState = {
-    longitude: -122.4,
-    latitude: 37.8,
+    longitude: -84.63549803244882,
+    latitude: 45.86518667524172,
     zoom: 14,
   },
   markers = [],

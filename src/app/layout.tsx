@@ -14,10 +14,10 @@ const readex = Readex_Pro({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: {
-    template: "%s - ECarry Photography",
-    default: "ECarry Photography",
+    template: "%s - StullStudios",
+    default: "StullStudios",
   },
-  description: "ECarry Photography",
+  description: "StullStudios",
 };
 
 export default async function RootLayout({

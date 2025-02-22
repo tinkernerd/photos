@@ -29,10 +29,11 @@ export class CloudflareR2Client {
    * @returns 带有时间戳的唯一文件名
    */
   private generateUniqueFilename(originalFilename: string): string {
-    const timestamp = Date.now();
+    //const timestamp = Date.now();
     const extension = originalFilename.split(".").pop() || "";
     const baseName = originalFilename.replace(`.${extension}`, "");
-    return `${baseName}-${timestamp}.${extension}`;
+    return `${baseName}.${extension}`;
+    //return `${baseName}-${timestamp}.${extension}`;
   }
 
   /**

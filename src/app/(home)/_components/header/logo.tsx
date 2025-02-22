@@ -7,8 +7,8 @@ const Logo = () => {
     <Link href="/" className="flex gap-2 items-center">
       <RiCameraLensFill size={18} />
       <AnimatedText
-        label="ECarry"
-        label2="Photo"
+        label="StullStudio"
+        label2="Photos"
         style="font-medium uppercase"
       />
     </Link>
