@@ -18,7 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **AboutCard Text**: Updated the text content to enhance messaging and clarity.
 - **External Links**:
   - Updated `xiaohongshu` link to [Website - Tinkernerd](https://tinkernerd.dev).
-  - Changed background image source from `/bg.webp` to `https://photograph.tinkernerd.dev/photos/Pickerel_Lake_241108_0062_edit.jpg` in `src/app/(auth)/layout.tsx`.
+  - Changed background image source from `/bg.webp` to `https://photograph.tinkernerd.dev/photos/Pickerel_Lake_241108_0062_edit.jpg` in `src/app/(auth)/layout.tsx` & in `src/app/(home)/about/page.tsx`. -> Will Possibly replace background with the slider from homepage.
 
 ### Removed
 - **Old Photos/Screenshots**: Deleted outdated images and replaced them with the latest versions from the @ECarry repo for a more consistent and modern look.
