@@ -22,3 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 - **Old Photos/Screenshots**: Deleted outdated images and replaced them with the latest versions from the @ECarry repo for a more consistent and modern look.
+
+## [Pre-Clone] @ECarry Repo Changes
+- 2025-02-13: tRPC instead of Hono.js
+- 2025-01-12: Better Auth instead of Next Auth

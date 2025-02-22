@@ -1,12 +1,3 @@
-Below is an example of an **improved README** structure and content that you can merge into your repository (or adapt as needed). The aim is to make the project clearer for contributors and end-users, and to highlight important configuration details. It also includes suggestions for best practices, potential improvements, and instructions for contributing to the project. Feel free to pick and choose what is most relevant for your needs.
-
----
-
-# Photography Blog
-
-A modern, full-stack photography blog built with **Next.js 15**, **Neon Postgres**, **Drizzle ORM**, **Better Auth**, **Shadcn/ui**, and **Cloudflare R2**. Deployed on **Vercel**.
-
-> **Note:** This repository is based on work by [ECarry](https://github.com/ECarry). As they publish updates, this project will integrate them. If you find any issues, please open an issue or pull request.
 
 ## Table of Contents
 
@@ -28,34 +19,6 @@ A modern, full-stack photography blog built with **Next.js 15**, **Neon Postgres
 11. [Contribution Guidelines](#contribution-guidelines)
 12. [License](#license)
 13. [Acknowledgments](#acknowledgments)
-
----
-
-## Features
-
-- **Photo Gallery & Blog:** Showcase your photography work with a clean, modern UI.
-- **Admin Dashboard:** Easily manage posts, images, and user profiles.
-- **Image Optimization:** Leverages Cloudflare Image Optimization (via R2) and Next.js dynamic image loading.
-- **Social Sharing:** Simple endpoints for social previews and embedded metadata.
-- **Authentication & Authorization:** Secure sign-in with Better Auth, including protected admin routes.
-- **Scalable Database:** Utilizes a serverless Postgres from Neon, managed via Drizzle ORM migrations.
-
----
-
-## Tech Stack
-
-| **Category**         | **Technology**                                                      |
-|----------------------|---------------------------------------------------------------------|
-| **Framework**        | [Next.js 15](https://nextjs.org/)                                  |
-| **Database**         | [Neon](https://neon.tech/) (Serverless Postgres)                    |
-| **ORM**              | [Drizzle](https://orm.drizzle.team/)                               |
-| **Authentication**   | [Better Auth](https://better-auth.com/)                            |
-| **UI Components**    | [Shadcn/ui](https://ui.shadcn.com/)                                |
-| **API Layer**        | tRPC                                     |
-| **Storage**          | [Cloudflare R2](https://www.cloudflare.com/products/r2/)           |
-| **Deployment**       | [Vercel](https://vercel.com)                                       |
-
----
 
 ## Getting Started
 
@@ -208,7 +171,7 @@ http://localhost:3000/sign-up
 ---
 
 ## Customizing the Portfolio
-
+These are I belive just a few that have content changes. See More @ [`.github/Differences.md`](https://github.com/tinkernerd/photos/blob/main/.github/Differences.md)
 Certain files contain default images, text, and branding that you may want to change:
 
 - `src/app/layout.tsx`
@@ -220,11 +183,3 @@ Certain files contain default images, text, and branding that you may want to ch
 - `src/modules/home/ui/components/header/mobile-menu.tsx`
 
 > **Tip:** Search the codebase for placeholder text like “ECarry” or “Photography Blog” to quickly locate branding references and replace them with your own.
-
----
-
-## Acknowledgments
-
-- [ECarry](https://github.com/ECarry) for the original codebase and continuous updates.
-- [Next.js](https://nextjs.org/), [Neon](https://neon.tech/), [Drizzle](https://orm.drizzle.team/), [Better Auth](https://better-auth.com/), [Shadcn/ui](https://ui.shadcn.com/), and [Cloudflare R2](https://www.cloudflare.com/products/r2/) for the awesome tools.
-
