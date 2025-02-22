@@ -209,7 +209,7 @@ src/modules/cloudflare/components/photo-uploader.tsx
 When Testing add for Test folder
 
 src/constants.ts
-- Line | end of file:
+- Line | End of File:
 ```ts
 export const DEFAULT_AVATAR = `https://avatars.githubusercontent.com/${process.env.NEXT_PUBLIC_GITHUB_USERNAME}`;
 ```
