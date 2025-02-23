@@ -72,7 +72,7 @@ const CitySectionSuspense = ({ city }: Props) => {
               <div className="flex gap-4 items-center">
                 {/* NAME  */}
                 <div className="flex flex-col gap-[2px]">
-                  <h1 className="text-4xl">{decodedCityName}</h1>
+                  <h1 className="text-4xl">{decodedCityName}, {cityData.region}</h1>
                 </div>
               </div>
 
@@ -93,6 +93,11 @@ const CitySectionSuspense = ({ city }: Props) => {
             <div className="w-full h-full p-3 lg:p-5 bg-muted rounded-xl flex justify-between items-center">
               <p className="text-xs text-text-muted">City</p>
               <p className="text-xs">{cityData.city}</p>
+            </div>
+
+            <div className="w-full h-full p-3 lg:p-5 bg-muted rounded-xl flex justify-between items-center">
+              <p className="text-xs text-text-muted">State/Region</p>
+              <p className="text-xs">{cityData.region}</p>
             </div>
 
             <div className="w-full h-full p-3 lg:p-5 bg-muted rounded-xl flex justify-between items-center">

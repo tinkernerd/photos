@@ -9,6 +9,8 @@ import { useRouter } from "next/navigation";
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { SiSony } from "react-icons/si";
+import { IoMdPhotos } from "react-icons/io";
+import { useCallback } from "react";
 
 interface Props {
   id: string;
@@ -28,15 +30,63 @@ const PhotographSectionSuspense = ({ id }: Props) => {
   const router = useRouter();
   const [data] = trpc.photos.getOne.useSuspenseQuery({ id });
 
+  // Memoize the download function
+  const handleDownload = useCallback(async () => {
+    try {
+      // Extract the original image URL
+      const cdnPrefix = "https://photograph.tinkernerd.dev/cdn-cgi/image/";
+      let downloadUrl = data.url;
+
+      if (data.url.includes(cdnPrefix)) {
+        downloadUrl = data.url.split(cdnPrefix)[1];
+        downloadUrl = `https://photograph.tinkernerd.dev/${downloadUrl}`;
+      }
+
+      // Fetch the image as a Blob
+      const response = await fetch(downloadUrl);
+      if (!response.ok) throw new Error("Network response was not ok");
+
+      const blob = await response.blob();
+      const objectUrl = URL.createObjectURL(blob);
+
+      // Create a temporary anchor element
+      const link = document.createElement("a");
+      link.href = objectUrl;
+      link.download = `${data.title}.jpg`; // Default filename
+      document.body.appendChild(link);
+
+      // Programmatically click the link to trigger download
+      link.click();
+
+      // Clean up the temporary object URL and anchor
+      URL.revokeObjectURL(objectUrl);
+      link.remove();
+    } catch (error) {
+      console.error("Download failed:", error);
+    }
+  }, [data.url, data.title]); // Only recreate if data.url or data.title changes
+
   return (
     <div className="relative size-full">
-      {/* Back button */}
-      <button
-        className="absolute top-4 left-4 z-10 p-1 rounded-md bg-black/50"
-        onClick={() => router.back()}
-      >
-        <ArrowLeft size={22} className="text-white" />
-      </button>
+      {/* Back and Download buttons */}
+      <div className="absolute top-4 left-4 z-10 flex items-center gap-2">
+        <button
+          className="p-1 rounded-md bg-black/50 hover:bg-black/70 transition"
+          onClick={() => router.back()}
+        >
+          <ArrowLeft size={22} className="text-white" />
+        </button>
+
+        {/* Download Button */}
+        <button
+          onClick={handleDownload}
+          className="flex items-center gap-2 px-3 py-1 bg-emerald-600 text-white rounded-md shadow hover:bg-emerald-700 transition text-sm"
+        >
+          <span>Download</span>
+          <IoMdPhotos className="text-lg" />
+        </button>
+      </div>
+
       {/* Blurhash background layer */}
       <div className="absolute inset-0 -z-10">
         <BlurImage
@@ -56,7 +106,7 @@ const PhotographSectionSuspense = ({ id }: Props) => {
             {data.title}
           </h1>
           <h2 className="text-xl lg:text-3xl text-gray-300">
-            {data.city}, {data.country}
+            {data.city}, {data.region} {data.countryCode}
           </h2>
         </div>
 
@@ -84,14 +134,16 @@ const PhotographSectionSuspense = ({ id }: Props) => {
               <p className="text-xs">{data.lensModel}</p>
             </div>
             <div className="flex flex-col text-center">
-            <div className="space-x-[6px] text-xs lg:text-md">
-            <h1
-                className={cn(
-                  "font-semibold text-xs sm:text-sm lg:text-lg",
-                  data.aspectRatio < 1 ? "lg:text-sm" : "lg:text-lg"
-                )}
-              >{data.title} | {data.city}, {data.country}</h1>
-            </div>
+              <div className="space-x-[6px] text-xs lg:text-md">
+                <h1
+                  className={cn(
+                    "font-semibold text-xs sm:text-sm lg:text-lg",
+                    data.aspectRatio < 1 ? "lg:text-sm" : "lg:text-lg"
+                  )}
+                >
+                  {data.title} | {data.city}, {data.region}, {data.countryCode}
+                </h1>
+              </div>
             </div>
             <div className="flex items-center gap-2">
               <SiSony size={50} />
